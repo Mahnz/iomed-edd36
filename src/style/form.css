@@ -1,0 +1,15 @@
+.login-form {
+    background: rgb(251, 145, 40);
+    background: linear-gradient(125deg, rgba(251, 145, 40, 1) 0%, rgba(235, 188, 83, 1) 49%, rgba(250, 234, 58, 1) 100%);
+}
+
+.signup-form {
+    background: rgb(250, 234, 58);
+    background: linear-gradient(125deg, rgba(250, 234, 58, 1) 0%, rgba(235, 188, 83, 1) 49%, rgba(251, 145, 40, 1) 100%);
+}
+
+.login-form input:focus, .signup-form input:focus, .signup-form select:focus {
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
