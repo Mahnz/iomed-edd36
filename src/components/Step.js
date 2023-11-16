@@ -10,9 +10,11 @@ import {
     faVenusMars
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
+
+import "react-datepicker/dist/react-datepicker.css";
 import province from '../province';
 
-export default function Step({step, formData, nextStep, prevStep, handleChange, handleSubmit}) {
+export default function Step({step, formData, nextStep, prevStep, handleChange, handleSubmit, computeCF}) {
     const today = new Date();
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
 
@@ -51,7 +53,7 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={12} md={3} className="my-1">
+                        <Col xs={12} md={3} className="my-1 col-auto">
                             <InputGroup className="mb-2">
                                 <InputGroup.Text><FontAwesomeIcon icon={faVenusMars}/></InputGroup.Text>
                                 <FloatingLabel label="Sesso">
@@ -93,7 +95,7 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
                                 <InputGroup.Text><FontAwesomeIcon icon={faLocationDot}/></InputGroup.Text>
                                 <FloatingLabel label="Luogo di nascita">
                                     <Form.Select
-                                        id="inputSesso"
+                                        id="inputLuogoNascita"
                                         name="birthPlace"
                                         value={formData.birthPlace}
                                         onChange={handleChange}
@@ -110,6 +112,12 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
                         </Col>
                     </Row>
                     <Row>
+                        <Col xs={12} md={3} className="my-1 mb-2">
+                            {/* TODO - pulsante per calcolare il codice fiscale*/}
+                            <Button variant="primary" className="w-100 h-100" onClick={computeCF}>
+                                Calcola
+                            </Button>
+                        </Col>
                         <Col className="my-1">
                             <InputGroup className="mb-2">
                                 <InputGroup.Text><FontAwesomeIcon icon={faIdBadge}/></InputGroup.Text>
@@ -119,9 +127,9 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
                                                   name="CF"
                                                   placeholder="Inserire codice fiscale"
                                                   value={formData.CF}
-                                                  onChange={handleChange}
                                                   autoComplete="off"
                                                   required
+                                                  readOnly
                                     />
                                 </FloatingLabel>
                             </InputGroup>
@@ -129,13 +137,13 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
                     </Row>
                     <Row>
                         <Col className="my-1">
-                            <InputGroup className="mb-2" hasValidation>
+                            <InputGroup className="mb-2">
                                 <InputGroup.Text><FontAwesomeIcon icon={faAt}/></InputGroup.Text>
                                 <FloatingLabel label="Email">
                                     <Form.Control type="email"
                                                   id="inputEmail"
                                                   name="email"
-                                                  placeholder="Inserire indirizzo email"
+                                                  placeholder="Inserire codice fiscale"
                                                   value={formData.email}
                                                   onChange={handleChange}
                                                   autoComplete="off"
@@ -180,8 +188,9 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
                         </Col>
                     </Row>
                     <Row className="justify-content-center mb-2">
-                        <Button type="submit" variant="primary" onClick={nextStep} className="mb-2"
-                                block>Avanti</Button>
+                        <Button type="submit" variant="primary" onClick={nextStep} className="mb-2">
+                            Avanti
+                        </Button>
                     </Row>
                     <div>
                         <p align="center">Hai già un account? <Link to="/login">Login</Link></p>
@@ -191,13 +200,6 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
             {step === 2 && (
                 <>
                     <h2 align="center">Step 2</h2>
-                    {/*
-                        Città di residenza
-                        Indirizzo
-                        Civico
-                        Numero di telefono
-
-                    */}
                     <Row className="mb-2">
                         <Col className="my-1">
                             <InputGroup className="mb-2">
@@ -317,12 +319,12 @@ export default function Step({step, formData, nextStep, prevStep, handleChange, 
 
                     <Row className="justify-content-center mb-2">
                         <Col xs="auto" className="my-1">
-                            <Button variant="secondary" className="mb-2" onClick={prevStep} block>
+                            <Button variant="secondary" className="mb-2" onClick={prevStep}>
                                 Indietro
                             </Button>
                         </Col>
                         <Col xs="auto" className="my-1">
-                            <Button variant="primary" className="mb-2" onClick={handleSubmit} block>
+                            <Button variant="primary" className="mb-2" onClick={handleSubmit}>
                                 Termina
                             </Button>
                         </Col>

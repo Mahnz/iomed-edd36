@@ -1,9 +1,11 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {Container, Form, Col, Row} from "react-bootstrap"
 import '../style/form.css'
 import Step from "./Step"
+import CodiceFiscale from "codice-fiscale-js";
 
 export default function SignUpForm() {
+    const CodiceFiscale = require('codice-fiscale-js');
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState({
         // Oggetto contenente tutti i dati del form di registrazione
@@ -35,7 +37,7 @@ export default function SignUpForm() {
         setStep(step - 1)
     }
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         const {name, value, type} = e.target
 
         if (type === 'file') {
@@ -48,18 +50,50 @@ export default function SignUpForm() {
             // Memorizzazione della data di nascita. Si memorizza SOLO la data effettiva
             const dateValue = new Date(value)
 
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: dateValue.toISOString().split('T')[0],
-            }))
+            setFormData({
+                ...formData,
+                [name]: dateValue.toISOString().split('T')[0]
+            })
         } else {
             // Memorizzazione di ogni altro campo testuale
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }))
+            setFormData({
+                ...formData,
+                [name]: value
+            })
         }
     }
+
+    const computeCF = () => {
+        if (
+            formData.firstName &&
+            formData.lastName &&
+            formData.birthDate &&
+            formData.sex &&
+            formData.birthPlace
+        ) {
+            try {
+                const codFiscale = new CodiceFiscale({
+                    name: formData.firstName,
+                    surname: formData.lastName,
+                    gender: formData.sex,
+                    day: new Date(formData.birthDate).getDate(),
+                    month: new Date(formData.birthDate).getMonth() + 1,
+                    year: new Date(formData.birthDate).getFullYear(),
+                    dateOfBirth: new Date(formData.birthDate),
+                    birthplace: formData.birthPlace,
+                });
+
+                const calculatedCF = codFiscale.toString();
+
+                setFormData({
+                    ...formData,
+                    CF: calculatedCF,
+                });
+            } catch (error) {
+                console.error('Errore nel calcolo del Codice Fiscale:', error);
+            }
+        }
+    };
 
 
     const handleSubmit = () => {
@@ -83,6 +117,7 @@ export default function SignUpForm() {
                                 prevStep={prevStep}
                                 handleChange={handleChange}
                                 handleSubmit={handleSubmit}
+                                computeCF={computeCF}
                             />
                         </Form>
                     </Col>
