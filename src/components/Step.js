@@ -11,7 +11,7 @@ import {
     faPhone,
     faVenusMars,
     faEye,
-    faEyeSlash
+    faEyeSlash, faCheck, faTimes
 } from "@fortawesome/free-solid-svg-icons"
 import {Link} from "react-router-dom"
 import '../style/form.css'
@@ -41,17 +41,19 @@ export default function Step({
                     <h2 align="center">Step 1</h2>
                     <Row className="mb-2">
                         <Col className="my-1">
-                            <FloatingLabel label="Nome">
-                                <Form.Control type="text"
-                                              id="inputNome"
-                                              name="firstName"
-                                              placeholder="Inserire nome"
-                                              value={formData.firstName}
-                                              onChange={handleChange}
-                                              autoComplete="off"
-                                              required
-                                />
-                            </FloatingLabel>
+                            <InputGroup hasValidation>
+                                <FloatingLabel label="Nome">
+                                    <Form.Control type="text"
+                                                  id="inputNome"
+                                                  name="firstName"
+                                                  placeholder="Inserire nome"
+                                                  value={formData.firstName}
+                                                  onChange={handleChange}
+                                                  autoComplete="off"
+                                                  required
+                                    />
+                                </FloatingLabel>
+                            </InputGroup>
                         </Col>
                         <Col className="my-1">
                             <FloatingLabel label="Cognome">
@@ -69,18 +71,17 @@ export default function Step({
                     </Row>
                     <Row>
                         <Col xs={12} md={3} className="my-1 col-auto">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faVenusMars}/></InputGroup.Text>
                                 <FloatingLabel label="Sesso">
-                                    <Form.Select
-                                        id="inputSesso"
-                                        name="sex"
-                                        value={formData.sex}
-                                        onChange={handleChange}
-                                        autoComplete="off"
-                                        required
+                                    <Form.Select id="inputSesso"
+                                                 name="sex"
+                                                 value={formData.sex}
+                                                 onChange={handleChange}
+                                                 autoComplete="off"
+                                                 required
                                     >
-                                        <option value="">Seleziona...</option>
+                                        <option value="" disabled>Seleziona...</option>
                                         <option value="M">Maschio</option>
                                         <option value="F">Femmina</option>
                                     </Form.Select>
@@ -88,34 +89,32 @@ export default function Step({
                             </InputGroup>
                         </Col>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faCalendarDays}/></InputGroup.Text>
                                 <FloatingLabel label="Data di nascita">
-                                    <Form.Control
-                                        type="date"
-                                        name="birthDate"
-                                        placeholder="Inserire data nascita"
-                                        value={formData.birthDate}
-                                        onChange={handleChange}
-                                        min="1850-01-01"
-                                        max={maxDate.toISOString().split('T')[0]}
-                                        autoComplete="off"
-                                        required
+                                    <Form.Control type="date"
+                                                  name="birthDate"
+                                                  placeholder="Inserire data nascita"
+                                                  value={formData.birthDate}
+                                                  onChange={handleChange}
+                                                  min="1850-01-01"
+                                                  max={maxDate.toISOString().split('T')[0]}
+                                                  autoComplete="off"
+                                                  required
                                     />
                                 </FloatingLabel>
                             </InputGroup>
                         </Col>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faLocationDot}/></InputGroup.Text>
                                 <FloatingLabel label="Provincia di nascita">
-                                    <Form.Select
-                                        id="inputLuogoNascita"
-                                        name="birthPlace"
-                                        value={formData.birthPlace}
-                                        onChange={handleChange}
-                                        autoComplete="off"
-                                        required
+                                    <Form.Select id="inputLuogoNascita"
+                                                 name="birthPlace"
+                                                 value={formData.birthPlace}
+                                                 onChange={handleChange}
+                                                 autoComplete="off"
+                                                 required
                                     >
                                         <option value="" disabled>Seleziona la provincia</option>
                                         {province.map((provincia) => (
@@ -123,8 +122,6 @@ export default function Step({
                                         ))}
                                     </Form.Select>
                                 </FloatingLabel>
-                                <Form.Control.Feedback type="invalid">Inserire provincia di
-                                    nascita</Form.Control.Feedback>
                             </InputGroup>
                         </Col>
                     </Row>
@@ -139,20 +136,19 @@ export default function Step({
                             >Calcola</Button>
                         </Col>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faIdBadge}/></InputGroup.Text>
                                 <FloatingLabel label="Codice fiscale">
-                                    <Form.Control
-                                        type="text"
-                                        id="inputCF"
-                                        name="CF"
-                                        placeholder="Inserire codice fiscale"
-                                        value={formData.CF === ''
-                                            ? "Inserire i dati per il calcolo del codice fiscale..."
-                                            : formData.CF}
-                                        autoComplete="off"
-                                        required
-                                        readOnly
+                                    <Form.Control type="text"
+                                                  id="inputCF"
+                                                  name="CF"
+                                                  placeholder="Inserire codice fiscale"
+                                                  value={formData.CF === ''
+                                                      ? "Inserire i dati per il calcolo del codice fiscale..."
+                                                      : formData.CF}
+                                                  autoComplete="off"
+                                                  required
+                                                  readOnly
                                     />
                                 </FloatingLabel>
                             </InputGroup>
@@ -160,18 +156,17 @@ export default function Step({
                     </Row>
                     <Row>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faAt}/></InputGroup.Text>
                                 <FloatingLabel label="Email">
-                                    <Form.Control
-                                        type="email"
-                                        id="inputEmail"
-                                        name="email"
-                                        placeholder="Inserire codice fiscale"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        autoComplete="off"
-                                        required
+                                    <Form.Control type="email"
+                                                  id="inputEmail"
+                                                  name="email"
+                                                  placeholder="Inserire codice fiscale"
+                                                  value={formData.email}
+                                                  onChange={handleChange}
+                                                  autoComplete="off"
+                                                  required
                                     />
                                 </FloatingLabel>
                             </InputGroup>
@@ -179,19 +174,19 @@ export default function Step({
                     </Row>
                     <Row>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faLock}/></InputGroup.Text>
                                 <FloatingLabel label="Password">
-                                    <Form.Control
-                                        type={showPassword ? "text" : "password"}
-                                        id="inputPassword"
-                                        name="password"
-                                        placeholder="Inserire password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        aria-describedby="passwordHelpBlock"
-                                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,20}$"
-                                        required
+                                    <Form.Control type={showPassword ? "text" : "password"}
+                                                  name="password"
+                                                  placeholder="Inserire password"
+                                                  value={formData.password}
+                                                  onChange={handleChange}
+                                                  aria-describedby="passwordHelpBlock"
+                                                  minLength="8"
+                                                  maxLength="20"
+                                                  required
+
                                     />
                                 </FloatingLabel>
                                 <Button
@@ -203,19 +198,18 @@ export default function Step({
                             </InputGroup>
                         </Col>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faLock}/></InputGroup.Text>
                                 <FloatingLabel label="Ripeti password">
-                                    <Form.Control
-                                        type={showConfirmPassword ? "text" : "password"}
-                                        id="inputConfirmPassword"
-                                        name="confirmPassword"
-                                        placeholder="Ripeti password"
-                                        value={formData.confirmPassword}
-                                        onChange={handleChange}
-                                        aria-describedby="passwordHelpBlock"
-                                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,20}$"
-                                        required
+                                    <Form.Control type={showConfirmPassword ? "text" : "password"}
+                                                  name="confirmPassword"
+                                                  placeholder="Ripeti password"
+                                                  value={formData.confirmPassword}
+                                                  onChange={handleChange}
+                                                  aria-describedby="passwordHelpBlock"
+                                                  minLength="8"
+                                                  maxLength="20"
+                                                  required
                                     />
                                 </FloatingLabel>
                                 <Button
@@ -224,8 +218,44 @@ export default function Step({
                                 >
                                     <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye}/>
                                 </Button>
+                                {/* TODO - Inserimento della label "le password non coincidono" */}
+                                {/*{(formData.confirmPassword && formData.password !== formData.confirmPassword) && (*/}
+                                {/*    <Form.Control.Feedback type="invalid">*/}
+                                {/*        Le password non coincidono*/}
+                                {/*    </Form.Control.Feedback>*/}
+                                {/*)}*/}
                             </InputGroup>
                         </Col>
+                    </Row>
+                    <Row className="justify-content-center mb-2">
+                        {formData.password && (
+                            <div className="password-validation">
+                                <ul>
+                                    <li className={/(?=.{8,20})/.test(formData.password) ? 'valid' : 'invalid'}>
+                                        <FontAwesomeIcon
+                                            icon={/(?=.{8,20})/.test(formData.password) ? faCheck : faTimes}/> Da 8 a 20 caratteri
+                                    </li>
+                                    <li className={/(?=.*[a-z])/.test(formData.password) ? 'valid' : 'invalid'}>
+                                        <FontAwesomeIcon
+                                            icon={/(?=.*[a-z])/.test(formData.password) ? faCheck : faTimes}/> Lettera minuscola
+                                    </li>
+                                    <li className={/(?=.*[A-Z])/.test(formData.password) ? 'valid' : 'invalid'}>
+                                        <FontAwesomeIcon
+                                            icon={/(?=.*[A-Z])/.test(formData.password) ? faCheck : faTimes}/> Lettera maiuscola
+                                    </li>
+                                    <li className={/(?=.*[0-9])/.test(formData.password) ? 'valid' : 'invalid'}>
+                                        <FontAwesomeIcon
+                                            icon={/(?=.*[0-9])/.test(formData.password) ? faCheck : faTimes}/> Carattere
+                                        numerico
+                                    </li>
+                                    <li className={/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])/.test(formData.password) ? 'valid' : 'invalid'}>
+                                        <FontAwesomeIcon
+                                            icon={/(?=.*[!@#$%^&*])/.test(formData.password) ? faCheck : faTimes}/> Carattere
+                                        speciale !@#$%^&*
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                     </Row>
                     <Row className="justify-content-center mb-2">
                         <Button type="submit" variant="primary" className="mb-2 h-100 w-100" onClick={nextStep}>
@@ -248,17 +278,16 @@ export default function Step({
                     <h2 align="center">Step 2</h2>
                     <Row className="mb-2">
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faLocationDot}/></InputGroup.Text>
                                 <FloatingLabel label="Provincia di residenza">
-                                    <Form.Select
-                                        id="inputProvince"
-                                        name="province"
-                                        placeholder="Inserire provincia di residenza"
-                                        value={formData.province}
-                                        onChange={handleChange}
-                                        autoComplete="off"
-                                        required
+                                    <Form.Select id="inputProvince"
+                                                 name="province"
+                                                 placeholder="Inserire provincia di residenza"
+                                                 value={formData.province}
+                                                 onChange={handleChange}
+                                                 autoComplete="off"
+                                                 required
                                     >
                                         <option value="" disabled>Seleziona la provincia</option>
                                         {province.map((provincia) => (
@@ -269,7 +298,7 @@ export default function Step({
                             </InputGroup>
                         </Col>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faLock}/></InputGroup.Text>
                                 <FloatingLabel label="Città di residenza">
                                     <Form.Control type="text"
@@ -287,7 +316,7 @@ export default function Step({
                     </Row>
                     <Row>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faMap}/></InputGroup.Text>
                                 <FloatingLabel label="Indirizzo di residenza">
                                     <Form.Control type="text"
@@ -305,10 +334,10 @@ export default function Step({
                     </Row>
                     <Row>
                         <Col className="my-1">
-                            <InputGroup className="mb-2">
+                            <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faPhone}/></InputGroup.Text>
                                 <FloatingLabel label="Numero di telefono">
-                                    <Form.Control type="tel"
+                                    <Form.Control type="text"
                                                   id="inputTelefono"
                                                   name="phoneNumber"
                                                   placeholder="Inserire numero di telefono"
@@ -350,24 +379,32 @@ export default function Step({
                     <Row className="mb-4">
                         <Col className="my-1">
                             <Form.Group controlId="frontIdImage">
-                                <Form.Label>Fronte del documento (jpg, png, pdf)</Form.Label>
-                                <Form.Control
-                                    type="file"
-                                    name="frontIdImage"
-                                    onChange={handleChange}
+                                <Form.Label>Fronte del documento (jpg, jpeg, png, pdf)</Form.Label>
+                                <Form.Control type="file"
+                                              name="frontIdImage"
+                                              onChange={handleChange}
+                                              accept="image/png, image/jpeg, image/jpg, application/pdf"
+                                              required
                                 />
+                                {/*<Form.Control.Feedback type="invalid">*/}
+                                {/*    File non valido*/}
+                                {/*</Form.Control.Feedback>*/}
                             </Form.Group>
                         </Col>
                     </Row>
                     <Row>
                         <Col className="my-1">
                             <Form.Group controlId="backIdImage">
-                                <Form.Label>Retro del documento (jpg, png, pdf)</Form.Label>
-                                <Form.Control
-                                    type="file"
-                                    name="backIdImage"
-                                    onChange={handleChange}
+                                <Form.Label>Retro del documento (jpg, jpeg, png, pdf)</Form.Label>
+                                <Form.Control type="file"
+                                              name="backIdImage"
+                                              onChange={handleChange}
+                                              accept="image/png, image/jpeg, image/jpg, application/pdf"
+                                              required
                                 />
+                                {/*<Form.Control.Feedback type="invalid">*/}
+                                {/*    File non valido*/}
+                                {/*</Form.Control.Feedback>*/}
                             </Form.Group>
                         </Col>
                     </Row>
@@ -375,13 +412,12 @@ export default function Step({
                     <Row className="m-2">
                         <Col className="d-flex justify-content-center">
                             <Form.Check>
-                                <Form.Check.Input
-                                    type="checkbox"
-                                    id="inputCheckTerms"
-                                    name="checkTerms"
-                                    checked={formData.checkTerms}
-                                    onChange={handleChange}
-                                    required
+                                <Form.Check.Input type="checkbox"
+                                                  id="inputCheckTerms"
+                                                  name="checkTerms"
+                                                  checked={formData.checkTerms}
+                                                  onChange={handleChange}
+                                                  required
                                 />
                                 <Form.Check.Label>
                                     Accetto i <Link to="/terms">termini e condizioni</Link>

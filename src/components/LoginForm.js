@@ -4,12 +4,12 @@ import {Link, useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import {Container, Form, Button, FloatingLabel, Col, Row, InputGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faLock} from '@fortawesome/free-solid-svg-icons';
+import {faUser, faLock, faKey} from '@fortawesome/free-solid-svg-icons';
 
 import Cookies from 'universal-cookie'
 
 export default function LoginForm() { // eslint-disable-next-line
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [validated, setValidated] = useState(false);
 
@@ -20,11 +20,11 @@ export default function LoginForm() { // eslint-disable-next-line
         // Verifica se il cookie è impostato
         if (cookies.get("username")) {
             console.log(cookies.get("username"))
-            navigate("/chat");
+            navigate("/home");
         }
     })
 
-    const handleSubmit = e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const form = e.currentTarget
@@ -33,13 +33,23 @@ export default function LoginForm() { // eslint-disable-next-line
         }
         setValidated(true)
 
-        // * Verifica del login dal database
-        const user = {
-            username: username,
-            password: password
-        };
         // TODO - Verifica del login dalla blockchain
     }
+
+    const handleChange = (e) => {
+        const {name, value, type} = e.target
+
+        if (name === 'inputEmailLogin') {
+            // Gestione del caricamento dei file
+            setEmail(value)
+        } else if (name === 'inputPassword') {
+            // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
+
+            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
+            setPassword(cleanValue)
+        }
+    }
+
 
     return (
         <>
@@ -54,11 +64,12 @@ export default function LoginForm() { // eslint-disable-next-line
                                     <Row className="mb-2">
                                         <InputGroup className="mb-2" hasValidation>
                                             <InputGroup.Text><FontAwesomeIcon icon={faUser}/></InputGroup.Text>
-                                            <FloatingLabel label="Username">
-                                                <Form.Control type="text" id="inputUsername"
-                                                              placeholder="Inserire username o email"
-                                                              value={username}
-                                                              onChange={e => setUsername(e.target.value)}
+                                            <FloatingLabel label="Email">
+                                                <Form.Control type="email"
+                                                              name="inputEmailLogin"
+                                                              placeholder="Inserire email"
+                                                              value={email}
+                                                              onChange={handleChange}
                                                               autoComplete="off"
                                                               required
                                                 />
@@ -68,15 +79,14 @@ export default function LoginForm() { // eslint-disable-next-line
 
                                     <Row className="mb-2">
                                         <InputGroup className="mb-2" hasValidation>
-                                            <InputGroup.Text><FontAwesomeIcon icon={faLock}/></InputGroup.Text>
+                                            <InputGroup.Text><FontAwesomeIcon icon={faKey}/></InputGroup.Text>
                                             <FloatingLabel label="Password">
-                                                <Form.Control
-                                                    type="password"
-                                                    id="inputPassword"
-                                                    placeholder="Inserire password"
-                                                    value={password}
-                                                    onChange={(e) => setPassword(e.target.value)}
-                                                    required
+                                                <Form.Control type="password"
+                                                              name="inputPassword"
+                                                              placeholder="Inserire password"
+                                                              value={password}
+                                                              onChange={handleChange}
+                                                              required
                                                 />
                                             </FloatingLabel>
                                         </InputGroup>

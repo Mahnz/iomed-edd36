@@ -33,3 +33,21 @@ input[type=number] {
     outline: none !important;
     box-shadow: none !important;
 }
+
+.password-validation {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.password-validation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.password-validation li {
+    color: red;
+}
+
+.password-validation li.valid {
+    color: green;
+}

@@ -32,7 +32,9 @@ export default function SignUpForm() {
 
     const nextStep = (e) => {
         e.preventDefault()
-        const form = e.currentTarget;
+
+        // Validazione input del form client-side
+        let form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.stopPropagation()
         }
@@ -52,6 +54,9 @@ export default function SignUpForm() {
                     formData.confirmPassword) {
                     if (formData.password === formData.confirmPassword) {
                         setStep(step + 1)
+                        setValidated(false)
+                    } else {
+                        alert("Le password inserite sono diverse")
                     }
                 }
                 break;
@@ -62,13 +67,7 @@ export default function SignUpForm() {
                     formData.address &&
                     formData.phoneNumber && formData.phoneNumber.length === 10) {
                     setStep(step + 1)
-                }
-                break;
-            case 3:
-                if (
-                    formData.frontID &&
-                    formData.backID) {
-                    setStep(step + 1)
+                    setValidated(false)
                 }
                 break;
             default:
@@ -80,11 +79,12 @@ export default function SignUpForm() {
         setStep(step - 1)
     }
 
+    // ? METODO DA ELIMINARE, USATO SOLO PER TEST
     const test = () => {
         setStep(step + 1)
     }
 
-    const handleChange = async (e) => {
+    const handleChange = (e) => {
         const {name, value, type} = e.target
 
         if (type === 'file') {
@@ -107,6 +107,23 @@ export default function SignUpForm() {
                 ...formData,
                 [name]: e.target.checked
             })
+        } else if (name === 'password' || name === 'confirmPassword') {
+            // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
+
+            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
+            setFormData({
+                ...formData,
+                [name]: cleanValue,
+            })
+        } else if (name === 'phoneNumber') {
+            // Si effettua il controllo sull'inserimento di caratteri alfabetici e spazi
+
+            const cleanValue = value.replace(/[^0-9]/g, '');
+            setFormData({
+                ...formData,
+                [name]: cleanValue,
+            })
+
         } else {
             // Memorizzazione di ogni altro campo testuale
             setFormData({
@@ -118,9 +135,38 @@ export default function SignUpForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        // Validazione input del form client-side
+        let form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.stopPropagation()
+        }
+        setValidated(true)
+
+
         // TODO - Gestire l'invio dei dati in blockchain
         console.log('Dati inviati:', formData)
+
         // TODO - Resettare lo stato di formData
+        setFormData({
+            firstName: '',
+            lastName: '',
+            birthDate: '',
+            birthPlace: '',
+            sex: '',
+            CF: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            address: '',
+            province: '',
+            city: '',
+            cap: '',
+            phoneNumber: '',
+            frontID: null,
+            backID: null,
+            checkTerms: false
+        })
     }
 
     useEffect(() => {
