@@ -13,3 +13,23 @@
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.eye, .eye:hover, .eye:active, .eye:focus {
+    background-color: white !important;
+    color: black !important;
+    border-color: #dee2e6 #dee2e6 #dee2e6 white !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
