@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 
 export default function Sidebar({isOpen, toggleSidebar}) {
     //iaaoaososoos
+    // Questo commento è dell'altro Domenico
     return (
         <Navbar bg="dark" variant="dark" className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <Navbar.Brand>
