@@ -20,5 +20,7 @@ export default function Sidebar({isOpen, toggleSidebar}) {
                 {/* Aggiungi altre voci della sidebar qui */}
             </Nav>
         </Navbar>
+
+        adsifjaeiodiojawdaijdwiodiow
     );
 };
