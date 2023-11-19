@@ -5,6 +5,7 @@ import {Navbar, Nav} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 export default function Sidebar({isOpen, toggleSidebar}) {
+    //iaaoaososoos
     return (
         <Navbar bg="dark" variant="dark" className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <Navbar.Brand>
