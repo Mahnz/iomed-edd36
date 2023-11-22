@@ -15,7 +15,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {Link} from "react-router-dom"
 import '../style/form.css'
-import "react-datepicker/dist/react-datepicker.css"
 import province from '../province'
 
 export default function Step({

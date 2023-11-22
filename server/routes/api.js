@@ -1,15 +1,13 @@
 const express = require('express');
-const ipfsClient = require('ipfs-http-client');
-const app = express();
-const port = 3000;
-const ipfs = require('./ipfs')
-const usersRouter = require('./users')
+const ipfsController = require('../controllers/ipfsController');
 
-// Configura l'endpoint del tuo nodo IPFS
+const router = express.Router();
 
+// IPFS routes
+router.post('/addFileToIPFS', ipfsController.addFileToIPFS);
+router.get('/getFileFromIPFS/:ipfsHash', ipfsController.getFileFromIPFS);
 
-// Altre API per gestire login, signup, retrieve pazienti da Hyperledger Fabric...
+// Other routes
+// ...
 
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-});
+module.exports = router;

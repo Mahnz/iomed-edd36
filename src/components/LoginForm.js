@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import {Container, Form, Button, FloatingLabel, Col, Row, InputGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faLock, faKey} from '@fortawesome/free-solid-svg-icons';
+import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
 
 import Cookies from 'universal-cookie'
 
