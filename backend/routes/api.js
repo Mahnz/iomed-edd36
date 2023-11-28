@@ -1,5 +1,6 @@
 const express = require('express')
-const ipfsRouter = require('./ipfsRoutes.js')
+const ipfsRouter = require('./ipfsRoutes')
+const bcRouter = require('./bcRoutes')
 
 const router = express.Router()
 
@@ -9,6 +10,8 @@ router.get('/', (req, res) => {
 
 router.use('/ipfs', ipfsRouter)
 
+router.use('/bc', bcRouter)
+
 // Altri router per login, signup...
 
-module.exports = router
+module.exports = router;

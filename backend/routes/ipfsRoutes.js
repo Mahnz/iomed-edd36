@@ -3,7 +3,7 @@ const ipfsController = require('../controllers/ipfsController');
 
 const router = express.Router();
 
-router.post('/addFileToIPFS', ipfsController.addFileToIPFS);
-router.get('/getFileFromIPFS/:ipfsHash', ipfsController.getFileFromIPFS);
+// router.post('/upload', ipfsController.uploadFile);
+// router.get('/retrieve/:ipfsHash', ipfsController.retrieveFile);
 
 module.exports = router;
