@@ -17,6 +17,7 @@
     "files-from-path": "^1.0.2",
     "ipfs-core": "^0.18.1",
     "ipfs-http-client": "^42.0.0",
+    "node": "^21.2.0",
     "npm-check-updates": "^16.14.11",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
