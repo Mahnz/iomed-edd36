@@ -1,60 +1,171 @@
-// Inserire i metodi per la gestione delle richieste in Blockchain
-'use strict';
+const {Gateway, Wallets}=require("fabric-network");
+const path=require("path");
+const fs=require("fs");
+const Patient=require("../models/Paziente.js");
 
-const { Contract } = require('fabric-contract-api');
+const conPath=path.resolve("~/Scrivania/software-edd36/backend","connection.json");
+const conJSON=fs.readFileSync(conPath, "utf8");
+const conn= JSON.parse(conJSON);
 
-class patientContract extends Contract {
-    async instantiate(ctx) {
-        console.log('Smart contract paziente istanziato');
-    }
+module.exports= {
+    example: async(req,res)=> {
 
-    async createPatient(ctx, patientId, patient) {
-        const exists = await this.patientExists(ctx, patientId);
-        if (exists) {
-            throw new Error(`Il paziente con ID ${patientId} esiste già.`);
+        const gateway=new Gateway();
+
+        try{
+            //Instaurazione connessione con blockchain
+            await gateway.connect(conn, {
+                wallet: await Wallets.newFileSystemWallet("./wallet"),
+                identity: "admin",
+                discovery: {enabled: true, asLocalhost: true}
+            });
+
+            //Ritrovamento canale su cui è applicato il chaincode
+            const network=await gateway.getNetwork("mychannel");
+
+            //Ritrovamento smartContract da chaincode
+            const contract= network.getContract("patientContract");
+
+            //Eseguire funzione istantiate
+            await contract.submitTransaction("istantiate");
+            res.status(200).json("Istanziato");
+
+            gateway.disconnect();
+
         }
+        catch(e){
+            console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+            res.status(500).json(`Errore ${e.message}`);
+            throw new Error("Errore durante il richiamo della funzione: ${e.message}")
 
-        await ctx.stub.putState(patientId, Buffer.from(JSON.stringify(patient)));
-        console.log(`Paziente inserito con successo: ${patientId}`);
-    }
-
-    async getPatient(ctx, patientId) {
-        const patientJSON = await ctx.stub.getState(patientId);
-        if (!patientJSON || patientJSON.length === 0) {
-            throw new Error(`Il paziente con ID ${patientId} non esiste.`);
         }
+    },
 
-        const patient = JSON.parse(patientJSON.toString());
-        console.log(`Paziente letto con succeso: ${patientId}`);
-        return patient;
-    }
+    addPatient: async(req,res)=> {
+        const gateway=new Gateway();
 
-    async updatePatient(ctx, patientId, newPatient) {
-        const exists = await this.patientExists(ctx, patientId);
-        if (!exists) {
-            throw new Error(`Il paziente con ID ${patientId} non esiste.`);
+        try{
+            //Instaurazione connessione con blockchain
+            await gateway.connect(conn, {
+                wallet: await Wallets.newFileSystemWallet("./wallet"),
+                identity: "admin",
+                discovery: {enabled: true, asLocalhost: true}
+            });
+
+            //Ritrovamento canale su cui è applicato il chaincode
+            const network=await gateway.getNetwork("mychannel");
+
+            //Ritrovamento smartContract da chaincode
+            const contract= network.getContract("patientContract");
+
+            //Eseguire funzione di inserimento paziente
+            const p=new Patient(req.nome, req.cognome, req.cf);
+            await contract.submitTransaction("createPatient",req.cf,p);
+            res.status(200).json("Inserimento avvenuto correttamente");
+
+            gateway.disconnect();
+
         }
+        catch(e){
+            console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+            res.status(500).json(`Errore ${e.message}`);
+            throw new Error("Errore durante il richiamo della funzione: ${e.message}")
 
-        await ctx.stub.putState(patientId, Buffer.from(JSON.stringify(newPatient)));
-        console.log(`Paziente aggiornato con successo: ${patientId}`);
-    }
-
-    async deletePatient(ctx, patientId) {
-        const exists = await this.patientExists(ctx, patientId);
-        if (!exists) {
-            throw new Error(`Il paziente con ID ${patientId} non esiste.`);
         }
+    },
 
-        await ctx.stub.deleteState(patientId);
-        console.log(`Paziente eliminato con successo: ${patientId}`);
-    }
+    deletePatient: async(req,res)=> {
+        const gateway=new Gateway();
 
-    async patientExists(ctx, patientId) {
-        const patientJSON = await ctx.stub.getState(patientId);
-        return patientJSON && patientJSON.length > 0;
+        try{
+            //Instaurazione connessione con blockchain
+            await gateway.connect(conn, {
+                wallet: await Wallets.newFileSystemWallet("./wallet"),
+                identity: "admin",
+                discovery: {enabled: true, asLocalhost: true}
+            });
+
+            //Ritrovamento canale su cui è applicato il chaincode
+            const network=await gateway.getNetwork("mychannel");
+
+            //Ritrovamento smartContract da chaincode
+            const contract= network.getContract("patientContract");
+
+            //Funzione di cancellazione paziente
+            await contract.submitTransaction("deletePatient", req.cf);
+            res.status(200).json("Eliminazione avvenuta correttamente");
+
+            gateway.disconnect();
+
+        }
+        catch(e){
+            console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+            res.status(500).json(`Errore ${e.message}`);
+            throw new Error("Errore durante il richiamo della funzione: ${e.message}")
+        }
+    },
+
+    updatePatient: async(req,res)=> {
+        const gateway=new Gateway();
+
+        try{
+            //Instaurazione connessione con blockchain
+            await gateway.connect(conn, {
+                wallet: await Wallets.newFileSystemWallet("./wallet"),
+                identity: "admin",
+                discovery: {enabled: true, asLocalhost: true}
+            });
+
+            //Ritrovamento canale su cui è applicato il chaincode
+            const network=await gateway.getNetwork("mychannel");
+
+            //Ritrovamento smartContract da chaincode
+            const contract= network.getContract("patientContract");
+
+            //Funzione di aggiornamento paziente
+            await contract.submitTransaction("updatePatient", req.cf, req.nome);
+            res.status(200).json("Aggiornamento effettuato con successo");
+
+            gateway.disconnect();
+
+        }
+        catch(e){
+            console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+            res.status(500).json(`Errore ${e.message}`);
+            throw new Error("Errore durante il richiamo della funzione: ${e.message}")
+        }
+    },
+
+    getPatient: async(req,res)=> {
+        const gateway=new Gateway();
+
+        try{
+            //Instaurazione connessione con blockchain
+            await gateway.connect(conn, {
+                wallet: await Wallets.newFileSystemWallet("./wallet"),
+                identity: "admin",
+                discovery: {enabled: true, asLocalhost: true}
+            });
+
+            //Ritrovamento canale su cui è applicato il chaincode
+            const network=await gateway.getNetwork("mychannel");
+
+            //Ritrovamento smartContract da chaincode
+            const contract= network.getContract("patientContract");
+
+            //funzione di lettura paziente
+            const p=await contract.evaluateTransaction("getPatient", req.cf);
+            res.status(200).json({message: "Lettura eseguita correttamente", value: p});
+
+            gateway.disconnect();
+
+        }
+        catch(e){
+            console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+            res.status(500).json(`Errore ${e.message}`);
+            throw new Error("Errore durante il richiamo della funzione: ${e.message}")
+        }
     }
 }
-
-module.exports = patientContract;
 
 
