@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"
 import {Container, Form, Col, Row} from "react-bootstrap"
 import '../style/form.css'
-import Step from "./Step"
+import Step from "./Step.js"
 
 export default function SignUpForm() {
     const CodiceFiscale = require('codice-fiscale-js');

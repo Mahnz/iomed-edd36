@@ -1,12 +1,13 @@
-const express = require('express')
-const bcController = require('../controllers/bcController')
+import express from 'express'
+import {bcController} from '../controllers/bcController.js'
 
 const router = express.Router();
 
 router.post('/addPatient', bcController.addPatient);
-router.get('/addPatient', bcController.getPatient);
+router.get('/getPatient', bcController.getPatient);
 
-router.post('/addDoctor', bcController.addDoctor);
-router.get('/addDoctor', bcController.getDoctor);
+// router.post('/addDoctor', bcController.addDoctor);
+// router.get('/getDoctor', bcController.getDoctor);
 
 // Aggiungere tutte le altre route per le operazioni su blockchain
+export default router

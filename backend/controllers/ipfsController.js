@@ -1,41 +1,41 @@
-//
-// async function uploadFile(req, res) {
-//     try {
-//         const apiKey = 'z6Mkn53wURVNPLkXj2Exz8kqEWtQj3PVbDTFaeX4gKJt9nFm';
-//         const web3Storage = new Web3Storage({token: apiKey});
-//
-//         const {content, filename} = req.body;
-//
-//         const files = [{path: `/${filename}`, content: Buffer.from(content)}];
-//         const cid = await web3Storage.put(files);
-//
-//         res.json({success: true, cid});
-//     } catch (error) {
-//         console.error('Errore durante il caricamento su Web3 Storage:', error);
-//         res.status(500).json({success: false, error: 'Internal Server Error'});
-//     }
-// }
-//
-// async function retrieveFile(req, res) {
-//     // try {
-//     //     const ipfsHash = req.params.ipfsHash;
-//     //     const files = await ipfs.get(ipfsHash);
-//     //     res.json({success: true, files});
-//     // } catch (error) {
-//     //     console.error("Errore durante il recupero del file da IPFS:", error);
-//     //     res.status(500).json({success: false, error: 'Internal Server Error', details: error.message});
-//     // }
-// }
-//
-// module.exports = {
-//     uploadFile,
-//     retrieveFile,
-// };
+import {create} from 'ipfs-http-client'
+const address = 'http://127.0.0.1:5002'
 
+const connect = async (req, res) => {
+    try {
+        const ipfs = create(new URL(address))
+        const isOnline = ipfs.isOnline()
 
-// const { Web3Storage, getFilesFromPath } = require('web3.storage')
-// const storage = new Web3Storage({ token: process.env.WEB3_TOKEN })
-// const files = await getFilesFromPath(process.env.PATH_TO_ADD)
-// const cid = await storage.put(files)
-// console.log(`IPFS CID: ${cid}`)
-// console.log(`Gateway URL: https://dweb.link/ipfs/${cid}`)
+        if (isOnline) {
+            console.log("IPFS online: " + address)
+            return ipfs
+        }
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+// const saveToIpfs = async ([file]) => {
+const saveToIpfs = async (req, res) => {
+    try {
+        const ipfs = await connect()
+        const { buffer } = req.formData.file;
+        // const {file} = req.body;
+        console.log(req)
+        // const added = await ipfs.add(
+        //     file,
+        //     {
+        //         progress: (prog) => console.log(`received: ${prog}`)
+        //     }
+        // )
+        // console.log("CID aggiunto: " + added.cid.toString())
+        console.log("POEJFPIWJIDOEJIFWJFIEJNFENFJENI")
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+export const ipfsController = {
+    connect,
+    saveToIpfs,
+};

@@ -1,6 +1,7 @@
-const express = require('express')
-const ipfsRouter = require('./ipfsRoutes')
-const bcRouter = require('./bcRoutes')
+import express from 'express';
+import ipfsRoutes from './ipfsRoutes.js';
+import bcRoutes from './bcRoutes.js';
+// import {router as bcRouter} from './bcRoutes'
 
 const router = express.Router()
 
@@ -8,10 +9,7 @@ router.get('/', (req, res) => {
     res.send("<h1>Nulla da vedere qui. Ciao.</h1>")
 })
 
-router.use('/ipfs', ipfsRouter)
+router.use('/ipfs', ipfsRoutes)
 
-router.use('/bc', bcRouter)
-
-// Altri router per login, signup...
-
-module.exports = router;
+router.use('/bc', bcRoutes)
+export default router

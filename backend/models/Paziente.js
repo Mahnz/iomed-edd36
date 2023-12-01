@@ -9,3 +9,4 @@ class Paziente {
 
 // Esporta la classe come modulo
 module.exports = Paziente;
+// export default Paziente;

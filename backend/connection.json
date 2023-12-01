@@ -14,7 +14,9 @@
   },
   "channels": {
     "mychannel": {
-      "orderers": ["orderer.example.com"],
+      "orderers": [
+        "orderer.example.com"
+      ],
       "peers": {
         "localhost": {},
         "localhost2": {}
@@ -24,13 +26,21 @@
   "organizations": {
     "Org1": {
       "mspid": "Org1MSP",
-      "peers": ["localhost"],
-      "certificateAuthorities": ["ca.org1.example.com"]
+      "peers": [
+        "localhost"
+      ],
+      "certificateAuthorities": [
+        "ca.org1.example.com"
+      ]
     },
     "Org2": {
       "mspid": "Org2MSP",
-      "peers": ["localhost2"],
-      "certificateAuthorities": ["ca.org2.example.com"]
+      "peers": [
+        "localhost2"
+      ],
+      "certificateAuthorities": [
+        "ca.org2.example.com"
+      ]
     }
   },
   "orderers": {

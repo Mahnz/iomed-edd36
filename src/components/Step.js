@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {Link} from "react-router-dom"
 import '../style/form.css'
-import province from '../province'
+import province from '../province.js'
 
 export default function Step({
                                  step,
@@ -232,15 +232,18 @@ export default function Step({
                                 <ul>
                                     <li className={/(?=.{8,20})/.test(formData.password) ? 'valid' : 'invalid'}>
                                         <FontAwesomeIcon
-                                            icon={/(?=.{8,20})/.test(formData.password) ? faCheck : faTimes}/> Da 8 a 20 caratteri
+                                            icon={/(?=.{8,20})/.test(formData.password) ? faCheck : faTimes}/> Da 8 a 20
+                                        caratteri
                                     </li>
                                     <li className={/(?=.*[a-z])/.test(formData.password) ? 'valid' : 'invalid'}>
                                         <FontAwesomeIcon
-                                            icon={/(?=.*[a-z])/.test(formData.password) ? faCheck : faTimes}/> Lettera minuscola
+                                            icon={/(?=.*[a-z])/.test(formData.password) ? faCheck : faTimes}/> Lettera
+                                        minuscola
                                     </li>
                                     <li className={/(?=.*[A-Z])/.test(formData.password) ? 'valid' : 'invalid'}>
                                         <FontAwesomeIcon
-                                            icon={/(?=.*[A-Z])/.test(formData.password) ? faCheck : faTimes}/> Lettera maiuscola
+                                            icon={/(?=.*[A-Z])/.test(formData.password) ? faCheck : faTimes}/> Lettera
+                                        maiuscola
                                     </li>
                                     <li className={/(?=.*[0-9])/.test(formData.password) ? 'valid' : 'invalid'}>
                                         <FontAwesomeIcon

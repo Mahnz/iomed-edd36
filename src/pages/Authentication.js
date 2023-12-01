@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import LoginForm from "../components/LoginForm";
-import SignUpForm from "../components/SignUpForm";
+import LoginForm from "../components/LoginForm.js";
+import SignUpForm from "../components/SignUpForm.js";
 
 export default function Authentication({login}) {
     useEffect(() => {

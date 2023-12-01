@@ -1,9 +1,10 @@
-const express = require('express');
-const ipfsController = require('../controllers/ipfsController');
+import express from 'express';
+import { ipfsController } from '../controllers/ipfsController.js';
 
 const router = express.Router();
 
-// router.post('/upload', ipfsController.uploadFile);
+router.get('/test', ipfsController.connect);
+router.post('/upload', ipfsController.saveToIpfs);
 // router.get('/retrieve/:ipfsHash', ipfsController.retrieveFile);
 
-module.exports = router;
+export default router;

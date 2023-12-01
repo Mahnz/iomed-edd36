@@ -1,20 +1,17 @@
-// Installa le librerie necessarie
-// npm install express body-parser web3.storage
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require("cors")
-const apiRouter = require('./routes/api')
+import express from 'express';
+import apiRoutes from './routes/api.js';
+import cors from 'cors'
 
 const app = express();
 const port = 3001;
 
-app.use(bodyParser.json());
-
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use('/api', apiRoutes);
 
 app.use(cors())
-console.log("CORS abilitato su tutti i percorsi")
-app.use('/api', apiRouter)
+console.log("CORS abilitato")
 
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`SERVER online: http://localhost:${port}`);
 });
