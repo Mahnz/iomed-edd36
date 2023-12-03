@@ -1,5 +1,5 @@
 // Classe paziente
-class Paziente {
+class Patient {
     constructor(nome, cognome, codiceFiscale) {
         this.nome = nome;
         this.cognome = cognome;
@@ -8,5 +8,5 @@ class Paziente {
 }
 
 // Esporta la classe come modulo
-module.exports = Paziente;
-// export default Paziente;
+// module.exports = Paziente;
+export default Patient;

@@ -21,7 +21,7 @@ const saveToIpfs = async (req, res) => {
         const ipfs = await connect()
         const { buffer } = req.formData.file;
         // const {file} = req.body;
-        console.log(req)
+        console.log(req.formData)
         // const added = await ipfs.add(
         //     file,
         //     {

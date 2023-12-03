@@ -1,4 +1,4 @@
-const { Contract } = require('fabric-contract-api');
+import {Contract} from 'fabric-contract-api';
 
 class PatientContract extends Contract {
     async instantiate(ctx) {
@@ -56,5 +56,3 @@ class PatientContract extends Contract {
 }
 
 module.exports = PatientContract;
-
-

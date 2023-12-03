@@ -1,10 +1,14 @@
 import {Gateway, Wallets} from "fabric-network";
 import path from "path";
+import {fileURLToPath} from 'url';
 import fs from "fs";
 
-const Patient = require("../models/Paziente.js");
+import Patient from "../models/Paziente.js";
 
-const conPath = path.resolve("~/Scrivania/software-edd36/backend", "connection.json");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const conPath = path.resolve(__dirname, "../connection.json");
 const conJSON = fs.readFileSync(conPath, "utf8");
 const conn = JSON.parse(conJSON);
 
