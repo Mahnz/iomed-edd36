@@ -12,8 +12,10 @@ export default function App() {
                 <Route path="/login" element={<Authentication login={true}/>}/>
                 <Route path="/signup" element={<Authentication login={false}/>}/>
                 <Route path="/home" element={<Dashboard/>}/>
-                <Route path="/ipfs" element={<TestIPFS/>}/>
-                {/*<Route path="*" element={<Navigate to='/login' replace />} />*/}
+                <Route path="/upload" element={<TestIPFS/>}/>
+
+                {/* TODO - Redirect per motivi di test */}
+                <Route path="*" element={<Navigate to='/home' replace />} />
             </Routes>
         </>
     );

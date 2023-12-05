@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from "react"
+import 'bootstrap/dist/css/bootstrap.css';
 import {Container, Form, Col, Row} from "react-bootstrap"
 import '../style/form.css'
 import Step from "./Step.js"
 
+import CodiceFiscale from 'codice-fiscale-js';
+
 export default function SignUpForm() {
-    const CodiceFiscale = require('codice-fiscale-js');
+    // const CodiceFiscale = require('codice-fiscale-js');
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState({
         // Oggetto contenente tutti i dati del form di registrazione

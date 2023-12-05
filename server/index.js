@@ -1,5 +1,6 @@
 import express from 'express';
 import apiRoutes from './routes/api.js';
+import bodyParser from 'body-parser';
 import cors from 'cors'
 
 const app = express();
@@ -8,6 +9,7 @@ const port = 3001;
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use('/api', apiRoutes);
+app.use(bodyParser.json())
 
 app.use(cors())
 console.log("CORS abilitato")
