@@ -41,17 +41,26 @@ const saveToIpfs = async (req, res) => {
 
 const getFilesByUsername = async (req, res) => {
     const username = req.params.username;
-    console.log(`Richiesta elenco file per l'utente '${username}'`);
     const ipfs = await connect();
+    const dirPath = `/users/${username}`;
+    const filesList = [];
 
     try {
-        const dirPath = `/users/${username}`;
-        const filesList = [];
-        for await (const file of ipfs.files.ls(dirPath)) {
+        console.log(`Richiesta elenco file per l'utente '${username}'`);
+
+        try {
+            await ipfs.files.stat(dirPath);
+        } catch (dirError) {
+            // La directory non esiste, restituisci un errore
+            console.log(`La directory '${dirPath}' non esiste.`);
+            res.status(404).json({success: false, error: 'Directory non trovata', fileList: []});
+            return;
+        }
+
+        for await (let file of ipfs.files.ls(dirPath)) {
             console.log(file.name)
             filesList.push(file);
         }
-
         console.log(`Elenco dei file nella directory '${dirPath}':`, filesList);
         res.status(200).json({success: true, fileList: filesList});
     } catch (err) {

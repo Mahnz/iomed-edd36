@@ -5,24 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/software-edd36.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/software-edd36.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chaincode.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/connection.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/controllers/bcController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/controllers/ipfsController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/Paziente.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/bcRoutes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/ipfsRoutes.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SignUpForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SignUpForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/ipfsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/ipfsController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/Paziente.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopBar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/TestIPFS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/TestIPFS.js" afterDir="false" />
     </list>
@@ -86,7 +73,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="Node.js.index.js">
     <configuration name="index.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="server/index.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -115,6 +102,7 @@
       <workItem from="1701787607002" duration="74000" />
       <workItem from="1701790416537" duration="758000" />
       <workItem from="1701791319908" duration="125000" />
+      <workItem from="1701811679247" duration="3001000" />
     </task>
     <servers />
   </component>

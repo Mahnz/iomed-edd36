@@ -7,6 +7,7 @@ export default function TestIPFS() {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [username, setUsername] = useState('');
     const [fileList, setFileList] = useState([]);
+    const [noFiles, setNoFiles] = useState(false);
 
     const handleFileChange = (e) => {
         setFiles([...e.target.files]);
@@ -49,8 +50,17 @@ export default function TestIPFS() {
     };
     const handleReadFiles = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/ipfs/getFilesByUsername/${username}`);
-            setFileList(response.data.fileList);
+            const response = await axios.get(`http://localhost:3001/api/ipfs/getFilesByUsername/${username}`)
+                .then(res => {
+                    console.log(res.statusText);
+                    setNoFiles(false);
+                    setFileList(response.data.fileList);
+                })
+                .catch(error => {
+                    console.error(error);
+                    setNoFiles(true);
+                    setFileList(response.data.fileList);
+                })
         } catch (error) {
             console.error(error);
         }
@@ -81,16 +91,24 @@ export default function TestIPFS() {
                     Ottieni Elenco File
                 </Button>
 
-                <Typography variant="h6" gutterBottom style={{marginTop: '20px'}}>
-                    Elenco dei file:
-                </Typography>
-                <List>
-                    {fileList.map((file, index) => (
-                        <ListItem key={index}>
-                            <Typography>{file.name}</Typography>
-                        </ListItem>
-                    ))}
-                </List>
+                {noFiles ?
+                    <Typography variant="h6" color="error" gutterBottom style={{marginTop: '20px'}}>
+                        Nessun file presente per l'utente inserito!
+                    </Typography>
+                    :
+                    (<>
+                            <Typography variant="h6" gutterBottom style={{marginTop: '20px'}}>
+                                Elenco dei file:
+                            </Typography>
+                            <List>
+                                {fileList.map((file, index) => (
+                                    <ListItem key={index}>
+                                        <Typography>{file.name}</Typography>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </>
+                    )}
             </div>
         </>
     );

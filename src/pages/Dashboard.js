@@ -1,15 +1,14 @@
-// Dashboard.js
-import React, {useState} from 'react';
-import Sidebar from '../components/Sidebar.js';
-import TopBar from '../components/TopBar.js';
-import DashboardCard from '../components/DashboardCard.js';
+import React, {useState} from 'react'
+import Sidebar from '../components/Sidebar.js'
+import TopBar from '../components/TopBar.js'
+import DashboardCard from '../components/DashboardCard.js'
 
-const Dashboard = () => {
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
+export default function Dashboard() {
+    const [isSidebarOpen, setSidebarOpen] = useState(false)
 
     const toggleSidebar = () => {
-        setSidebarOpen(!isSidebarOpen);
-    };
+        setSidebarOpen(!isSidebarOpen)
+    }
 
     return (
         <div>
@@ -21,7 +20,5 @@ const Dashboard = () => {
                 </div>
             </div>
         </div>
-    );
-};
-
-export default Dashboard;
+    )
+}

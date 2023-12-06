@@ -3,7 +3,6 @@ import {styled, alpha} from '@mui/material';
 import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu} from '@mui/material';
 import {
     Menu as MenuIcon,
-    Search as SearchIcon,
     AccountCircle,
     Mail as MailIcon,
     MoreVert as MoreIcon
@@ -35,19 +34,19 @@ import {
 //     justifyContent: 'center',
 // }));
 
-const StyledInputBase = styled(InputBase)(({theme}) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
-}));
+// const StyledInputBase = styled(InputBase)(({theme}) => ({
+//     color: 'inherit',
+//     '& .MuiInputBase-input': {
+//         padding: theme.spacing(1, 1, 1, 0),
+//         // vertical padding + font size from searchIcon
+//         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//         transition: theme.transitions.create('width'),
+//         width: '100%',
+//         [theme.breakpoints.up('md')]: {
+//             width: '20ch',
+//         },
+//     },
+// }));
 
 export default function PrimarySearchAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
