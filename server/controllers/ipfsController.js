@@ -26,13 +26,13 @@ const saveToIpfs = async (req, res) => {
             console.log("Dimensione: " + file.size + "\n")
             console.log("- - - - - - - - - - - - - - - - - - - - - - - -")
 
-            const filePath = `/users/${username}/${file.originalname}`
+            const filePath = `/users/${username}/cartellaTest/${file.originalname}`
             await ipfs.files.write(filePath, file.buffer, {create: true, parents: true})
 
             const fileObj = await ipfs.files.stat(filePath)
             const dirObj = await ipfs.files.stat(userDirectory)
             console.log(`FILE: ${file.originalname} - CID: ${fileObj.cid.toString()}`)
-            console.log(`DIRECTORY: '${filePath}' - CID: ${dirObj.cid.toString()}`)
+            console.log(`DIRECTORY: '${userDirectory}' - CID: ${dirObj.cid.toString()}`)
             res.status(200).json({success: true, fileCID: fileObj.cid.toString()})
         }
     } catch (err) {

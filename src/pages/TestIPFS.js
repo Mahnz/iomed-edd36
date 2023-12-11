@@ -66,18 +66,6 @@ export default function TestIPFS() {
                     setNoFiles(false);
                     setFileList(response.data.fileList);
                 }
-                // .then(res => {
-                //     console.log(res.statusText)
-                //     console.log("Numero dei file letti: " + res.data.fileList.length)
-                //     if (res.data.fileList.length > 0) {
-                //         setNoFiles(false)
-                //         setFileList(res.data.fileList)
-                //     } else {
-                //         console.log("Nessun file presente per l'utente inserito")
-                //         setNoFiles(true)
-                //         setPressed(false)
-                //     }
-                // })
             } catch (err) {
                 console.error("Errore")
             }
