@@ -2,8 +2,6 @@
 import React, {useState, useEffect} from 'react'
 import {
     styled,
-    createTheme,
-    ThemeProvider,
     CssBaseline,
     Box,
     Drawer as MuiDrawer,
@@ -15,11 +13,10 @@ import {
     IconButton,
     Badge,
     Container,
-    ListItemButton, ListItemIcon, ListItemText, ListSubheader
+    ListItemButton, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem
 } from '@mui/material'
 
 import {
-    Menu,
     ChevronLeft,
     Notifications,
     Assignment,
@@ -27,7 +24,7 @@ import {
     Person,
     Home,
     Settings,
-    AccountCircleRounded
+    AccountCircleRounded, KeyboardArrowDown
 } from '@mui/icons-material'
 import VisiteMediche from '../components/VisiteMediche.js'
 import HomeContent from "../components/HomeContent.js";
@@ -38,20 +35,21 @@ const drawerWidth = 240
 
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
 (({theme, open}) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
+            duration: theme.transitions.duration.leavingScreen,
         }),
-    }),
-}))
+        ...(open && {
+            marginLeft: drawerWidth,
+            width: `calc(100% - ${drawerWidth}px)`,
+            transition: theme.transitions.create(['width', 'margin'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+        }),
+    })
+)
 
 const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
     ({theme, open}) => ({
@@ -76,26 +74,39 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
                 },
             }),
         },
-    }),
-)
+    }),)
 
 export default function Dashboard() {
-    const [open, setOpen] = React.useState(false)
+    const [openDrawer, setOpenDrawer] = React.useState(false)
     const [selectedTab, setSelectedTab] = useState("H")
     const [pageTitle, setPageTitle] = useState("Benvenuto, NomeUtente")
-    const [openNotifications, setOpenNotifications] = useState(false);
-
+    const [notifArray, setNotifArray] = useState([
+        {
+            id: 0,
+            label: 'First notification'
+        },
+        {
+            id: 1,
+            label: 'Second notification'
+        }])
 
     const toggleDrawer = () => {
-        setOpen(!open)
+        setOpenDrawer(!openDrawer)
     }
 
     const handleSelectTab = (value) => {
         setSelectedTab(value)
     }
-    const handleCloseNotifications = () => {
-        setOpenNotifications(!openNotifications)
-    }
+
+    // ? GESTIONE DEL PANNELLO DELLE NOTIFICHE
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openPanel = Boolean(anchorEl);
+    const handleClickPanel = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClosePanel = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         if (selectedTab === "H") {
@@ -117,7 +128,7 @@ export default function Dashboard() {
         // <ThemeProvider theme={defaultTheme}>
         <Box sx={{display: 'flex'}}>
             <CssBaseline/>
-            <AppBar position="absolute" open={open}>
+            <AppBar position="absolute" open={openDrawer}>
                 <Toolbar
                     sx={{
                         pr: '24px', // keep right padding when drawer closed
@@ -130,10 +141,9 @@ export default function Dashboard() {
                         onClick={toggleDrawer}
                         sx={{
                             marginRight: '36px',
-                            ...(open && {display: 'none'}),
+                            ...(openDrawer && {display: 'none'}),
                         }}
                     >
-                        <Menu/>
                     </IconButton>
                     <Typography
                         component="h1"
@@ -144,24 +154,32 @@ export default function Dashboard() {
                     >
                         MedPlatform
                     </Typography>
-                    <IconButton color="inherit" onClick={handleCloseNotifications}>
-                        <Badge badgeContent={4} color="secondary">
+                    <IconButton
+                        id="notification-button"
+                        color="inherit"
+                        aria-controls={openPanel ? 'notification-panel' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={openPanel ? 'true' : undefined}
+                        onClick={handleClickPanel}
+                    >
+                        <Badge badgeContent={notifArray.length} color="secondary">
                             <Notifications/>
                         </Badge>
                     </IconButton>
+                    <NotificationsPanel
+                        anchorEl={anchorEl}
+                        openPanel={openPanel}
+                        handleClose={handleClosePanel}
+                        notifArray={notifArray}/>
                     <IconButton color="inherit">
                         <Badge color="secondary">
                             <AccountCircleRounded/>
                         </Badge>
                     </IconButton>
                 </Toolbar>
-                <NotificationsPanel
-                    open={openNotifications}
-                    onClose={handleCloseNotifications}
-                />
             </AppBar>
 
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={openDrawer}>
                 <Toolbar
                     sx={{
                         display: 'flex',
