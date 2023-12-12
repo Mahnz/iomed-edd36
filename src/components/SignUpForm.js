@@ -148,7 +148,12 @@ export default function SignUpForm() {
 
 
         // TODO - Gestire l'invio dei dati in blockchain
-        console.log('Dati inviati:', formData)
+        console.log('Dati inviati:', formData);
+        console.log("Chiamata funzione axios");
+
+        axios.post("http://localhost:3001/insertUser", {
+            formData: formData
+        }).then(res=> console.log(res)).catch(e=> console.log(e));
 
         // TODO - Resettare lo stato di formData
         setFormData({

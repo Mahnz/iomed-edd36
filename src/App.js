@@ -5,6 +5,7 @@ import Authentication from "./pages/Authentication.js"
 import Dashboard from "./pages/Dashboard.js";
 import TestIPFS from "./pages/TestIPFS.js";
 import TestFrontend from "./pages/TestFrontend.js";
+import TestBC from "./pages/TestBC.js"
 
 export default function App() {
     return (
@@ -15,7 +16,7 @@ export default function App() {
                 <Route path="/dashboard" element={<Dashboard/>}/>
                 <Route path="/upload" element={<TestIPFS/>}/>
                 <Route path="/test" element={<TestFrontend/>}/>
-
+                <Route path="/t" element={<TestBC/>}/>
                 {/* TODO - Redirect per motivi di test */}
                 <Route path="*" element={<Navigate to='/dashboard' replace/>}/>
             </Routes>
