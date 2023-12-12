@@ -31,6 +31,8 @@ import {
 } from '@mui/icons-material'
 import VisiteMediche from '../components/VisiteMediche.js'
 import HomeContent from "../components/HomeContent.js";
+import MyProfile from "../components/MyProfile.js";
+import NotificationsPanel from "../components/NotificationsPanel.js";
 
 const drawerWidth = 240
 
@@ -79,21 +81,26 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 
 export default function Dashboard() {
     const [open, setOpen] = React.useState(false)
-    const [selectedTab, setSelectedTab] = useState("V")
-    const [pageTitle, setPageTitle] = useState("Benvenuto")
+    const [selectedTab, setSelectedTab] = useState("H")
+    const [pageTitle, setPageTitle] = useState("Benvenuto, NomeUtente")
+    const [openNotifications, setOpenNotifications] = useState(false);
+
+
     const toggleDrawer = () => {
         setOpen(!open)
     }
 
     const handleSelectTab = (value) => {
-        console.log(value)
         setSelectedTab(value)
+    }
+    const handleCloseNotifications = () => {
+        setOpenNotifications(!openNotifications)
     }
 
     useEffect(() => {
         if (selectedTab === "H") {
             document.title = 'MedPlatform - Home';
-            setPageTitle("Benvenuto")
+            setPageTitle("Benvenuto, NomeUtente")
         } else if (selectedTab === "V") {
             document.title = 'MedPlatform - Ultime visite';
             setPageTitle("Le tue ultime visite")
@@ -137,7 +144,7 @@ export default function Dashboard() {
                     >
                         MedPlatform
                     </Typography>
-                    <IconButton color="inherit">
+                    <IconButton color="inherit" onClick={handleCloseNotifications}>
                         <Badge badgeContent={4} color="secondary">
                             <Notifications/>
                         </Badge>
@@ -148,7 +155,12 @@ export default function Dashboard() {
                         </Badge>
                     </IconButton>
                 </Toolbar>
+                <NotificationsPanel
+                    open={openNotifications}
+                    onClose={handleCloseNotifications}
+                />
             </AppBar>
+
             <Drawer variant="permanent" open={open}>
                 <Toolbar
                     sx={{
@@ -231,7 +243,10 @@ export default function Dashboard() {
                         <HomeContent handleSelectTab={handleSelectTab}/>
                     }
                     {selectedTab === "P" &&
-                        <h5>Elenco dei dati personali dell'utente</h5>
+                        <>
+                            <MyProfile/>
+                        </>
+
                     }
                     {selectedTab === "V" &&
                         <VisiteMediche/>

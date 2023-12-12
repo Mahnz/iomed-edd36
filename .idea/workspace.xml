@@ -7,13 +7,9 @@
     <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Small update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/ipfsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/ipfsController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DashboardCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MedicalVisitCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Sidebar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TopBar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/VisiteMediche.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VisiteMediche.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HomeContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomeContent.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/TestIPFS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/TestIPFS.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,14 +49,14 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/src/components&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/src&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -82,6 +78,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src\components" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src\pages" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server" />
@@ -131,6 +128,9 @@
       <workItem from="1702310557915" duration="48000" />
       <workItem from="1702310638739" duration="446000" />
       <workItem from="1702311120387" duration="2939000" />
+      <workItem from="1702321518167" duration="77000" />
+      <workItem from="1702321628476" duration="4928000" />
+      <workItem from="1702337232187" duration="4339000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />

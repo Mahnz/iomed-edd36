@@ -1,0 +1,19 @@
+{
+  "firstName": "Domenico",
+  "lastName": "Russo",
+  "birthDate": "25/01/1980",
+  "birthPlace": "Bari",
+  "sex": "M",
+  "CF": "RSSDNC80A25A662U",
+  "email": "domenico.russo@gmail.com",
+  "password": "acosncosvnsknuwicdbnie",
+  "confirmPassword": "acosncosvnsknuwicdbnie",
+  "address": "Via sparano ",
+  "province": "Bari",
+  "city": "Bari",
+  "cap": "70056",
+  "phoneNumber": "3337643908",
+  "frontID": null,
+  "backID": null,
+  "checkTerms": false
+}

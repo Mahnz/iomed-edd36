@@ -7,7 +7,9 @@ export default function HomeContent({handleSelectTab}) {
             <Grid item xs={12} sm={6} md={4}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">Il mio profilo</Typography>
+                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                            <b>Il mio profilo</b>
+                        </Typography>
                         <Typography color="text.secondary">
                             Visualizza e modifica le informazioni del tuo profilo.
                         </Typography>
@@ -23,7 +25,9 @@ export default function HomeContent({handleSelectTab}) {
             <Grid item xs={12} sm={6} md={4}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">Ultime visite</Typography>
+                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                            <b>Ultime visite</b>
+                        </Typography>
                         <Typography color="text.secondary">
                             Consulta l'elenco delle tue ultime visite mediche.
                         </Typography>
@@ -39,7 +43,9 @@ export default function HomeContent({handleSelectTab}) {
             <Grid item xs={12} sm={6} md={4}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">Medici autorizzati</Typography>
+                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                            <b>Medici autorizzati</b>
+                        </Typography>
                         <Typography color="text.secondary">
                             Visualizza, aggiungi o rimuovi i medici autorizzati ad accedere alle tue informazioni.
                         </Typography>
