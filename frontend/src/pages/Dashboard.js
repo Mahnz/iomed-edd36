@@ -20,11 +20,9 @@ import {
 import {
     Menu as MenuIcon,
     ChevronLeft,
-    Assignment,
     Healing,
     Person,
     Home,
-    Settings,
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons";
@@ -34,10 +32,12 @@ import HomeContent from "../components/HomeContent.js";
 import MyProfile from "../components/MyProfile.js";
 import NotificationsPanel from "../components/NotificationsPanel.js";
 import UserIconPanel from "../components/UserIconPanel.js";
-import Cookies from 'universal-cookie'
 
+import Cookies from 'universal-cookie'
+import {useNavigate, Redirect, Route, Switch } from "react-router-dom";
 
 const drawerWidth = 240
+import "../style/dashboard.css"
 
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
 (({theme, open}) => ({
@@ -108,6 +108,7 @@ export default function Dashboard() {
     // ? GESTIONE DELLE TAB
     const [selectedTab, setSelectedTab] = useState("H")
     const [pageTitle, setPageTitle] = useState("Benvenuto, " + loggedUser)
+    const history = useHistory();
     const handleSelectTab = (value) => {
         setSelectedTab(value)
     }
@@ -187,9 +188,30 @@ export default function Dashboard() {
                     >
                         <MenuIcon/>
                     </IconButton>
+                    {/*<Typography*/}
+                    {/*    component="h1"*/}
+                    {/*    variant="h5"*/}
+                    {/*    className="brandText"*/}
+                    {/*    color="red"*/}
+                    {/*    sx={{flexGrow: 1}}*/}
+                    {/*    noWrap*/}
+                    {/*>*/}
+                    {/*    Med*/}
+                    {/*</Typography>*/}
+                    {/*<Typography*/}
+                    {/*    component="h1"*/}
+                    {/*    variant="h5"*/}
+                    {/*    className="brandText"*/}
+                    {/*    color="secondary"*/}
+                    {/*    sx={{flexGrow: 1}}*/}
+                    {/*    display="inline"*/}
+                    {/*>*/}
+                    {/*    Platform*/}
+                    {/*</Typography>*/}
+
                     <Typography
                         component="h1"
-                        variant="h6"
+                        variant="h5"
                         color="inherit"
                         noWrap
                         sx={{flexGrow: 1}}
@@ -314,6 +336,19 @@ export default function Dashboard() {
                     <Typography variant="h4" mb={4}>
                         {pageTitle}
                     </Typography>
+                    <Switch>
+                        <Route path="/dashboard/:component">
+                            {/* Blocco di codice fornito sopra */}
+                        </Route>
+                        <Route path="/dashboard/visita/:id">
+                            {/* Blocco di codice fornito sopra */}
+                        </Route>
+                        {/* Aggiungi questa route alla fine del tuo Switch */}
+                        <Route path="/dashboard/*">
+                            {/* Gestisci eventuali valori non validi */}
+                            <Redirect to="/dashboard/h"/>
+                        </Route>
+                    </Switch>
                     {selectedTab === "H" && <HomeContent handleSelectTab={handleSelectTab}/>}
                     {selectedTab === "P" && <MyProfile/>}
                     {selectedTab === "V" && <ElencoVisite/>}
