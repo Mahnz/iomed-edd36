@@ -18,9 +18,9 @@ export default function LoginForm() { // eslint-disable-next-line
 
     useEffect(() => {
         // Verifica se il cookie è impostato
-        if (cookies.get("username")) {
-            console.log(cookies.get("username"))
-            navigate("/home");
+        if (cookies.get("email")) {
+            console.log(cookies.get("email"))
+            navigate("/dashboard");
         }
     })
 
@@ -34,6 +34,26 @@ export default function LoginForm() { // eslint-disable-next-line
         setValidated(true)
 
         // TODO - Verifica del login dalla blockchain
+        const user = {
+            email: email,
+            password: password
+        };
+        axios.post('http://localhost:3001/api/bc/login', user)
+            .then(res => {
+                console.log("Login effettuato")
+                console.log(res.data)
+
+                cookies.set('email', email, {
+                    path: '/',
+                    expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                    httpOnly: true,      // Non accessibile tramite JavaScript
+                    sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                });
+                navigate("/dashboard");
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     const handleChange = (e) => {
@@ -44,7 +64,6 @@ export default function LoginForm() { // eslint-disable-next-line
             setEmail(value)
         } else if (name === 'inputPassword') {
             // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
-
             const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
             setPassword(cleanValue)
         }

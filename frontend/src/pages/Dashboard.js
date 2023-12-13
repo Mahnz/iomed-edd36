@@ -13,23 +13,29 @@ import {
     IconButton,
     Badge,
     Container,
-    ListItemButton, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem
+    ListItemButton, ListItemIcon, ListItemText, ListSubheader,
+    Tooltip
 } from '@mui/material'
 
 import {
+    Menu as MenuIcon,
     ChevronLeft,
-    Notifications,
     Assignment,
     Healing,
     Person,
     Home,
     Settings,
-    AccountCircleRounded, KeyboardArrowDown
 } from '@mui/icons-material'
-import VisiteMediche from '../components/VisiteMediche.js'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons";
+
+import ElencoVisite from '../components/ElencoVisite.js'
 import HomeContent from "../components/HomeContent.js";
 import MyProfile from "../components/MyProfile.js";
 import NotificationsPanel from "../components/NotificationsPanel.js";
+import UserIconPanel from "../components/UserIconPanel.js";
+import Cookies from 'universal-cookie'
+
 
 const drawerWidth = 240
 
@@ -77,44 +83,41 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
     }),)
 
 export default function Dashboard() {
+    // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
     const [openDrawer, setOpenDrawer] = React.useState(false)
-    const [selectedTab, setSelectedTab] = useState("H")
-    const [pageTitle, setPageTitle] = useState("Benvenuto, NomeUtente")
-    const [notifArray, setNotifArray] = useState([
-        {
-            id: 0,
-            label: 'First notification'
-        },
-        {
-            id: 1,
-            label: 'Second notification'
-        }])
-
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
     }
 
+    /* TODO - Verifica dinamica del cookie: se non è settato, l'utente viene rimandato alla pagina di login; altrimenti,
+              continua la propria navigazione nella dashboard*/
+    const [loggedUser, setLoggedUser] = useState("test")
+    const cookies = new Cookies();
+    // useEffect(() => {
+    //     let loggedUsername = cookies.get("email")
+    //     if (!loggedUsername) {
+    //         console.log("Login non effettuato. Reindirizzamento...")
+    //         navigate("/login");
+    //         return
+    //     } else {
+    //         setLoggedUser(loggedUsername)
+    //     }
+    //     init(loggedUsername).then(() => console.log("Inizializzazione effettuata"))
+    // }, [])
+
+    // ? GESTIONE DELLE TAB
+    const [selectedTab, setSelectedTab] = useState("H")
+    const [pageTitle, setPageTitle] = useState("Benvenuto, " + loggedUser)
     const handleSelectTab = (value) => {
         setSelectedTab(value)
     }
-
-    // ? GESTIONE DEL PANNELLO DELLE NOTIFICHE
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const openPanel = Boolean(anchorEl);
-    const handleClickPanel = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClosePanel = () => {
-        setAnchorEl(null);
-    };
-
     useEffect(() => {
         if (selectedTab === "H") {
             document.title = 'MedPlatform - Home';
-            setPageTitle("Benvenuto, NomeUtente")
+            setPageTitle("Benvenuto, " + loggedUser)
         } else if (selectedTab === "V") {
             document.title = 'MedPlatform - Ultime visite';
-            setPageTitle("Le tue ultime visite")
+            setPageTitle("Le tue ultime visite mediche")
         } else if (selectedTab === "P") {
             document.title = 'MedPlatform - Il mio profilo';
             setPageTitle("Il tuo profilo")
@@ -124,8 +127,46 @@ export default function Dashboard() {
         }
     }, [selectedTab])
 
+
+    // ? GESTIONE DEL PANNELLO A DISCESA DELLE NOTIFICHE
+    const [anchorNtf, setAnchorNtf] = React.useState(null);
+    const openNtfPanel = Boolean(anchorNtf);
+    const handleClickNtfPanel = (event) => {
+        setAnchorNtf(event.currentTarget);
+    };
+    const handleCloseNtfPanel = () => {
+        setAnchorNtf(null);
+    };
+    const [notifArray, setNotifArray] = useState([
+        {
+            id: 0,
+            type: 'Nuovo referto aggiunto',
+            message: 'È stato caricato un nuovo file di referto. Clicca per visualizzarlo.'
+        },
+        {
+            id: 1,
+            type: 'Richiesta autorizzazione',
+            message: 'Richiesta di accesso ai dati: Medico COGNOME_Nome'
+        }])
+    const deleteNotification = (id) => {
+        setNotifArray(notifArray.filter((ntf) => ntf.id !== id))
+    }
+    const deleteAllNotifications = () => {
+        setNotifArray([])
+    }
+
+
+    // ? GESTIONE DELLE PANNELLO A DISCESA DELL'UTENTE
+    const [anchorUser, setAnchorUser] = React.useState(null);
+    const openUserPanel = Boolean(anchorUser);
+    const handleClickUserPanel = (event) => {
+        setAnchorUser(event.currentTarget);
+    };
+    const handleCloseUserPanel = () => {
+        setAnchorUser(null);
+    };
+
     return (
-        // <ThemeProvider theme={defaultTheme}>
         <Box sx={{display: 'flex'}}>
             <CssBaseline/>
             <AppBar position="absolute" open={openDrawer}>
@@ -144,6 +185,7 @@ export default function Dashboard() {
                             ...(openDrawer && {display: 'none'}),
                         }}
                     >
+                        <MenuIcon/>
                     </IconButton>
                     <Typography
                         component="h1"
@@ -154,28 +196,59 @@ export default function Dashboard() {
                     >
                         MedPlatform
                     </Typography>
-                    <IconButton
-                        id="notification-button"
-                        color="inherit"
-                        aria-controls={openPanel ? 'notification-panel' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={openPanel ? 'true' : undefined}
-                        onClick={handleClickPanel}
-                    >
-                        <Badge badgeContent={notifArray.length} color="secondary">
-                            <Notifications/>
-                        </Badge>
-                    </IconButton>
+
+                    {/* PANNELLO A DISCESA SULL'ICONA DELLE NOTIFICHE */}
+                    <Tooltip title={
+                        notifArray.length === 0
+                            ? 'Nessuna notifica'
+                            : notifArray.length === 1 ? `Hai ${notifArray.length} nuova notifica!` : `Hai ${notifArray.length} nuove notifiche!`
+                    }>
+                        <IconButton
+                            id="notification-button"
+                            color="inherit"
+                            aria-controls={openNtfPanel ? 'notification-panel' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={openNtfPanel ? 'true' : undefined}
+                            onClick={handleClickNtfPanel}
+                        >
+                            <Badge badgeContent={notifArray.length} color="secondary">
+                                <FontAwesomeIcon icon={faBell} style={{color: "#ffffff",}}
+                                                 shake={notifArray.length > 0}/>
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                     <NotificationsPanel
-                        anchorEl={anchorEl}
-                        openPanel={openPanel}
-                        handleClose={handleClosePanel}
-                        notifArray={notifArray}/>
-                    <IconButton color="inherit">
-                        <Badge color="secondary">
-                            <AccountCircleRounded/>
-                        </Badge>
-                    </IconButton>
+                        anchorEl={anchorNtf}
+                        openPanel={openNtfPanel}
+                        handleClose={handleCloseNtfPanel}
+                        notifArray={notifArray}
+                        deleteNotification={deleteNotification}
+                        deleteAllNotifications={deleteAllNotifications}
+                    />
+
+                    {/* PANNELLO A DISCESA SULL'ICONA DELL'UTENTE */}
+                    <Tooltip title="Azioni sul profilo">
+                        <IconButton
+                            id="user-icon-button"
+                            color="inherit"
+                            aria-controls={openUserPanel ? 'user-icon-panel' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={openUserPanel ? 'true' : undefined}
+                            onClick={handleClickUserPanel}
+                            sx={{pl: 2}}
+                        >
+                            <Badge color="secondary">
+                                <FontAwesomeIcon icon={faCircleUser} style={{color: "#ffffff",}}/>
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
+                    <UserIconPanel
+                        anchorEl={anchorUser}
+                        openPanel={openUserPanel}
+                        handleClose={handleCloseUserPanel}
+                        setSelectedTab={setSelectedTab}
+                        setLoggedUser={setLoggedUser}
+                    />
                 </Toolbar>
             </AppBar>
 
@@ -192,7 +265,9 @@ export default function Dashboard() {
                         <ChevronLeft/>
                     </IconButton>
                 </Toolbar>
+
                 <Divider/>
+
                 <List component="nav">
                     {/*  Qui aggiungere tutte le voci necessarie alla Sidebar */}
                     <ListItemButton onClick={() => handleSelectTab("H")}>
@@ -213,12 +288,6 @@ export default function Dashboard() {
                         </ListItemIcon>
                         <ListItemText primary="Il mio profilo"/>
                     </ListItemButton>
-                    <ListItemButton onClick={() => handleSelectTab("S")}>
-                        <ListItemIcon>
-                            <Settings/>
-                        </ListItemIcon>
-                        <ListItemText primary="Impostazioni"/>
-                    </ListItemButton>
 
                     <Divider sx={{my: 1}}/>
 
@@ -226,18 +295,6 @@ export default function Dashboard() {
                     <ListSubheader component="div" inset>
                         Saved reports
                     </ListSubheader>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Assignment/>
-                        </ListItemIcon>
-                        <ListItemText primary="Ultimo mese"/>
-                    </ListItemButton>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Assignment/>
-                        </ListItemIcon>
-                        <ListItemText primary="Ultimo anno"/>
-                    </ListItemButton>
                 </List>
             </Drawer>
             <Box
@@ -257,18 +314,9 @@ export default function Dashboard() {
                     <Typography variant="h4" mb={4}>
                         {pageTitle}
                     </Typography>
-                    {selectedTab === "H" &&
-                        <HomeContent handleSelectTab={handleSelectTab}/>
-                    }
-                    {selectedTab === "P" &&
-                        <>
-                            <MyProfile/>
-                        </>
-
-                    }
-                    {selectedTab === "V" &&
-                        <VisiteMediche/>
-                    }
+                    {selectedTab === "H" && <HomeContent handleSelectTab={handleSelectTab}/>}
+                    {selectedTab === "P" && <MyProfile/>}
+                    {selectedTab === "V" && <ElencoVisite/>}
                 </Container>
             </Box>
         </Box>

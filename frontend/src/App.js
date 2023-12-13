@@ -15,8 +15,9 @@ export default function App() {
                 <Route path="/signup" element={<Authentication login={false}/>}/>
                 <Route path="/dashboard" element={<Dashboard/>}/>
                 <Route path="/upload" element={<TestIPFS/>}/>
-                <Route path="/test" element={<TestFrontend/>}/>
-                <Route path="/t" element={<TestBC/>}/>
+                <Route path="/testFE" element={<TestFrontend/>}/>
+                <Route path="/blockchain" element={<TestBC/>}/>
+
                 {/* TODO - Redirect per motivi di test */}
                 <Route path="*" element={<Navigate to='/dashboard' replace/>}/>
             </Routes>
