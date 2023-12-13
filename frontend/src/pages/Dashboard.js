@@ -34,10 +34,11 @@ import NotificationsPanel from "../components/NotificationsPanel.js";
 import UserIconPanel from "../components/UserIconPanel.js";
 
 import Cookies from 'universal-cookie'
-import {useNavigate, Redirect, Route, Switch } from "react-router-dom";
 
 const drawerWidth = 240
 import "../style/dashboard.css"
+import {Route, Routes, useNavigate} from "react-router-dom";
+import VisitaMedica from "../components/VisitaMedica.js";
 
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
 (({theme, open}) => ({
@@ -106,25 +107,38 @@ export default function Dashboard() {
     // }, [])
 
     // ? GESTIONE DELLE TAB
-    const [selectedTab, setSelectedTab] = useState("H")
+    const [selectedTab, setSelectedTab] = useState("")
     const [pageTitle, setPageTitle] = useState("Benvenuto, " + loggedUser)
-    const history = useHistory();
+    const navigate = useNavigate()
     const handleSelectTab = (value) => {
         setSelectedTab(value)
+        if (selectedTab === "H") {
+            navigate('/dashboard/home');
+        } else if (selectedTab === "V") {
+            navigate('/dashboard/visite');
+        } else if (selectedTab === "P") {
+            navigate('/dashboard/profilo');
+        } else if (selectedTab === "S") {
+            navigate('/dashboard/settings');
+        }
     }
     useEffect(() => {
         if (selectedTab === "H") {
             document.title = 'MedPlatform - Home';
             setPageTitle("Benvenuto, " + loggedUser)
+            navigate('/dashboard/home');
         } else if (selectedTab === "V") {
             document.title = 'MedPlatform - Ultime visite';
             setPageTitle("Le tue ultime visite mediche")
+            navigate('/dashboard/visite');
         } else if (selectedTab === "P") {
             document.title = 'MedPlatform - Il mio profilo';
             setPageTitle("Il tuo profilo")
+            navigate('/dashboard/profilo');
         } else if (selectedTab === "S") {
             document.title = 'MedPlatform - Impostazioni';
             setPageTitle("Impostazioni")
+            navigate('/dashboard/settings');
         }
     }, [selectedTab])
 
@@ -158,7 +172,7 @@ export default function Dashboard() {
 
 
     // ? GESTIONE DELLE PANNELLO A DISCESA DELL'UTENTE
-    const [anchorUser, setAnchorUser] = React.useState(null);
+    const [anchorUser, setAnchorUser] = useState(null);
     const openUserPanel = Boolean(anchorUser);
     const handleClickUserPanel = (event) => {
         setAnchorUser(event.currentTarget);
@@ -166,6 +180,9 @@ export default function Dashboard() {
     const handleCloseUserPanel = () => {
         setAnchorUser(null);
     };
+
+    const [visita, setVisita] = useState(null);
+
 
     return (
         <Box sx={{display: 'flex'}}>
@@ -188,27 +205,6 @@ export default function Dashboard() {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    {/*<Typography*/}
-                    {/*    component="h1"*/}
-                    {/*    variant="h5"*/}
-                    {/*    className="brandText"*/}
-                    {/*    color="red"*/}
-                    {/*    sx={{flexGrow: 1}}*/}
-                    {/*    noWrap*/}
-                    {/*>*/}
-                    {/*    Med*/}
-                    {/*</Typography>*/}
-                    {/*<Typography*/}
-                    {/*    component="h1"*/}
-                    {/*    variant="h5"*/}
-                    {/*    className="brandText"*/}
-                    {/*    color="secondary"*/}
-                    {/*    sx={{flexGrow: 1}}*/}
-                    {/*    display="inline"*/}
-                    {/*>*/}
-                    {/*    Platform*/}
-                    {/*</Typography>*/}
-
                     <Typography
                         component="h1"
                         variant="h5"
@@ -336,22 +332,13 @@ export default function Dashboard() {
                     <Typography variant="h4" mb={4}>
                         {pageTitle}
                     </Typography>
-                    <Switch>
-                        <Route path="/dashboard/:component">
-                            {/* Blocco di codice fornito sopra */}
-                        </Route>
-                        <Route path="/dashboard/visita/:id">
-                            {/* Blocco di codice fornito sopra */}
-                        </Route>
-                        {/* Aggiungi questa route alla fine del tuo Switch */}
-                        <Route path="/dashboard/*">
-                            {/* Gestisci eventuali valori non validi */}
-                            <Redirect to="/dashboard/h"/>
-                        </Route>
-                    </Switch>
-                    {selectedTab === "H" && <HomeContent handleSelectTab={handleSelectTab}/>}
-                    {selectedTab === "P" && <MyProfile/>}
-                    {selectedTab === "V" && <ElencoVisite/>}
+                    <Routes>
+                        <Route index element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
+                        <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
+                        <Route path="/visite" element={<ElencoVisite setVisita={setVisita}/>}/>
+                        <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={visita}/>}/>
+                        <Route path="/profilo" element={<MyProfile/>}/>
+                    </Routes>
                 </Container>
             </Box>
         </Box>

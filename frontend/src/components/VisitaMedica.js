@@ -1,6 +1,6 @@
 // VisitaMedica.js
 import React from 'react';
-import {Paper, Typography, Button} from '@mui/material';
+import {Paper, Typography, Button, Container} from '@mui/material';
 import {ArrowBack} from '@mui/icons-material';
 import {Link} from 'react-router-dom';
 
@@ -33,7 +33,7 @@ export default function VisitaMedica({visita}) {
                 <b>Ultimo aggiornamento:</b> 13:50, 11/12/2021
             </Typography>
             <Container sx={{textAlign: 'center', pt: 2}}>
-                <Button variant="outlined" color="primary" component={Link} to="/">
+                <Button variant="outlined" color="primary" component={Link} to="/dashboard/visite">
                     <ArrowBack/>
                     Torna all'elenco
                 </Button>

@@ -1,9 +1,10 @@
 // ElencoVisite.js
 import React from 'react'
 import {Button, Container, Grid, Paper, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
-export default function ElencoVisite() {
-    const visits = [
+export default function ElencoVisite({setVisita}) {
+    const temp = [
         {
             name: "Visita allergologica",
             date: "12/12/2021",
@@ -55,14 +56,18 @@ export default function ElencoVisite() {
             doctor: "Dott. Mario Rossi"
         },
     ]
+    const navigate = useNavigate()
+    navigate('/dashboard/home');
 
-    const handleOpen = (visit) => {
-        e.preventDefault();
+    const handleOpen = (visita) => {
+        console.log(visita.date)
+        setVisita(visita)
+        navigate('/dashboard/visite/visualizzaVisita')
     }
 
     return (
         <Grid container spacing={5}>
-            {visits.map((visit, index) => (
+            {temp.map((visit, index) => (
                 <Grid item xs={12} md={8} lg={6} key={index}>
                     <Paper
                         sx={{
@@ -93,7 +98,7 @@ export default function ElencoVisite() {
                                 </Typography>
                             </div>
                             <Container sx={{textAlign: 'center', pb: 1}}>
-                                <Button variant="contained" color="primary" onClick={handleOpen(visit)}>
+                                <Button variant="contained" color="primary" onClick={() => handleOpen(visit)}>
                                     VISUALIZZA DETTAGLI
                                 </Button>
                             </Container>
