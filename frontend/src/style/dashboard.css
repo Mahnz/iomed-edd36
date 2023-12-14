@@ -2,3 +2,8 @@
     font-family: 'Baloo Bhaijaan', cursive;
     font-weight: 400;
 }
+
+.selected-tab {
+    border-left: 4px solid #2196f3; /* Colore a tua scelta */
+    background-color: rgba(33, 150, 243, 0.1); /* Colore a tua scelta */
+}

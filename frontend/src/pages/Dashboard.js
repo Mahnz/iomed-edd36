@@ -24,21 +24,21 @@ import {
     Person,
     Home,
 } from '@mui/icons-material'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
 
 import ElencoVisite from '../components/ElencoVisite.js'
-import HomeContent from "../components/HomeContent.js";
-import MyProfile from "../components/MyProfile.js";
-import NotificationsPanel from "../components/NotificationsPanel.js";
-import UserIconPanel from "../components/UserIconPanel.js";
+import HomeContent from "../components/HomeContent.js"
+import MyProfile from "../components/MyProfile.js"
+import NotificationsPanel from "../components/NotificationsPanel.js"
+import UserIconPanel from "../components/UserIconPanel.js"
 
 import Cookies from 'universal-cookie'
+import "../style/dashboard.css"
+import {Route, Routes, useNavigate} from "react-router-dom"
+import VisitaMedica from "../components/VisitaMedica.js"
 
 const drawerWidth = 240
-import "../style/dashboard.css"
-import {Route, Routes, useNavigate} from "react-router-dom";
-import VisitaMedica from "../components/VisitaMedica.js";
 
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
 (({theme, open}) => ({
@@ -85,20 +85,21 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 
 export default function Dashboard() {
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
-    const [openDrawer, setOpenDrawer] = React.useState(false)
+    const navigate = useNavigate()
+    const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
     }
 
-    /* TODO - Verifica dinamica del cookie: se non è settato, l'utente viene rimandato alla pagina di login; altrimenti,
+    /* TODO - Verifica dinamica del cookie: se non è settato, l'utente viene rimandato alla pagina di login altrimenti,
               continua la propria navigazione nella dashboard*/
     const [loggedUser, setLoggedUser] = useState("test")
-    const cookies = new Cookies();
+    const cookies = new Cookies()
     // useEffect(() => {
     //     let loggedUsername = cookies.get("email")
     //     if (!loggedUsername) {
     //         console.log("Login non effettuato. Reindirizzamento...")
-    //         navigate("/login");
+    //         navigate("/login")
     //         return
     //     } else {
     //         setLoggedUser(loggedUsername)
@@ -108,50 +109,35 @@ export default function Dashboard() {
 
     // ? GESTIONE DELLE TAB
     const [selectedTab, setSelectedTab] = useState("")
-    const [pageTitle, setPageTitle] = useState("Benvenuto, " + loggedUser)
-    const navigate = useNavigate()
     const handleSelectTab = (value) => {
         setSelectedTab(value)
-        if (selectedTab === "H") {
-            navigate('/dashboard/home');
-        } else if (selectedTab === "V") {
-            navigate('/dashboard/visite');
-        } else if (selectedTab === "P") {
-            navigate('/dashboard/profilo');
-        } else if (selectedTab === "S") {
-            navigate('/dashboard/settings');
-        }
     }
     useEffect(() => {
         if (selectedTab === "H") {
-            document.title = 'MedPlatform - Home';
-            setPageTitle("Benvenuto, " + loggedUser)
-            navigate('/dashboard/home');
+            document.title = 'MedPlatform - Home'
+            navigate('/dashboard/home')
         } else if (selectedTab === "V") {
-            document.title = 'MedPlatform - Ultime visite';
-            setPageTitle("Le tue ultime visite mediche")
-            navigate('/dashboard/visite');
+            document.title = 'MedPlatform - Ultime visite'
+            navigate('/dashboard/visite')
         } else if (selectedTab === "P") {
-            document.title = 'MedPlatform - Il mio profilo';
-            setPageTitle("Il tuo profilo")
-            navigate('/dashboard/profilo');
+            document.title = 'MedPlatform - Il mio profilo'
+            navigate('/dashboard/profilo')
         } else if (selectedTab === "S") {
-            document.title = 'MedPlatform - Impostazioni';
-            setPageTitle("Impostazioni")
-            navigate('/dashboard/settings');
+            document.title = 'MedPlatform - Impostazioni'
+            navigate('/dashboard/settings')
         }
     }, [selectedTab])
 
 
     // ? GESTIONE DEL PANNELLO A DISCESA DELLE NOTIFICHE
-    const [anchorNtf, setAnchorNtf] = React.useState(null);
-    const openNtfPanel = Boolean(anchorNtf);
+    const [anchorNtf, setAnchorNtf] = React.useState(null)
+    const openNtfPanel = Boolean(anchorNtf)
     const handleClickNtfPanel = (event) => {
-        setAnchorNtf(event.currentTarget);
-    };
+        setAnchorNtf(event.currentTarget)
+    }
     const handleCloseNtfPanel = () => {
-        setAnchorNtf(null);
-    };
+        setAnchorNtf(null)
+    }
     const [notifArray, setNotifArray] = useState([
         {
             id: 0,
@@ -172,16 +158,16 @@ export default function Dashboard() {
 
 
     // ? GESTIONE DELLE PANNELLO A DISCESA DELL'UTENTE
-    const [anchorUser, setAnchorUser] = useState(null);
-    const openUserPanel = Boolean(anchorUser);
+    const [anchorUser, setAnchorUser] = useState(null)
+    const openUserPanel = Boolean(anchorUser)
     const handleClickUserPanel = (event) => {
-        setAnchorUser(event.currentTarget);
-    };
+        setAnchorUser(event.currentTarget)
+    }
     const handleCloseUserPanel = () => {
-        setAnchorUser(null);
-    };
+        setAnchorUser(null)
+    }
 
-    const [visita, setVisita] = useState(null);
+    const [visita, setVisita] = useState(null)
 
 
     return (
@@ -190,7 +176,7 @@ export default function Dashboard() {
             <AppBar position="absolute" open={openDrawer}>
                 <Toolbar
                     sx={{
-                        pr: '24px', // keep right padding when drawer closed
+                        pr: '24px',
                     }}
                 >
                     <IconButton
@@ -271,14 +257,12 @@ export default function Dashboard() {
             </AppBar>
 
             <Drawer variant="permanent" open={openDrawer}>
-                <Toolbar
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        px: [1],
-                    }}
-                >
+                <Toolbar sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    px: [1],
+                }}>
                     <IconButton onClick={toggleDrawer}>
                         <ChevronLeft/>
                     </IconButton>
@@ -287,20 +271,25 @@ export default function Dashboard() {
                 <Divider/>
 
                 <List component="nav">
-                    {/*  Qui aggiungere tutte le voci necessarie alla Sidebar */}
-                    <ListItemButton onClick={() => handleSelectTab("H")}>
+                    <ListItemButton
+                        onClick={() => handleSelectTab("H")}
+                        className={selectedTab === 'H' ? 'selected-tab' : ''}>
                         <ListItemIcon>
                             <Home/>
                         </ListItemIcon>
                         <ListItemText primary="Home"/>
                     </ListItemButton>
-                    <ListItemButton onClick={() => handleSelectTab("V")}>
+                    <ListItemButton
+                        onClick={() => handleSelectTab('V')}
+                        className={selectedTab === 'V' ? 'selected-tab' : ''}>
                         <ListItemIcon>
                             <Healing/>
                         </ListItemIcon>
                         <ListItemText primary="Visite mediche"/>
                     </ListItemButton>
-                    <ListItemButton onClick={() => handleSelectTab("P")}>
+                    <ListItemButton
+                        onClick={() => handleSelectTab('P')}
+                        className={selectedTab === 'P' ? 'selected-tab' : ''}>
                         <ListItemIcon>
                             <Person/>
                         </ListItemIcon>
@@ -329,11 +318,9 @@ export default function Dashboard() {
             >
                 <Toolbar/>
                 <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-                    <Typography variant="h4" mb={4}>
-                        {pageTitle}
-                    </Typography>
                     <Routes>
-                        <Route index element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
+                        <Route index
+                               element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/visite" element={<ElencoVisite setVisita={setVisita}/>}/>
                         <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={visita}/>}/>
