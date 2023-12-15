@@ -23,6 +23,7 @@ import {
     Healing,
     Person,
     Home,
+    ExitToApp
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
@@ -35,7 +36,7 @@ import UserIconPanel from "../components/UserIconPanel.js"
 
 import Cookies from 'universal-cookie'
 import "../style/dashboard.css"
-import {Route, Routes, useNavigate} from "react-router-dom"
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import VisitaMedica from "../components/VisitaMedica.js"
 
 const drawerWidth = 240
@@ -85,7 +86,6 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 
 export default function Dashboard() {
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
-    const navigate = useNavigate()
     const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
@@ -95,6 +95,7 @@ export default function Dashboard() {
               continua la propria navigazione nella dashboard*/
     const [loggedUser, setLoggedUser] = useState("test")
     const cookies = new Cookies()
+    const navigate = useNavigate()
     // useEffect(() => {
     //     let loggedUsername = cookies.get("email")
     //     if (!loggedUsername) {
@@ -106,9 +107,14 @@ export default function Dashboard() {
     //     }
     //     init(loggedUsername).then(() => console.log("Inizializzazione effettuata"))
     // }, [])
+    const handleLogout = () => {
+        // cookies.remove(["email", "password"])
+        navigate("/homepage");
+    };
 
     // ? GESTIONE DELLE TAB
     const [selectedTab, setSelectedTab] = useState("")
+    const [selectedVisita, setSelectedVisita] = useState("")
     const handleSelectTab = (value) => {
         setSelectedTab(value)
     }
@@ -119,6 +125,7 @@ export default function Dashboard() {
         } else if (selectedTab === "V") {
             document.title = 'MedPlatform - Ultime visite'
             navigate('/dashboard/visite')
+            setSelectedVisita("")
         } else if (selectedTab === "P") {
             document.title = 'MedPlatform - Il mio profilo'
             navigate('/dashboard/profilo')
@@ -166,9 +173,6 @@ export default function Dashboard() {
     const handleCloseUserPanel = () => {
         setAnchorUser(null)
     }
-
-    const [visita, setVisita] = useState(null)
-
 
     return (
         <Box sx={{display: 'flex'}}>
@@ -302,6 +306,12 @@ export default function Dashboard() {
                     <ListSubheader component="div" inset>
                         Saved reports
                     </ListSubheader>
+                    <ListItemButton onClick={() => handleLogout()}>
+                        <ListItemIcon>
+                            <ExitToApp/>
+                        </ListItemIcon>
+                        <ListItemText primary="Logout"/>
+                    </ListItemButton>
                 </List>
             </Drawer>
             <Box
@@ -322,9 +332,10 @@ export default function Dashboard() {
                         <Route index
                                element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
-                        <Route path="/visite" element={<ElencoVisite setVisita={setVisita}/>}/>
-                        <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={visita}/>}/>
+                        <Route path="/visite" element={<ElencoVisite setVisita={setSelectedVisita}/>}/>
+                        <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={selectedVisita}/>}/>
                         <Route path="/profilo" element={<MyProfile/>}/>
+                        <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
                     </Routes>
                 </Container>
             </Box>

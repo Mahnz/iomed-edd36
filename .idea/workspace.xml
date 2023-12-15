@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Dashboard:&#10; - visualizzazione visita: IN CORSO&#10; - URL dinamico in base alle pagine">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Small update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/VisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VisitaMedica.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/style/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/style/dashboard.css" afterDir="false" />
@@ -22,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -52,6 +53,7 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -148,9 +150,8 @@
       <workItem from="1702321628476" duration="4928000" />
       <workItem from="1702337232187" duration="4339000" />
       <workItem from="1702410712800" duration="13706000" />
-      <workItem from="1702490297526" duration="5497000" />
-      <workItem from="1702510391863" duration="414000" />
-      <workItem from="1702554867178" duration="341000" />
+      <workItem from="1702458241705" duration="2779000" />
+      <workItem from="1702464303230" duration="1433000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -160,15 +161,7 @@
       <option name="project" value="LOCAL" />
       <updated>1701824406004</updated>
     </task>
-    <task id="LOCAL-00002" summary="Dashboard:&#10; - visualizzazione visita: IN CORSO&#10; - URL dinamico in base alle pagine">
-      <option name="closed" value="true" />
-      <created>1702491976527</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1702491976527</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,7 +180,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Small update" />
-    <MESSAGE value="Dashboard:&#10; - visualizzazione visita: IN CORSO&#10; - URL dinamico in base alle pagine" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dashboard:&#10; - visualizzazione visita: IN CORSO&#10; - URL dinamico in base alle pagine" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small update" />
   </component>
 </project>

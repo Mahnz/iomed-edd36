@@ -20,7 +20,7 @@ export default function LoginForm() { // eslint-disable-next-line
         // Verifica se il cookie è impostato
         if (cookies.get("email")) {
             console.log(cookies.get("email"))
-            navigate("/dashboard");
+            navigate("/dashboard/home");
         }
     })
 
@@ -49,7 +49,7 @@ export default function LoginForm() { // eslint-disable-next-line
                     httpOnly: true,      // Non accessibile tramite JavaScript
                     sameSite: 'Strict',  // Cookie limitato al proprio dominio
                 });
-                navigate("/dashboard");
+                navigate("/dashboard/home");
             })
             .catch(error => {
                 console.error(error);
