@@ -8,13 +8,13 @@ export default function TestBC(){
             <Button variant="contained" color="primary" onClick={e=> {
                 e.preventDefault();
                 console.log("Bottone cliccato");
-                axios.get("http://localhost:3001/getData").then(res=> console.log(res)).catch(e=> console.log("Errore"));
+                axios.get("http://localhost:3001/api/bc/getData").then(res=> console.log(res)).catch(e=> console.log("Errore"));
             }}>prova getAll</Button>
 
             <Button variant="contained" color="primary" onClick={e=> {
                 e.preventDefault();
                 console.log("Bottone cliccato");
-                axios.get("http://localhost:3001/query").then(res=> console.log(res)).catch(e=> console.log("Errore"));
+                axios.get("http://localhost:3001/api/bc/query").then(res=> console.log(res)).catch(e=> console.log("Errore"));
             }}>prova query</Button>
         </div>
     );

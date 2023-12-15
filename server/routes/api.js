@@ -1,6 +1,6 @@
 import express from 'express';
 import ipfsRoutes from './ipfsRoutes.js';
-// import bcRoutes from './bcRoutes.js';
+import bcRoutes from './bcRoutes.js';
 
 const router = express.Router()
 
@@ -9,6 +9,6 @@ router.get('/', (req, res) => {
 })
 
 router.use('/ipfs', ipfsRoutes)
-// router.use('/bc', bcRoutes)
+router.use('/bc', bcRoutes)
 
 export default router
