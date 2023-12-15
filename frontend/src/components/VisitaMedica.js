@@ -27,25 +27,22 @@ export default function VisitaMedica({visita}) {
 
     useEffect(() => {
         if (visita === "") {
-            console.log("Visita non definita")
             navigate(-1);
         }
     }, [visita]);
 
+    // ? Gestione del menù di opzioni per i file
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
-
     const handleDownload = () => {
         window.alert('Scarica il file qui');
         handleMenuClose();
     };
-
     const handleOpenInNewTab = () => {
         window.alert('Apri il file in una nuova pagina');
         handleMenuClose();
@@ -89,8 +86,19 @@ export default function VisitaMedica({visita}) {
 
                     <Grid item xs={6}>
                         {files.map((file, index) => (
-                            <Paper elevation={3}
-                                   sx={{padding: 2, mt: 2, display: 'flex', alignItems: 'center', height: 60}}>
+                            <Paper key={index} elevation={1}
+                                   sx={{
+                                       padding: 2,
+                                       mt: 2,
+                                       cursor: 'pointer',
+                                       display: 'flex',
+                                       alignItems: 'center',
+                                       height: 60,
+                                       transition: 'box-shadow 0.2s',
+                                       '&:hover': {
+                                           boxShadow: '0 2px 3px rgba(0, 0, 0, 0.4)',
+                                       },
+                                   }}>
                                 <Menu
                                     id="file-options-menu"
                                     anchorEl={anchorEl}

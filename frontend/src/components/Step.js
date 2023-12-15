@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Form, Button, Row, Col, FloatingLabel, InputGroup} from 'react-bootstrap'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {
@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {Link} from "react-router-dom"
 import '../style/form.css'
-import province from '../province.js'
+import axios from "axios"
 
 export default function Step({
                                  step,
@@ -32,6 +32,38 @@ export default function Step({
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+    const [provinceList, setProvinceList] = useState([])
+    const [comuniList, setComuniList] = useState([])
+
+    useEffect(() => {
+        const fetchProvinces = async () => {
+            try {
+                const response = await axios.get('https://axqvoqvbfjpaamphztgd.functions.supabase.co/province')
+                const provinceNames = response.data.map((province) => province.nome)
+                setProvinceList(provinceNames)
+            } catch (error) {
+                console.error('Errore durante il recupero delle province', error)
+            }
+        }
+        fetchProvinces()
+    }, [])
+
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                if (formData.birthProvincia) {
+                    const response = await axios.get(`https://axqvoqvbfjpaamphztgd.functions.supabase.co/comuni/provincia/${formData.birthProvincia}`);
+                    const comuniNames = response.data.map((comune) => comune.nome);
+                    setComuniList(comuniNames);
+                }
+            } catch (error) {
+                console.error('Errore durante il recupero delle città', error);
+            }
+        };
+        fetchCities();
+    }, [formData.birthProvincia]);
+
 
     return (
         <>
@@ -104,10 +136,35 @@ export default function Step({
                                 </FloatingLabel>
                             </InputGroup>
                         </Col>
+                    </Row>
+
+                    {/* TODO - Luogo di nascita */}
+                    <Row>
                         <Col className="my-1">
                             <InputGroup className="mb-2" hasValidation>
                                 <InputGroup.Text><FontAwesomeIcon icon={faLocationDot}/></InputGroup.Text>
                                 <FloatingLabel label="Provincia di nascita">
+                                    <Form.Select id="inputProvinciaNascita"
+                                                 name="birthProvincia"
+                                                 value={formData.birthProvincia}
+                                                 onChange={handleChange}
+                                                 autoComplete="off"
+                                                 required
+                                    >
+                                        <option value="" disabled>Seleziona la provincia</option>
+                                        {provinceList.map((province, index) => (
+                                            <option key={index} value={province}>
+                                                {province}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </FloatingLabel>
+                            </InputGroup>
+                        </Col>
+                        <Col className="my-1">
+                            <InputGroup className="mb-2" hasValidation>
+                                <InputGroup.Text><FontAwesomeIcon icon={faLocationDot}/></InputGroup.Text>
+                                <FloatingLabel label="Comune di nascita">
                                     <Form.Select id="inputLuogoNascita"
                                                  name="birthPlace"
                                                  value={formData.birthPlace}
@@ -115,15 +172,27 @@ export default function Step({
                                                  autoComplete="off"
                                                  required
                                     >
-                                        <option value="" disabled>Seleziona la provincia</option>
-                                        {province.map((provincia) => (
-                                            <option key={provincia} value={provincia}>{provincia}</option>
+                                        <option value="" disabled>Seleziona il comune</option>
+                                        {comuniList.map((comune, index) => (
+                                            <option key={index} value={comune}>
+                                                {comune}
+                                            </option>
                                         ))}
                                     </Form.Select>
+                                    {/*<Form.Control type="text"*/}
+                                    {/*              id="inputComuneNascita"*/}
+                                    {/*              name="birthPlace"*/}
+                                    {/*              placeholder="Inserire comune di nascita"*/}
+                                    {/*              value={formData.birthPlace}*/}
+                                    {/*              onChange={handleChange}*/}
+                                    {/*              autoComplete="off"*/}
+                                    {/*              required*/}
+                                    {/*/>*/}
                                 </FloatingLabel>
                             </InputGroup>
                         </Col>
                     </Row>
+
                     <Row>
                         <Col xs={12} md={3} className="my-1 mb-2">
                             {/* TODO - pulsante per calcolare il codice fiscale*/}
@@ -250,7 +319,7 @@ export default function Step({
                                             icon={/(?=.*[0-9])/.test(formData.password) ? faCheck : faTimes}/> Carattere
                                         numerico
                                     </li>
-                                    <li className={/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])/.test(formData.password) ? 'valid' : 'invalid'}>
+                                    <li className={/(?=.*[!@#$%^&*()_+{}\[\]:<>,.?~\\-])/.test(formData.password) ? 'valid' : 'invalid'}>
                                         <FontAwesomeIcon
                                             icon={/(?=.*[!@#$%^&*])/.test(formData.password) ? faCheck : faTimes}/> Carattere
                                         speciale !@#$%^&*
@@ -292,8 +361,10 @@ export default function Step({
                                                  required
                                     >
                                         <option value="" disabled>Seleziona la provincia</option>
-                                        {province.map((provincia) => (
-                                            <option key={provincia} value={provincia}>{provincia}</option>
+                                        {provinceList.map((province, index) => (
+                                            <option key={index} value={province}>
+                                                {province}
+                                            </option>
                                         ))}
                                     </Form.Select>
                                 </FloatingLabel>

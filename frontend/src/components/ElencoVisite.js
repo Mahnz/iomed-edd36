@@ -4,6 +4,8 @@ import {Button, Container, Grid, Paper, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 export default function ElencoVisite({setVisita}) {
+
+    // TODO - Da rimuovere quando le visite vengono lette da IPFS
     const temp = [
         {
             name: "Visita allergologica",

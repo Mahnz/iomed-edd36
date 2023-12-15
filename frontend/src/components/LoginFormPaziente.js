@@ -8,7 +8,7 @@ import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
 
 import Cookies from 'universal-cookie'
 
-export default function LoginForm() { // eslint-disable-next-line
+export default function LoginFormPaziente() { // eslint-disable-next-line
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [validated, setValidated] = useState(false);
@@ -20,7 +20,7 @@ export default function LoginForm() { // eslint-disable-next-line
         // Verifica se il cookie è impostato
         if (cookies.get("email")) {
             console.log(cookies.get("email"))
-            navigate("/dashboard/home");
+            navigate("/dashboard");
         }
     })
 

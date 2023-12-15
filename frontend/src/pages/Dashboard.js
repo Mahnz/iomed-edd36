@@ -23,7 +23,7 @@ import {
     Healing,
     Person,
     Home,
-    ExitToApp
+    ExitToApp, PersonAddAlt1
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
@@ -38,6 +38,7 @@ import Cookies from 'universal-cookie'
 import "../style/dashboard.css"
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import VisitaMedica from "../components/VisitaMedica.js"
+import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js";
 
 const drawerWidth = 240
 
@@ -129,6 +130,9 @@ export default function Dashboard() {
         } else if (selectedTab === "P") {
             document.title = 'MedPlatform - Il mio profilo'
             navigate('/dashboard/profilo')
+        } else if (selectedTab === "I") {
+            document.title = 'MedPlatform - Nuova visita'
+            navigate('/dashboard/inserimentoVisita')
         } else if (selectedTab === "S") {
             document.title = 'MedPlatform - Impostazioni'
             navigate('/dashboard/settings')
@@ -299,6 +303,14 @@ export default function Dashboard() {
                         </ListItemIcon>
                         <ListItemText primary="Il mio profilo"/>
                     </ListItemButton>
+                    <ListItemButton
+                        onClick={() => handleSelectTab('I')}
+                        className={selectedTab === 'I' ? 'selected-tab' : ''}>
+                        <ListItemIcon>
+                            <PersonAddAlt1/>
+                        </ListItemIcon>
+                        <ListItemText primary="Inserimento visita"/>
+                    </ListItemButton>
 
                     <Divider sx={{my: 1}}/>
 
@@ -306,12 +318,6 @@ export default function Dashboard() {
                     <ListSubheader component="div" inset>
                         Saved reports
                     </ListSubheader>
-                    <ListItemButton onClick={() => handleLogout()}>
-                        <ListItemIcon>
-                            <ExitToApp/>
-                        </ListItemIcon>
-                        <ListItemText primary="Logout"/>
-                    </ListItemButton>
                 </List>
             </Drawer>
             <Box
@@ -335,6 +341,8 @@ export default function Dashboard() {
                         <Route path="/visite" element={<ElencoVisite setVisita={setSelectedVisita}/>}/>
                         <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={selectedVisita}/>}/>
                         <Route path="/profilo" element={<MyProfile/>}/>
+                        <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>
+
                         <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
                     </Routes>
                 </Container>

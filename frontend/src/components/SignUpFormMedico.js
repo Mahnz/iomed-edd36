@@ -6,7 +6,7 @@ import Step from "./Step.js"
 
 import CodiceFiscale from 'codice-fiscale-js';
 
-export default function SignUpForm() {
+export default function SignUpFormMedico() {
     // const CodiceFiscale = require('codice-fiscale-js');
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState({
@@ -14,6 +14,7 @@ export default function SignUpForm() {
         firstName: '',
         lastName: '',
         birthDate: '',
+        birthProvincia: '',
         birthPlace: '',
         sex: '',
         CF: '',
@@ -50,6 +51,7 @@ export default function SignUpForm() {
                     formData.lastName &&
                     formData.sex &&
                     formData.birthDate &&
+                    formData.birthProvincia &&
                     formData.birthPlace &&
                     formData.CF &&
                     formData.email &&
@@ -126,7 +128,13 @@ export default function SignUpForm() {
                 ...formData,
                 [name]: cleanValue,
             })
-
+        } else if (name === 'birthProvincia') {
+            // Memorizzazione della provincia di nascita
+            setFormData({
+                ...formData,
+                birthProvincia: value,
+                birthPlace: ''
+            })
         } else {
             // Memorizzazione di ogni altro campo testuale
             setFormData({

@@ -15,8 +15,12 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route path="/login" element={<Authentication login={true}/>}/>
-                <Route path="/signup" element={<Authentication login={false}/>}/>
+                <Route path="/loginPaziente" element={<Authentication medico={false} login={true}/>}/>
+                <Route path="/signupPaziente" element={<Authentication medico={false} login={false}/>}/>
+
+                <Route path="/loginMedico" element={<Authentication medico={true} login={true}/>}/>
+                <Route path="/signupMedico" element={<Authentication medico={true} login={false}/>}/>
+
                 <Route path="/dashboard/*" element={<Dashboard/>}/>
                 <Route path="/upload" element={<TestIPFS/>}/>
                 <Route path="/testFE" element={<TestFrontend/>}/>
