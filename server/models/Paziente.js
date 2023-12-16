@@ -14,6 +14,8 @@ class Paziente {
         this.phoneNumber=form.phoneNumber;
         this.province=form.province;
         this.sex=form.sex;
+        this.cid=null;
+        this.doctors=[];
     }
 }
 export default Paziente;

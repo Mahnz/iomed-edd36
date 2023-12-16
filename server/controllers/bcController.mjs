@@ -12,6 +12,8 @@ const __dirname = path.dirname(__filename);
 import {buildCAClient, registerAndEnrollUser, enrollAdmin} from "../../CAUtil.mjs";
 import {buildCCPOrg1, buildWallet, prettyJSONString} from "../../AppUtil.mjs";
 import Patient from "../models/Paziente.js";
+const jwt=require("jsonwebtoken");
+const bcrypt=require("bcrypt");
 
 
 const channelName = 'mychannel';
@@ -93,24 +95,41 @@ const addPatient = async (req, res) => {
         const contract = network.getContract(chaincodeName);
 
         //Eseguire funzione di inserimento paziente
-        const p = JSON.stringify(new Patient(req.body.formData));
+        const p = new Patient(req.body.formData);
         console.log(p);
-        console.log(req.body.formData.CF);
+
+        console.log("inizio critto pass");
+        const s=await bcrypt.genSalt(10);
+        const pass=await bcrypt.hash(p.password,s);
+        p.password=pass;
+
+        console.log("Fine critto");
+
+        console.log(p);
 
         console.log("Inizio transazione di aggiunta utente");
 
-        await contract.submitTransaction("createPatient", 50, p);
-        res.status(200).json("Inserimento avvenuto correttamente");
-
+        const r=await contract.submitTransaction("createPatient", p.CF, JSON.stringify(p));
         gateway.disconnect();
+        console.log(Buffer.from(r).toString());
 
-        console.log("Aggiunta avvenuta");
+        const v= await contract.evaluateTransaction()
+
+        if(Buffer.from(r).toString()=="true")
+        {
+            console.log("Aggiunta avvenuta");
+            res.status(200).json("Inserimento avvenuto correttamente");
+        }
+        else
+        {
+            console.log("Utente già esistente");
+            res.status(409).json("Utente già esistente");
+        }
 
     } catch (e) {
+        console.log(e);
         console.error(`Errore durante il richiamo della funzione`);
         res.status(500).json(`Errore`);
-        throw new Error("Errore durante il richiamo della funzione")
-
     }
 }
 
@@ -215,16 +234,19 @@ const getPatient = async (req, res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
+        console.log("Ricerca iniziata");
+
         //funzione di lettura paziente
-        const p = await contract.evaluateTransaction("getPatient", req.cf);
-        res.status(200).json({message: "Lettura eseguita correttamente",  value: p});
+        const p = await contract.evaluateTransaction("getPatient", "1");
+        console.log(p);
+
+        console.log("Ricerca finita");
 
         gateway.disconnect();
 
     } catch (e) {
+        console.log(e);
         console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-        res.status(500).json(`Errore ${e.message}`);
-        throw new Error("Errore durante il richiamo della funzione: ${e.message}")
     }
 }
 
@@ -256,7 +278,7 @@ const getAll = async (req, res) => {
         console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
         let result = await contract.evaluateTransaction('GetAllAssets');
 
-        console.log(prettyJSONString(result));
+        console.log(JSON.parse(prettyJSONString(result)));
 
         gateway.disconnect();
     } catch (e) {
@@ -340,16 +362,30 @@ const login = async (req, res) => {
             },
         };
 
-        console.log(q);
-
         console.log('\n--> Evaluate Transaction: Login');
-        const result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
+        let result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
 
-        console.log(prettyJSONString(result));
+        result=JSON.parse(prettyJSONString(result));
+
+        console.log("Verifica password");
+        const verify=await bcrypt.compare(req.body.password, result[0].Record.password);
+
+        if(verify)
+        {
+            console.log("Andato tutto");
+            res.status(200).json({sessionid: 10});
+        }
+
+        else
+        {
+            console.log("Password diversa");
+            res.status(401).json("Credenziali errate");
+        }
+
 
         gateway.disconnect();
     } catch (e) {
-        console.log(e);
+        res.status(401).json("Accesso fallito");
     }
 }
 

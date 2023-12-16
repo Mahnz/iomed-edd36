@@ -8,7 +8,7 @@ router.get('/getPatient', bcController.getPatient);
 
 router.get("/query", (req, res) => {
     console.log("Richiesta arrivata");
-    bcController.query();
+    bcController.getPatient();
     res.json("tutto ok");
 });
 
