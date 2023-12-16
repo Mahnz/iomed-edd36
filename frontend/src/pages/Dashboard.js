@@ -1,5 +1,5 @@
 // Dashboard.js
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import {
     styled,
     CssBaseline,
@@ -14,7 +14,7 @@ import {
     Badge,
     Container,
     ListItemButton, ListItemIcon, ListItemText, ListSubheader,
-    Tooltip
+    Tooltip, useMediaQuery, createTheme, ThemeProvider
 } from '@mui/material'
 
 import {
@@ -23,7 +23,8 @@ import {
     Healing,
     Person,
     Home,
-    ExitToApp, PersonAddAlt1
+    PersonAddAlt1,
+    Brightness7, Brightness4
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
@@ -38,7 +39,7 @@ import Cookies from 'universal-cookie'
 import "../style/dashboard.css"
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import VisitaMedica from "../components/VisitaMedica.js"
-import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js";
+import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
 
 const drawerWidth = 240
 
@@ -86,6 +87,18 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
     }),)
 
 export default function Dashboard() {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    const theme = useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    mode: prefersDarkMode ? 'dark' : 'light',
+                }
+            }),
+        [prefersDarkMode],
+    );
+
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
     const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
@@ -110,8 +123,8 @@ export default function Dashboard() {
     // }, [])
     const handleLogout = () => {
         // cookies.remove(["email", "password"])
-        navigate("/homepage");
-    };
+        navigate("/homepage")
+    }
 
     // ? GESTIONE DELLE TAB
     const [selectedTab, setSelectedTab] = useState("")
@@ -179,174 +192,196 @@ export default function Dashboard() {
     }
 
     return (
-        <Box sx={{display: 'flex'}}>
-            <CssBaseline/>
-            <AppBar position="absolute" open={openDrawer}>
-                <Toolbar
-                    sx={{
-                        pr: '24px',
-                    }}
-                >
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={toggleDrawer}
+        <ThemeProvider theme={theme}>
+            <Box sx={{display: 'flex'}}>
+                <CssBaseline/>
+                <AppBar position="absolute" open={openDrawer}>
+                    <Toolbar
                         sx={{
-                            marginRight: '36px',
-                            ...(openDrawer && {display: 'none'}),
+                            pr: '24px',
                         }}
                     >
-                        <MenuIcon/>
-                    </IconButton>
-                    <Typography
-                        component="h1"
-                        variant="h5"
-                        color="inherit"
-                        noWrap
-                        sx={{flexGrow: 1}}
-                    >
-                        MedPlatform
-                    </Typography>
-
-                    {/* PANNELLO A DISCESA SULL'ICONA DELLE NOTIFICHE */}
-                    <Tooltip title={
-                        notifArray.length === 0
-                            ? 'Nessuna notifica'
-                            : notifArray.length === 1 ? `Hai ${notifArray.length} nuova notifica!` : `Hai ${notifArray.length} nuove notifiche!`
-                    }>
                         <IconButton
-                            id="notification-button"
+                            edge="start"
                             color="inherit"
-                            aria-controls={openNtfPanel ? 'notification-panel' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={openNtfPanel ? 'true' : undefined}
-                            onClick={handleClickNtfPanel}
+                            aria-label="open drawer"
+                            onClick={toggleDrawer}
+                            sx={{
+                                marginRight: '36px',
+                                ...(openDrawer && {display: 'none'}),
+                            }}
                         >
-                            <Badge badgeContent={notifArray.length} color="secondary">
-                                <FontAwesomeIcon icon={faBell} style={{color: "#ffffff",}}
-                                                 shake={notifArray.length > 0}/>
-                            </Badge>
+                            <MenuIcon/>
                         </IconButton>
-                    </Tooltip>
-                    <NotificationsPanel
-                        anchorEl={anchorNtf}
-                        openPanel={openNtfPanel}
-                        handleClose={handleCloseNtfPanel}
-                        notifArray={notifArray}
-                        deleteNotification={deleteNotification}
-                        deleteAllNotifications={deleteAllNotifications}
-                    />
-
-                    {/* PANNELLO A DISCESA SULL'ICONA DELL'UTENTE */}
-                    <Tooltip title="Azioni sul profilo">
-                        <IconButton
-                            id="user-icon-button"
+                        <Typography
+                            component="h1"
+                            variant="h5"
                             color="inherit"
-                            aria-controls={openUserPanel ? 'user-icon-panel' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={openUserPanel ? 'true' : undefined}
-                            onClick={handleClickUserPanel}
-                            sx={{pl: 2}}
+                            noWrap
+                            sx={{flexGrow: 1}}
                         >
-                            <Badge color="secondary">
-                                <FontAwesomeIcon icon={faCircleUser} style={{color: "#ffffff",}}/>
-                            </Badge>
+                            MedPlatform
+                        </Typography>
+
+                        {/* PANNELLO A DISCESA SULL'ICONA DELLE NOTIFICHE */}
+                        <Tooltip title={
+                            notifArray.length === 0
+                                ? 'Nessuna notifica'
+                                : notifArray.length === 1 ? `Hai ${notifArray.length} nuova notifica!` : `Hai ${notifArray.length} nuove notifiche!`
+                        }>
+                            <IconButton
+                                id="notification-button"
+                                color="inherit"
+                                aria-controls={openNtfPanel ? 'notification-panel' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={openNtfPanel ? 'true' : undefined}
+                                onClick={handleClickNtfPanel}
+                            >
+                                <Badge badgeContent={notifArray.length} color="secondary">
+                                    <FontAwesomeIcon icon={faBell} style={{color: "#ffffff",}}
+                                                     shake={notifArray.length > 0}/>
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
+                        <NotificationsPanel
+                            anchorEl={anchorNtf}
+                            openPanel={openNtfPanel}
+                            handleClose={handleCloseNtfPanel}
+                            notifArray={notifArray}
+                            deleteNotification={deleteNotification}
+                            deleteAllNotifications={deleteAllNotifications}
+                        />
+
+                        {/* PANNELLO A DISCESA SULL'ICONA DELL'UTENTE */}
+                        <Tooltip title="Azioni sul profilo">
+                            <IconButton
+                                id="user-icon-button"
+                                color="inherit"
+                                aria-controls={openUserPanel ? 'user-icon-panel' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={openUserPanel ? 'true' : undefined}
+                                onClick={handleClickUserPanel}
+                                sx={{ml: 1}}
+                            >
+                                <Badge color="secondary">
+                                    <FontAwesomeIcon icon={faCircleUser} style={{color: "#ffffff",}}/>
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
+                        <UserIconPanel
+                            anchorEl={anchorUser}
+                            openPanel={openUserPanel}
+                            handleClose={handleCloseUserPanel}
+                            setSelectedTab={setSelectedTab}
+                            setLoggedUser={setLoggedUser}
+                        />
+
+                        {/* PULSANTE PER SWITCHARE TRA LIGHT E DARK MODE */}
+                        <Tooltip title="Passa alla modalità chiara"
+                        //     title={{theme.palette.mode === 'dark'
+                        //     ? "Passa alla modalità scura"
+                        //     : "Passa alla modalità chiara"
+                        // }}
+                        >
+                            < IconButton
+                                id="mode-button"
+                                color="inherit"
+                                // onClick={toggleDarkMode}
+                                sx={{ml: 1}}
+                            >
+                                <Badge color="secondary">
+                                    {theme.palette.mode === 'dark' ? <Brightness7/> : <Brightness4/>}
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
+                    </Toolbar>
+                </AppBar>
+
+                <Drawer variant="permanent" open={openDrawer}>
+                    <Toolbar sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        px: [1],
+                    }}>
+                        <IconButton onClick={toggleDrawer}>
+                            <ChevronLeft/>
                         </IconButton>
-                    </Tooltip>
-                    <UserIconPanel
-                        anchorEl={anchorUser}
-                        openPanel={openUserPanel}
-                        handleClose={handleCloseUserPanel}
-                        setSelectedTab={setSelectedTab}
-                        setLoggedUser={setLoggedUser}
-                    />
-                </Toolbar>
-            </AppBar>
+                    </Toolbar>
 
-            <Drawer variant="permanent" open={openDrawer}>
-                <Toolbar sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    px: [1],
-                }}>
-                    <IconButton onClick={toggleDrawer}>
-                        <ChevronLeft/>
-                    </IconButton>
-                </Toolbar>
+                    <Divider/>
 
-                <Divider/>
+                    <List component="nav">
+                        <ListItemButton
+                            onClick={() => handleSelectTab("H")}
+                            className={selectedTab === 'H' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Home/>
+                            </ListItemIcon>
+                            <ListItemText primary="Home"/>
+                        </ListItemButton>
+                        <ListItemButton
+                            onClick={() => handleSelectTab('V')}
+                            className={selectedTab === 'V' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Healing/>
+                            </ListItemIcon>
+                            <ListItemText primary="Visite mediche"/>
+                        </ListItemButton>
+                        <ListItemButton
+                            onClick={() => handleSelectTab('P')}
+                            className={selectedTab === 'P' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Person/>
+                            </ListItemIcon>
+                            <ListItemText primary="Il mio profilo"/>
+                        </ListItemButton>
+                        <ListItemButton
+                            onClick={() => handleSelectTab('I')}
+                            className={selectedTab === 'I' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <PersonAddAlt1/>
+                            </ListItemIcon>
+                            <ListItemText primary="Inserimento visita"/>
+                        </ListItemButton>
 
-                <List component="nav">
-                    <ListItemButton
-                        onClick={() => handleSelectTab("H")}
-                        className={selectedTab === 'H' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <Home/>
-                        </ListItemIcon>
-                        <ListItemText primary="Home"/>
-                    </ListItemButton>
-                    <ListItemButton
-                        onClick={() => handleSelectTab('V')}
-                        className={selectedTab === 'V' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <Healing/>
-                        </ListItemIcon>
-                        <ListItemText primary="Visite mediche"/>
-                    </ListItemButton>
-                    <ListItemButton
-                        onClick={() => handleSelectTab('P')}
-                        className={selectedTab === 'P' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <Person/>
-                        </ListItemIcon>
-                        <ListItemText primary="Il mio profilo"/>
-                    </ListItemButton>
-                    <ListItemButton
-                        onClick={() => handleSelectTab('I')}
-                        className={selectedTab === 'I' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <PersonAddAlt1/>
-                        </ListItemIcon>
-                        <ListItemText primary="Inserimento visita"/>
-                    </ListItemButton>
+                        <Divider sx={{my: 1}}/>
 
-                    <Divider sx={{my: 1}}/>
+                        {/* Qui è possibile aggiungere le voci di un menù secondario (idea: visite dell'ultimo anno, mese, settimana */}
+                        <ListSubheader component="div" inset>
+                            Saved reports
+                        </ListSubheader>
+                    </List>
+                </Drawer>
+                <Box
+                    component="main"
+                    sx={{
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === 'light'
+                                ? theme.palette.grey[100]
+                                : theme.palette.grey[900],
+                        flexGrow: 1,
+                        height: '100vh',
+                        overflow: 'auto',
+                    }}
+                >
+                    <Toolbar/>
+                    <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+                        <Routes>
+                            <Route index
+                                   element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
+                            <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
+                            <Route path="/visite" element={<ElencoVisite setVisita={setSelectedVisita}/>}/>
+                            <Route path="/visite/visualizzaVisita"
+                                   element={<VisitaMedica visita={selectedVisita}/>}/>
+                            <Route path="/profilo" element={<MyProfile/>}/>
+                            <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>
 
-                    {/* Qui è possibile aggiungere le voci di un menù secondario (idea: visite dell'ultimo anno, mese, settimana */}
-                    <ListSubheader component="div" inset>
-                        Saved reports
-                    </ListSubheader>
-                </List>
-            </Drawer>
-            <Box
-                component="main"
-                sx={{
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === 'light'
-                            ? theme.palette.grey[100]
-                            : theme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-            >
-                <Toolbar/>
-                <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-                    <Routes>
-                        <Route index
-                               element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
-                        <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
-                        <Route path="/visite" element={<ElencoVisite setVisita={setSelectedVisita}/>}/>
-                        <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={selectedVisita}/>}/>
-                        <Route path="/profilo" element={<MyProfile/>}/>
-                        <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>
-
-                        <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
-                    </Routes>
-                </Container>
+                            <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
+                        </Routes>
+                    </Container>
+                </Box>
             </Box>
-        </Box>
+        </ThemeProvider>
     )
 }

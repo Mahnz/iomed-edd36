@@ -7,7 +7,6 @@ import Step from "./Step.js"
 import CodiceFiscale from 'codice-fiscale-js';
 
 export default function SignUpFormMedico() {
-    // const CodiceFiscale = require('codice-fiscale-js');
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState({
         // Oggetto contenente tutti i dati del form di registrazione

@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {AttachFile, Close} from "@mui/icons-material";
-import CustomFileInput from "../pages/TestFrontend.js";
+import CustomFileInput from "../pages/TestFrontendLogin.js";
 
 const departments = ['Cardiologia', 'Ortopedia', 'Neurologia', 'Oculistica', 'Altro']
 
@@ -181,13 +181,9 @@ export default function InserimentoVisitaMedica() {
                                         type="file"
                                         name="file"
                                         accept=".png, .jpeg, .jpg, .pdf"
+                                        fullWidth
                                         onChange={(e) => handleAllegatoChange(index, allegato.nome, e.target.files[0])}
                                     />
-                                    {/*<input*/}
-                                    {/*    type="file"*/}
-                                    {/*    accept=".png, .jpeg, .jpg, .pdf"*/}
-                                    {/*    onChange={(e) => handleAllegatoChange(index, allegato.nome, e.target.files[0])}*/}
-                                    {/*/>*/}
                                 </Grid>
                                 <Grid item xs={8} sm={8}>
                                     <TextField
