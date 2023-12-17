@@ -140,3 +140,33 @@ return (
         />
     )}
 )
+
+
+// IMPLEMENTAZIONE DELLA GENERAZIONE DINAMICA DELLE CITTA' IN BASE ALLA PROVINCIA SELEZIONATA
+useEffect(() => {
+        const fetchProvinces = async () => {
+            try {
+                const response = await axios.get('https://axqvoqvbfjpaamphztgd.functions.supabase.co/province')
+                const provinceNames = response.data.map((province) => province.nome)
+                setProvinceList(provinceNames)
+            } catch (error) {
+                console.error('Errore durante il recupero delle province', error)
+            }
+        }
+        fetchProvinces()
+    }, [])
+
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                if (formData.birthProvincia) {
+                    const response = await axios.get(`https://axqvoqvbfjpaamphztgd.functions.supabase.co/comuni/provincia/${formData.birthProvincia}`);
+                    const comuniNames = response.data.map((comune) => comune.nome);
+                    setComuniList(comuniNames);
+                }
+            } catch (error) {
+                console.error('Errore durante il recupero delle città', error);
+            }
+        };
+        fetchCities();
+    }, [formData.birthProvincia]);

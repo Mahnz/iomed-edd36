@@ -7,10 +7,7 @@ import Step from "./Step.js"
 import CodiceFiscale from 'codice-fiscale-js';
 
 export default function SignUpFormPaziente() {
-    // const CodiceFiscale = require('codice-fiscale-js');
-    const [step, setStep] = useState(1)
-    const [formData, setFormData] = useState({
-        // Oggetto contenente tutti i dati del form di registrazione
+    const initialForm = {
         firstName: '',
         lastName: '',
         birthDate: '',
@@ -28,8 +25,11 @@ export default function SignUpFormPaziente() {
         phoneNumber: '',
         frontID: null,
         backID: null,
-        checkTerms: false
-    })
+        checkTerms: false,
+        docType: "patient"
+    }
+    const [step, setStep] = useState(1)
+    const [formData, setFormData] = useState(initialForm)
     // TODO - Settare tutti i name dei campi del form, fedelmente a quelli di formData
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [validated, setValidated] = useState(false)
@@ -164,26 +164,7 @@ export default function SignUpFormPaziente() {
         }).then(res => console.log(res)).catch(e => console.log(e));
 
         // TODO - Resettare lo stato di formData
-        setFormData({
-            firstName: '',
-            lastName: '',
-            birthDate: '',
-            birthProvincia: '',
-            birthPlace: '',
-            sex: '',
-            CF: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            address: '',
-            province: '',
-            city: '',
-            cap: '',
-            phoneNumber: '',
-            frontID: null,
-            backID: null,
-            checkTerms: false
-        })
+        setFormData(initialForm)
     }
 
     useEffect(() => {

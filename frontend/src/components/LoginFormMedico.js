@@ -1,29 +1,42 @@
 // LoginFormMedico.js
-import React, {useState, useEffect} from "react";
-import {Link, useNavigate} from "react-router-dom";
-
-import 'bootstrap/dist/css/bootstrap.css';
-import {Container, Form, Button, FloatingLabel, Col, Row, InputGroup} from "react-bootstrap";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
-
+import React, {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {
+    Container,
+    TextField,
+    Button,
+    Typography,
+    Grid,
+    InputAdornment,
+    IconButton,
+    CssBaseline,
+    Avatar,
+    Box,
+    Link, Paper,
+} from '@mui/material'
+import {LockOutlined, Visibility, VisibilityOff, PersonOutline} from '@mui/icons-material'
 import Cookies from 'universal-cookie'
+import axios from 'axios'
 
-export default function LoginFormMedico() { // eslint-disable-next-line
+export default function LoginFormMedico() {
     const [id, setId] = useState('')
     const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
     const [validated, setValidated] = useState(false);
+    const [errors, setErrors] = useState({
+        id: '',
+        password: '',
+    })
 
     const navigate = useNavigate()
     const cookies = new Cookies();
 
     useEffect(() => {
-        // Verifica se il cookie è impostato
-        if (cookies.get("id")) {
-            console.log(cookies.get("id"))
-            navigate("/dashboard");
+        if (cookies.get('id')) {
+            console.log(cookies.get('id'))
+            navigate('/dashboard/home')
         }
-    })
+    }, [cookies, navigate])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,7 +52,7 @@ export default function LoginFormMedico() { // eslint-disable-next-line
             id: id,
             password: password
         };
-        axios.post('http://localhost:3001/api/bc/login', user)
+        axios.post('http://localhost:3001/api/bc/loginM', user)
             .then(res => {
                 console.log("Login effettuato")
                 console.log(res.data)
@@ -58,74 +71,102 @@ export default function LoginFormMedico() { // eslint-disable-next-line
     }
 
     const handleChange = (e) => {
-        const {name, value, type} = e.target
+        const {name, value} = e.target
 
         if (name === 'inputIdLogin') {
-            // Gestione del caricamento dei file
             setId(value)
+            setErrors((prevErrors) => ({...prevErrors, id: ''}))
         } else if (name === 'inputPassword') {
-            // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
-            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
+            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '')
             setPassword(cleanValue)
+            setErrors((prevErrors) => ({...prevErrors, password: ''}));
         }
     }
 
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
 
     return (
-        <>
-            <div className="login-form d-flex align-items-center vh-100">
-                <Container>
-                    <Row className="justify-content-center">
-                        <Col>
-                            <Form className="bg-white p-4 rounded-4" noValidate validated={validated}
-                                  onSubmit={handleSubmit}>
-                                <h2 align="center">Login</h2>
-                                <Col>
-                                    <Row className="mb-2">
-                                        <InputGroup className="mb-2" hasValidation>
-                                            <InputGroup.Text><FontAwesomeIcon icon={faUser}/></InputGroup.Text>
-                                            <FloatingLabel label="Identificativo">
-                                                <Form.Control type="text"
-                                                              name="inputIdLogin"
-                                                              placeholder="Inserire email"
-                                                              value={id}
-                                                              onChange={handleChange}
-                                                              autoComplete="off"
-                                                              maxLength="16"
-                                                              required
-                                                />
-                                            </FloatingLabel>
-                                        </InputGroup>
-                                    </Row>
-
-                                    <Row className="mb-2">
-                                        <InputGroup className="mb-2" hasValidation>
-                                            <InputGroup.Text><FontAwesomeIcon icon={faKey}/></InputGroup.Text>
-                                            <FloatingLabel label="Password">
-                                                <Form.Control type="password"
-                                                              name="inputPassword"
-                                                              placeholder="Inserire password"
-                                                              value={password}
-                                                              onChange={handleChange}
-                                                              required
-                                                />
-                                            </FloatingLabel>
-                                        </InputGroup>
-                                    </Row>
-
-                                    <Row>
-                                        <Button type="submit" className="mb-2">Entra!</Button>
-                                    </Row>
-                                </Col>
-                                <div>
-                                    <p align="center">Non hai ancora un account? <Link to="/signup">Registrati</Link>
-                                    </p>
-                                </div>
-                            </Form>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        </>
+        // <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs" sx={{mb: 4}}>
+            <CssBaseline/>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100vh',
+                }}
+            >
+                <Paper
+                    variant="outlined"
+                    sx={{
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.grey[900],
+                        borderRadius: 4,
+                        my: {xs: 3, md: 6},
+                        p: {xs: 4, md: 3},
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <LockOutlined/>
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Login tesserato
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                        <TextField type="text"
+                                   margin="normal"
+                                   fullWidth
+                                   label="Identificativo"
+                                   name="inputIdLogin"
+                                   value={id}
+                                   onChange={handleChange}
+                                   autoFocus
+                                   required
+                                   error={validated && !id}
+                                   helperText={validated && !id && 'Il campo è obbligatorio'}
+                        />
+                        <TextField type={showPassword ? 'text' : 'password'}
+                                   name="inputPassword"
+                                   margin="normal"
+                                   label="Password"
+                                   value={password}
+                                   onChange={handleChange}
+                                   fullWidth
+                                   required
+                                   error={validated && !password}
+                                   helperText={validated && !password && 'Il campo è obbligatorio'}
+                                   InputProps={{
+                                       endAdornment: (
+                                           <InputAdornment position="end">
+                                               <IconButton onClick={handleTogglePasswordVisibility}>
+                                                   {showPassword ? <Visibility/> : <VisibilityOff/>}
+                                               </IconButton>
+                                           </InputAdornment>
+                                       ),
+                                   }}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{mt: 3, mb: 2}}
+                        >
+                            Login
+                        </Button>
+                        <Link href="#" variant="body2">
+                            Non hai un account? Registrati
+                        </Link>
+                    </Box>
+                </Paper>
+            </Box>
+        </Container>
+        // </ThemeProvider>
     )
 }

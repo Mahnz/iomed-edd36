@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {AttachFile, Close} from "@mui/icons-material";
-import CustomFileInput from "../pages/TestFrontendLogin.js";
+import CustomFileInput from "../pages/TestFrontend.js";
 
 const departments = ['Cardiologia', 'Ortopedia', 'Neurologia', 'Oculistica', 'Altro']
 

@@ -13,6 +13,19 @@ const connect = async (req, res) => {
     }
 }
 
+const addUser = async (cf) => {
+    const ipfs = await connect()
+    const userDirectory = `/patients/${cf}`
+    try {
+        await ipfs.files.mkdir(userDirectory, {parents: true})
+        const dirObj = await ipfs.files.stat(userDirectory)
+        console.log(`DIRECTORY: '${userDirectory}' - CID: ${dirObj.cid.toString()}`)
+        return dirObj.cid.toString()
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 const saveToIpfs = async (req, res) => {
     const username = "test"
     const ipfs = await connect()
@@ -67,6 +80,7 @@ const getFilesByUsername = async (req, res) => {
 
 export const ipfsController = {
     connect,
+    addUser,
     getFilesByUsername,
     saveToIpfs,
 }

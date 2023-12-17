@@ -4,14 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Dashboard:&#10; - icona notifiche: completate&#10; - icona utente: completata&#10;&#10;Implementati i cookie nelle pagine Dashboard, Login, Signup, con annessi set, verifica e redirect&#10;&#10;Visualizzazione visita medica: IN CORSO">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Dashboard:&#10; - inserimento visita: IN CORSO&#10;&#10;Login e Signup medico: IN CORSO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/NotificationsPanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NotificationsPanel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/VisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VisitaMedica.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/IMPL_FUTURE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/IMPL_FUTURE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/ThemeProviderWrapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpComponents/AddressForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/InformazioniPersonali.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpComponents/PaymentForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/DatiProfessionali.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpComponents/Review.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Contatti.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Step.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Step.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TestFrontendLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TestFrontend.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TestFrontendSignup.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TestFrontendSignup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/ipfsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/ipfsController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +31,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -51,7 +62,8 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components/SignUpSteps&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -60,7 +72,7 @@
     &quot;npm.BACKEND.executor&quot;: &quot;Run&quot;,
     &quot;npm.FRONTEND.executor&quot;: &quot;Run&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.deploy.options&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/Domenico/Desktop/packageOLD.json&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -83,11 +95,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components\SignUpSteps" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src\pages" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server\routes" />
-      <recent name="C:\Users\Domenico\Desktop\software-edd36" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server" />
@@ -148,7 +160,10 @@
       <workItem from="1702321628476" duration="4928000" />
       <workItem from="1702337232187" duration="4339000" />
       <workItem from="1702410712800" duration="13706000" />
-      <workItem from="1702490297526" duration="1571000" />
+      <workItem from="1702458241705" duration="2779000" />
+      <workItem from="1702464303230" duration="1433000" />
+      <workItem from="1702727246066" duration="40933000" />
+      <workItem from="1702801497898" duration="2370000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />

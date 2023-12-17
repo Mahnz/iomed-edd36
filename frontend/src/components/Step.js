@@ -1,3 +1,4 @@
+// Step.js
 import React, {useEffect, useState} from 'react'
 import {Form, Button, Row, Col, FloatingLabel, InputGroup} from 'react-bootstrap'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -138,7 +139,6 @@ export default function Step({
                         </Col>
                     </Row>
 
-                    {/* TODO - Luogo di nascita */}
                     <Row>
                         <Col className="my-1">
                             <InputGroup className="mb-2" hasValidation>
@@ -446,6 +446,7 @@ export default function Step({
                 </>
             )}
 
+
             {step === 3 && (
                 <>
                     <h2 align="center">Step 3</h2>
@@ -459,9 +460,6 @@ export default function Step({
                                               accept="image/png, image/jpeg, image/jpg, application/pdf"
                                               required
                                 />
-                                {/*<Form.Control.Feedback type="invalid">*/}
-                                {/*    File non valido*/}
-                                {/*</Form.Control.Feedback>*/}
                             </Form.Group>
                         </Col>
                     </Row>
