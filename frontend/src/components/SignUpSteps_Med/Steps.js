@@ -1,14 +1,13 @@
 // TestStep.js
 import React, {useState} from 'react'
 import {Button, Grid, Link, Typography} from "@mui/material"
-import axios from "axios"
 
-import InformazioniPersonali from "./SignUpSteps/InformazioniPersonali.js";
-import DatiProfessionali from "./SignUpSteps/DatiProfessionali.js";
-import Contatti from "./SignUpSteps/Contatti.js";
-import Fine from "./SignUpSteps/Fine.js";
+import InformazioniPersonali from "./InformazioniPersonali.js";
+import DatiProfessionali from "./DatiProfessionali.js";
+import Contatti from "./Contatti.js";
+import Fine from "./Fine.js";
 
-export default function TestStep({
+export default function Steps({
                                      step,
                                      formData,
                                      nextStep,

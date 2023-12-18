@@ -1,10 +1,27 @@
+// SignUpFormPaziente.js
 import React, {useState, useEffect} from "react"
-import 'bootstrap/dist/css/bootstrap.css';
-import {Container, Form, Col, Row} from "react-bootstrap"
-import '../style/form.css'
-import Step from "./Step.js"
+import Steps from "./SignUpSteps_Paz/Steps.js"
+import {
+    Box,
+    Container,
+    Stepper,
+    Step,
+    StepLabel,
+    Paper,
+    AppBar,
+    Toolbar,
+    Typography, createTheme, ThemeProvider,
+} from "@mui/material"
+import axios from "axios"
+import CodiceFiscale from 'codice-fiscale-js'
 
-import CodiceFiscale from 'codice-fiscale-js';
+const theme = createTheme({
+    palette: {
+        background: {
+            default: '#f5f5f5', // Imposta il colore dello sfondo come carta
+        },
+    },
+})
 
 export default function SignUpFormPaziente() {
     const initialForm = {
@@ -22,7 +39,7 @@ export default function SignUpFormPaziente() {
         province: '',
         city: '',
         cap: '',
-        phoneNumber: '',
+        telefono: '',
         frontID: null,
         backID: null,
         checkTerms: false,
@@ -30,53 +47,79 @@ export default function SignUpFormPaziente() {
     }
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState(initialForm)
-    // TODO - Settare tutti i name dei campi del form, fedelmente a quelli di formData
-    const [btnDisabled, setBtnDisabled] = useState(true);
-    const [validated, setValidated] = useState(false)
+    const [btnDisabled, setBtnDisabled] = useState(true)
+    const [errInfoPersonali, setErrInfoPersonali] = useState({
+        firstName: true,
+        lastName: true,
+        birthDate: true,
+        birthProvincia: true,
+        birthPlace: true,
+        sex: true,
+        CF: true,
+        frontID: true,
+        backID: true
+    })
+    const [errContatti, setErrContatti] = useState({
+        address: true,
+        province: true,
+        city: true,
+        cap: true,
+        telefono: true
+    })
+    const [errFine, setErrFine] = useState({
+        email: true,
+        password: true,
+        confirmPassword: true,
+        checkTerms: true
+    })
 
-    const nextStep = (e) => {
-        e.preventDefault()
-
-        // Validazione input del form client-side
-        let form = e.currentTarget;
-        if (form.checkValidity() === false) {
-            e.stopPropagation()
+    useEffect(() => {
+        if (step === 1) {
+            setErrInfoPersonali({
+                firstName: !formData.firstName.trim(),
+                lastName: !formData.lastName.trim(),
+                sex: !formData.sex.trim(),
+                birthDate: !formData.birthDate.trim(),
+                birthProvincia: !formData.birthProvincia.trim(),
+                birthPlace: !formData.birthPlace.trim(),
+                CF: !formData.CF.trim()
+            })
+            console.log("ERRORI: ", errInfoPersonali)
+        } else if (step === 2) {
+            setErrContatti({
+                province: !formData.province.trim(),
+                city: !formData.city.trim(),
+                cap: !formData.cap.trim(),
+                address: !formData.address.trim(),
+                telefono: !formData.telefono.trim(),
+                frontID: !formData.frontID,
+                backID: !formData.backID
+            })
+            console.log("ERRORI: ", errContatti)
+        } else if (step === 3) {
+            setErrFine({
+                email: !formData.province,
+                password: !formData.password,
+                confirmPassword: !formData.confirmPassword.trim(),
+                checkTerms: !formData.checkTerms
+            })
+            console.log("ERRORI: ", errFine)
         }
-        setValidated(true)
+    }, [step, formData])
 
-        switch (step) {
-            case 1:
-                if (
-                    formData.firstName &&
-                    formData.lastName &&
-                    formData.sex &&
-                    formData.birthDate &&
-                    formData.birthProvincia &&
-                    formData.birthPlace &&
-                    formData.CF &&
-                    formData.email &&
-                    formData.password &&
-                    formData.confirmPassword) {
-                    if (formData.password === formData.confirmPassword) {
-                        setStep(step + 1)
-                        setValidated(false)
-                    } else {
-                        alert("Le password inserite sono diverse")
-                    }
-                }
-                break;
-            case 2:
-                if (
-                    formData.province &&
-                    formData.city &&
-                    formData.address &&
-                    formData.phoneNumber && formData.phoneNumber.length === 10) {
-                    setStep(step + 1)
-                    setValidated(false)
-                }
-                break;
-            default:
-                break;
+    const nextStep = () => {
+        let hasErrors = false
+        if (step === 1) {
+            hasErrors = Object.values(errInfoPersonali).some((error) => error)
+        } else if (step === 2) {
+            hasErrors = Object.values(errContatti).some((error) => error)
+        } else if (step === 3) {
+            hasErrors = Object.values(errFine).some((error) => error)
+        }
+        console.log("ERRORI: " + hasErrors)
+        // 0 errori  ->  prossimo step
+        if (!hasErrors) {
+            setStep((prevStep) => prevStep + 1)
         }
     }
 
@@ -91,17 +134,9 @@ export default function SignUpFormPaziente() {
 
     const handleChange = (e) => {
         const {name, value, type} = e.target
-
-        if (type === 'file') {
-            // Gestione del caricamento dei file
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: e.target.files[0],
-            }))
-        } else if (type === 'date') {
+        if (name === 'birthDate') {
             // Memorizzazione della data di nascita. Si memorizza SOLO la data effettiva
             const dateValue = new Date(value)
-
             setFormData({
                 ...formData,
                 [name]: dateValue.toISOString().split('T')[0]
@@ -114,26 +149,47 @@ export default function SignUpFormPaziente() {
             })
         } else if (name === 'password' || name === 'confirmPassword') {
             // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
-
-            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
+            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '')
             setFormData({
                 ...formData,
                 [name]: cleanValue,
             })
-        } else if (name === 'phoneNumber') {
-            // Si effettua il controllo sull'inserimento di caratteri alfabetici e spazi
-
-            const cleanValue = value.replace(/[^0-9]/g, '');
+        } else if (name === 'telefonoPersonale' || name === 'cap') {
+            // Controllo sull'inserimento di caratteri alfabetici e spazi nel numero di telefono
+            const cleanValue = value.replace(/[^0-9]/g, '')
             setFormData({
                 ...formData,
                 [name]: cleanValue,
             })
         } else if (name === 'birthProvincia') {
-            // Memorizzazione della provincia di nascita
+            // Check sulla Provincia di nascita
             setFormData({
                 ...formData,
                 birthProvincia: value,
                 birthPlace: ''
+            })
+        } else if (name === 'province') {
+            // Check sulla Provincia di residenza
+            setFormData({
+                ...formData,
+                province: value,
+                city: ''
+            })
+        } else if (name === 'frontID') {
+            // Memorizzazione del fronte del documento
+            const selectedFile = e.target.files[0]
+            console.log("Fronte documento:", e.target.files[0])
+            setFormData({
+                ...formData,
+                frontID: selectedFile
+            })
+        } else if (name === 'backID') {
+            // Memorizzazione del fronte del documento
+            const selectedFile = e.target.files[0]
+            console.log("Retro documento:", e.target.files[0])
+            setFormData({
+                ...formData,
+                backID: selectedFile
             })
         } else {
             // Memorizzazione di ogni altro campo testuale
@@ -147,23 +203,19 @@ export default function SignUpFormPaziente() {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        // Validazione input del form client-side
-        let form = e.currentTarget;
-        if (form.checkValidity() === false) {
-            e.stopPropagation()
+        if (!Object.values(errInfoPersonali).some((error) => error) &&
+            !Object.values(errContatti).some((error) => error) &&
+            !Object.values(errFine).some((error) => error)) {
+            // TODO - Gestire l'invio dei dati in blockchain
+            console.log('Dati inviati:', formData)
+            console.log("Chiamata funzione axios")
+            axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
+                .then(res => console.log(res)).catch(e => console.log(e))
+        } else {
+            console.log('Dati non inviati')
         }
-        setValidated(true)
 
-
-        // TODO - Gestire l'invio dei dati in blockchain
-        console.log('Dati inviati:', formData);
-        console.log("Chiamata funzione axios");
-
-        axios.post("http://localhost:3001/api/bc/insertUser", {
-            formData: formData
-        }).then(res => console.log(res)).catch(e => console.log(e));
-
-        // TODO - Resettare lo stato di formData
+        // ? Reset allo stato iniziale del form
         setFormData(initialForm)
     }
 
@@ -173,10 +225,10 @@ export default function SignUpFormPaziente() {
             formData.lastName &&
             formData.birthDate &&
             formData.sex &&
-            formData.birthPlace;
+            formData.birthPlace
 
-        setBtnDisabled(!isFormValid);
-    }, [formData]);
+        setBtnDisabled(!isFormValid)
+    }, [formData])
 
     const computeCF = () => {
         if (
@@ -196,29 +248,74 @@ export default function SignUpFormPaziente() {
                     year: new Date(formData.birthDate).getFullYear(),
                     dateOfBirth: new Date(formData.birthDate),
                     birthplace: formData.birthPlace,
-                });
+                })
 
-                const calculatedCF = codFiscale.toString();
+                const calculatedCF = codFiscale.toString()
 
                 setFormData({
                     ...formData,
                     CF: calculatedCF,
-                });
+                })
             } catch (error) {
-                console.error('Errore nel calcolo del Codice Fiscale:', error);
+                console.error('Errore nel calcolo del Codice Fiscale:', error)
             }
         }
-    };
+    }
 
 
     return (
-        <div className="signup-form d-flex align-items-center vh-100">
-            <Container fluid="md">
-                <Row className="justify-content-center">
-                    <Col md={step === 1 ? 9 : step === 2 ? 8 : 5}>
-                        <Form className="bg-white p-4 pb-2 rounded-4" noValidate validated={validated}
-                              onSubmit={handleSubmit}>
-                            <Step
+        <ThemeProvider theme={theme}>
+            <AppBar
+                position="absolute"
+                color="primary"
+                elevation={0}
+            >
+                <Toolbar>
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        color="inherit"
+                        noWrap
+                        sx={{flexGrow: 1}}
+                    >
+                        MedPlatform
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Container component="main" maxWidth="xs">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100vh',
+                    }}
+                >
+                    <Paper variant="outlined"
+                           sx={{
+                               p: 4,
+                               borderRadius: 4,
+                               display: 'flex',
+                               flexDirection: 'column',
+                               alignItems: 'center',
+                               minWidth: step === 4 ? '600px' : '700px',
+                               maxWidth: step === 4 ? '600px' : '700px',
+                           }}>
+                        <Stepper activeStep={step - 1} sx={{pb: 3}} alternativeLabel>
+                            <Step>
+                                <StepLabel>Informazioni personali</StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel>Contatti</StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel>Fine</StepLabel>
+                            </Step>
+                        </Stepper>
+
+                        <Box component="form" onSubmit={handleSubmit}>
+                            <Steps
                                 step={step}
                                 formData={formData}
                                 nextStep={nextStep}
@@ -227,12 +324,17 @@ export default function SignUpFormPaziente() {
                                 handleSubmit={handleSubmit}
                                 computeCF={computeCF}
                                 btnDisabled={btnDisabled}
+                                errors={
+                                    step === 1 ? errInfoPersonali :
+                                        step === 2 ? errContatti :
+                                            step === 3 && errFine
+                                }
                                 test={test}
                             />
-                        </Form>
-                    </Col>
-                </Row>
+                        </Box>
+                    </Paper>
+                </Box>
             </Container>
-        </div>
+        </ThemeProvider>
     )
 }

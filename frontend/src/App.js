@@ -6,7 +6,6 @@ import Dashboard from "./pages/Dashboard.js"
 import TestIPFS from "./pages/TestIPFS.js"
 import TestFrontend from "./pages/TestFrontend.js"
 import TestBC from "./pages/TestBC.js"
-import TestFrontendSignup from "./pages/TestFrontendSignup.js"
 
 export default function App() {
     return (
@@ -21,7 +20,6 @@ export default function App() {
                 <Route path="/dashboard/*" element={<Dashboard/>}/>
                 <Route path="/upload" element={<TestIPFS/>}/>
                 <Route path="/testFE" element={<TestFrontend/>}/>
-                <Route path="/testSignup" element={<TestFrontendSignup/>}/>
                 <Route path="/blockchain" element={<TestBC/>}/>
 
                 {/* TODO - Redirect per motivi di test */}

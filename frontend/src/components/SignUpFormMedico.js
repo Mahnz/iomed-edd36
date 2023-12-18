@@ -1,7 +1,7 @@
 // SignUpFormMedico.js
 import React, {useState, useEffect} from "react"
-import TestStep from "../components/TestStep.js"
-import CodiceFiscale from 'codice-fiscale-js';
+import Steps from "./SignUpSteps_Med/Steps.js"
+import CodiceFiscale from 'codice-fiscale-js'
 import {
     Box,
     Container,
@@ -12,8 +12,8 @@ import {
     AppBar,
     Toolbar,
     Typography,
-} from "@mui/material";
-import axios from "axios";
+} from "@mui/material"
+import axios from "axios"
 
 export default function SignUpFormMedico() {
     const initialForm = {
@@ -42,87 +42,102 @@ export default function SignUpFormMedico() {
         hospital: ''
     }
     const [step, setStep] = useState(1)
-    // const [validationErrors, setValidationErrors] = useState(0)
     const [formData, setFormData] = useState(initialForm)
-
-    // TODO - Settare tutti i name dei campi del form, fedelmente a quelli di formData
-    const [btnDisabled, setBtnDisabled] = useState(true);
-    const [validated, setValidated] = useState(false)
-    const [errors, setErrors] = useState({
-        firstName: false,
-        lastName: false,
-        sex: false,
-        birthDate: false,
-        birthProvincia: false,
-        birthPlace: false,
-        CF: false,
-        email: false,
-        password: false,
-        confirmPassword: false,
-        id: false,
-        spec: false,
-        hospital: false,
-        province: false,
-        city: false,
-        address: false,
-        cap: false,
-        telefonoPersonale: false,
-        frontID: false,
-        backID: false,
-        checkTerms: false
+    const [btnDisabled, setBtnDisabled] = useState(true)
+    const [errInfoPersonali, setErrInfoPersonali] = useState({
+        firstName: true,
+        lastName: true,
+        birthDate: true,
+        birthProvincia: true,
+        birthPlace: true,
+        sex: true,
+        CF: true,
+    })
+    const [errDatiProfessionali, setErrDatiProfessionali] = useState({
+        email: true,
+        password: true,
+        confirmPassword: true,
+        id: true,
+        spec: true,
+        hospital: true,
+    })
+    const [errContatti, setErrContatti] = useState({
+        province: true,
+        city: true,
+        cap: true,
+        address: true,
+        telefonoPersonale: true,
+    })
+    const [errFine, setErrFine] = useState({
+        frontID: true,
+        backID: true,
+        checkTerms: true
     })
 
     useEffect(() => {
         if (step === 1) {
-            setErrors({
+            setErrInfoPersonali({
                 firstName: !formData.firstName.trim(),
                 lastName: !formData.lastName.trim(),
                 sex: !formData.sex.trim(),
                 birthDate: !formData.birthDate.trim(),
                 birthProvincia: !formData.birthProvincia.trim(),
                 birthPlace: !formData.birthPlace.trim(),
-                CF: !formData.CF.trim(),
+                CF: !formData.CF.trim()
             })
+            console.log("ERRORI: ", errInfoPersonali)
         } else if (step === 2) {
-            setErrors({
+            setErrDatiProfessionali({
                 email: !formData.email.trim(),
                 password: !formData.password.trim(),
                 confirmPassword: !formData.confirmPassword.trim(),
                 id: !formData.id.trim(),
                 spec: !formData.spec.trim(),
-                hospital: !formData.hospital.trim(),
+                hospital: !formData.hospital.trim()
             })
+            console.log("ERRORI: ", errDatiProfessionali)
         } else if (step === 3) {
-            setErrors({
+            setErrContatti({
                 province: !formData.province.trim(),
                 city: !formData.city.trim(),
                 address: !formData.address.trim(),
                 cap: !formData.cap.trim(),
-                telefonoPersonale: !formData.telefonoPersonale.trim(),
+                telefonoPersonale: !formData.telefonoPersonale.trim()
             })
+            console.log("ERRORI: ", errContatti)
         } else if (step === 4) {
-            setErrors({
+            setErrFine({
                 frontID: !formData.frontID,
                 backID: !formData.backID,
-                checkTerms: !formData.checkTerms,
+                checkTerms: !formData.checkTerms
             })
+            console.log("ERRORI: ", errFine)
         }
-    }, [step, formData]);
+    }, [step, formData])
 
     const nextStep = () => {
-        const hasErrors = Object.values(errors).some((error) => error);
+        let hasErrors = false
+        if (step === 1) {
+            hasErrors = Object.values(errInfoPersonali).some((error) => error)
+        } else if (step === 2) {
+            hasErrors = Object.values(errDatiProfessionali).some((error) => error)
+        } else if (step === 3) {
+            hasErrors = Object.values(errContatti).some((error) => error)
+        } else if (step === 4) {
+            hasErrors = Object.values(errFine).some((error) => error)
+        }
         console.log("ERRORI: " + hasErrors)
         // 0 errori  ->  prossimo step
         if (!hasErrors) {
-            setStep((prevStep) => prevStep + 1);
+            setStep((prevStep) => prevStep + 1)
         }
-    };
+    }
 
     const prevStep = () => {
         setStep(step - 1)
     }
 
-// TODO - Metodo da eliminare, usato solo per test
+    // TODO - Metodo da eliminare, usato solo per test
     const test = () => {
         setStep(step + 1)
     }
@@ -136,32 +151,26 @@ export default function SignUpFormMedico() {
                 ...formData,
                 [name]: dateValue.toISOString().split('T')[0]
             })
-        } else if (type === 'checkbox') {
-            // Memorizzazione del valore booleano della checkbox
-            setFormData({
-                ...formData,
-                [name]: e.target.checked
-            })
-        } else if (name === 'password' || name === 'confirmPassword') {
-            // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
-            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
-            setFormData({
-                ...formData,
-                [name]: cleanValue,
-            })
-        } else if (name === 'telefonoPersonale' || name === 'telefonoUfficio' || name === 'cap') {
-            // Controllo sull'inserimento di caratteri alfabetici e spazi nel numero di telefono
-            const cleanValue = value.replace(/[^0-9]/g, '');
-            setFormData({
-                ...formData,
-                [name]: cleanValue,
-            })
         } else if (name === 'birthProvincia') {
             // Check sulla Provincia di nascita
             setFormData({
                 ...formData,
                 birthProvincia: value,
                 birthPlace: ''
+            })
+        } else if (name === 'password' || name === 'confirmPassword') {
+            // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
+            const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '')
+            setFormData({
+                ...formData,
+                [name]: cleanValue,
+            })
+        } else if (name === 'telefonoPersonale' || name === 'telefonoUfficio' || name === 'cap') {
+            // Controllo sull'inserimento di caratteri alfabetici e spazi nel numero di telefono
+            const cleanValue = value.replace(/[^0-9]/g, '')
+            setFormData({
+                ...formData,
+                [name]: cleanValue,
             })
         } else if (name === 'province') {
             // Check sulla Provincia di residenza
@@ -186,6 +195,18 @@ export default function SignUpFormMedico() {
                 ...formData,
                 backID: selectedFile
             })
+        } else if (type === 'checkbox') {
+            // Memorizzazione del valore booleano della checkbox
+            setFormData({
+                ...formData,
+                [name]: e.target.checked
+            })
+        } else if (name === 'id') {
+            // Check sulla Provincia di nascita
+            setFormData({
+                ...formData,
+                id: value.toUpperCase()
+            })
         } else {
             // Memorizzazione di ogni altro campo testuale
             setFormData({
@@ -198,18 +219,18 @@ export default function SignUpFormMedico() {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        // Validazione input del form client-side
-        let form = e.currentTarget;
-        if (form.checkValidity() === false) {
-            e.stopPropagation()
+        if (!Object.values(errInfoPersonali).some((error) => error) &&
+            !Object.values(errDatiProfessionali).some((error) => error) &&
+            !Object.values(errContatti).some((error) => error) &&
+            !Object.values(errFine).some((error) => error)) {
+            // TODO - Gestire l'invio dei dati in blockchain
+            console.log('Dati inviati:', formData)
+            console.log("Chiamata funzione axios")
+            axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
+                .then(res => console.log(res)).catch(e => console.log(e))
+        } else {
+            console.log('Dati non inviati')
         }
-
-        // TODO - Gestire l'invio dei dati in blockchain
-        console.log('Dati inviati:', formData);
-        console.log("Chiamata funzione axios");
-
-        axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
-            .then(res => console.log(res)).catch(e => console.log(e));
 
         // ? Reset allo stato iniziale del form
         setFormData(initialForm)
@@ -223,9 +244,9 @@ export default function SignUpFormMedico() {
             formData.lastName &&
             formData.birthDate &&
             formData.sex &&
-            formData.birthPlace;
-        setBtnDisabled(!isFormValid);
-    }, [formData]);
+            formData.birthPlace
+        setBtnDisabled(!isFormValid)
+    }, [formData])
     const computeCF = () => {
         if (
             formData.firstName &&
@@ -244,19 +265,19 @@ export default function SignUpFormMedico() {
                     year: new Date(formData.birthDate).getFullYear(),
                     dateOfBirth: new Date(formData.birthDate),
                     birthplace: formData.birthPlace,
-                });
+                })
 
-                const calculatedCF = codFiscale.toString();
+                const calculatedCF = codFiscale.toString()
 
                 setFormData({
                     ...formData,
                     CF: calculatedCF,
-                });
+                })
             } catch (error) {
-                console.error('Errore nel calcolo del Codice Fiscale:', error);
+                console.error('Errore nel calcolo del Codice Fiscale:', error)
             }
         }
-    };
+    }
 
     return (
         <>
@@ -277,8 +298,7 @@ export default function SignUpFormMedico() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Container component="main" maxWidth="xs"
-            >
+            <Container component="main" maxWidth="xs">
                 <Box
                     sx={{
                         display: 'flex',
@@ -298,15 +318,8 @@ export default function SignUpFormMedico() {
                                minWidth: step === 4 ? '600px' : '700px',
                                maxWidth: step === 4 ? '600px' : '700px',
                            }}>
-                        {step === 1 &&
-                            <Typography component="h1" variant="h4" sx={{mb: 3}}>Informazioni
-                                personali</Typography>}
-                        {step === 2 &&
-                            <Typography component="h1" variant="h4" sx={{mb: 3}}>Dati professionali</Typography>}
-                        {step === 3 && <Typography component="h1" variant="h4" sx={{mb: 3}}>Contatti</Typography>}
-                        {step === 4 && <Typography component="h1" variant="h4" sx={{mb: 3}}>Fine</Typography>}
 
-                        <Stepper activeStep={step - 1} sx={{pt: 3, pb: 5}} alternativeLabel>
+                        <Stepper activeStep={step - 1} sx={{pb: 3}} alternativeLabel>
                             <Step>
                                 <StepLabel>Informazioni personali</StepLabel>
                             </Step>
@@ -321,7 +334,7 @@ export default function SignUpFormMedico() {
                             </Step>
                         </Stepper>
                         <Box component="form" onSubmit={handleSubmit}>
-                            <TestStep
+                            <Steps
                                 step={step}
                                 formData={formData}
                                 nextStep={nextStep}
@@ -330,7 +343,12 @@ export default function SignUpFormMedico() {
                                 handleSubmit={handleSubmit}
                                 computeCF={computeCF}
                                 btnDisabled={btnDisabled}
-                                errors={errors}
+                                errors={
+                                    step === 1 ? errInfoPersonali :
+                                        step === 2 ? errDatiProfessionali :
+                                            step === 3 ? errContatti :
+                                                step === 4 ? errFine : errors
+                                }
                                 test={test}
                             />
                         </Box>

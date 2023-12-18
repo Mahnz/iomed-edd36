@@ -1,17 +1,46 @@
+// LoginFormPaziente.js
 import React, {useState, useEffect} from "react";
-import {Link, useNavigate} from "react-router-dom";
-
-import 'bootstrap/dist/css/bootstrap.css';
-import {Container, Form, Button, FloatingLabel, Col, Row, InputGroup} from "react-bootstrap";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
-
+import {useNavigate} from "react-router-dom";
+import {
+    AppBar,
+    Avatar,
+    Box,
+    Button,
+    Container,
+    CssBaseline,
+    TextField,
+    Toolbar,
+    Typography,
+    Link,
+    Paper, InputAdornment, IconButton, Grid, createTheme, ThemeProvider
+} from "@mui/material";
+import {Person, Vaccines, Visibility, VisibilityOff} from "@mui/icons-material";
 import Cookies from 'universal-cookie'
+import axios from 'axios'
 
-export default function LoginFormPaziente() { // eslint-disable-next-line
+const theme = createTheme({
+    palette: {
+        background: {
+            default: '#f5f5f5', // Imposta il colore dello sfondo come carta
+        },
+    },
+});
+
+export default function LoginFormPaziente() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [validated, setValidated] = useState(false);
+    const [showPassword, setShowPassword] = useState(false)
+    const [errors, setErrors] = useState({
+        email: {
+            error: false,
+            message: ''
+        },
+        password: {
+            error: false,
+            message: ''
+        },
+    })
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     const navigate = useNavigate()
     const cookies = new Cookies();
@@ -20,110 +49,282 @@ export default function LoginFormPaziente() { // eslint-disable-next-line
         // Verifica se il cookie è impostato
         if (cookies.get("email")) {
             console.log(cookies.get("email"))
-            navigate("/dashboard");
+            navigate("/dashboard/home");
         }
     })
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const form = e.currentTarget
-        if (!form.checkValidity()) {
-            e.stopPropagation()
-        }
-        setValidated(true)
-
-        // TODO - Verifica del login dalla blockchain
-        const user = {
-            email: email,
-            password: password
-        };
-        axios.post('http://localhost:3001/api/bc/login', user)
-            .then(res => {
-                console.log("Login effettuato")
-                console.log(res.data)
-
-                cookies.set('email', email, {
-                    path: '/',
-                    expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                    httpOnly: true,      // Non accessibile tramite JavaScript
-                    sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                });
-                navigate("/dashboard/home");
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
     }
 
     const handleChange = (e) => {
-        const {name, value, type} = e.target
+        const {name, value} = e.target
 
         if (name === 'inputEmailLogin') {
-            // Gestione del caricamento dei file
             setEmail(value)
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                email: {
+                    error: false,
+                    message: ''
+                }
+            }));
         } else if (name === 'inputPassword') {
             // Evita l'inserimento di spazi e caratteri speciali non consentiti nelle password
             const cleanValue = value.replace(/[^a-zA-Z0-9!@#$%^&*]/g, '');
             setPassword(cleanValue)
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: {
+                    error: false,
+                    message: ''
+                }
+            }));
         }
     }
 
+    const [isFirstRender, setIsFirstRender] = useState(true)
+    const [isFirstClick, setIsFirstClick] = useState(true)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (!email) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                email: {
+                    error: true,
+                    message: 'Campo obbligatorio'
+                }
+            }))
+        } else {
+            if (!emailRegex.test(email)) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: {
+                        error: true,
+                        message: "Inserire un'email valida"
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+        }
+
+        if (!password) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: {
+                    error: true,
+                    message: 'Campo obbligatorio'
+                }
+            }))
+        } else {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: {
+                    error: false,
+                    message: ""
+                }
+            }))
+        }
+
+        if (isFirstClick) {
+            setIsFirstClick(false)
+        } else {
+            if (!errors.email.error && !errors.password.error) {
+                // TODO - Verifica del login dalla blockchain
+                const user = {
+                    email: email,
+                    password: password
+                };
+                console.log("Sono arrivato alla POST")
+                axios.post('http://localhost:3001/api/bc/login', user)
+                    .then(res => {
+                        console.log("Login effettuato")
+                        console.log(res.data)
+
+                        cookies.set('email', email, {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            httpOnly: true,      // Non accessibile tramite JavaScript
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        navigate("/dashboard/home");
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setIsFirstRender(false)
+        } else {
+            if (!email) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                if (!emailRegex.test(email)) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        email: {
+                            error: true,
+                            message: ""
+                        }
+                    }))
+                } else {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        email: {
+                            error: false,
+                            message: ""
+                        }
+                    }))
+                }
+            }
+        }
+
+    }, [email])
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setIsFirstRender(false)
+        } else {
+            if (!password) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+        }
+    }, [password])
+
 
     return (
-        <>
-            <div className="login-form d-flex align-items-center vh-100">
-                <Container>
-                    <Row className="justify-content-center">
-                        <Col>
-                            <Form className="bg-white p-4 rounded-4" noValidate validated={validated}
-                                  onSubmit={handleSubmit}>
-                                <h2 align="center">Login</h2>
-                                <Col>
-                                    <Row className="mb-2">
-                                        <InputGroup className="mb-2" hasValidation>
-                                            <InputGroup.Text><FontAwesomeIcon icon={faUser}/></InputGroup.Text>
-                                            <FloatingLabel label="Email">
-                                                <Form.Control type="email"
-                                                              name="inputEmailLogin"
-                                                              placeholder="Inserire email"
-                                                              value={email}
-                                                              onChange={handleChange}
-                                                              autoComplete="off"
-                                                              required
-                                                />
-                                            </FloatingLabel>
-                                        </InputGroup>
-                                    </Row>
-
-                                    <Row className="mb-2">
-                                        <InputGroup className="mb-2" hasValidation>
-                                            <InputGroup.Text><FontAwesomeIcon icon={faKey}/></InputGroup.Text>
-                                            <FloatingLabel label="Password">
-                                                <Form.Control type="password"
-                                                              name="inputPassword"
-                                                              placeholder="Inserire password"
-                                                              value={password}
-                                                              onChange={handleChange}
-                                                              required
-                                                />
-                                            </FloatingLabel>
-                                        </InputGroup>
-                                    </Row>
-
-                                    <Row>
-                                        <Button type="submit" className="mb-2">Entra!</Button>
-                                    </Row>
-                                </Col>
-                                <div>
-                                    <p align="center">Non hai ancora un account? <Link to="/signup">Registrati</Link>
-                                    </p>
-                                </div>
-                            </Form>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        </>
+        <ThemeProvider theme={theme}>
+            <AppBar
+                position="absolute"
+                color="primary"
+                elevation={0}
+            >
+                <Toolbar>
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        color="inherit"
+                        noWrap
+                        sx={{flexGrow: 1}}
+                    >
+                        MedPlatform
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline/>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100vh',
+                    }}
+                >
+                    <Paper
+                        variant="outlined"
+                        sx={{
+                            backgroundColor: (theme) =>
+                                theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.grey[900],
+                            borderRadius: 4,
+                            my: {xs: 3, md: 6},
+                            p: {xs: 4, md: 3},
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{m: 1, bgcolor: 'primary.main', width: 55, height: 55}}>
+                            <Person fontSize="large"/>
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Login paziente
+                        </Typography>
+                        {/*<Box component="form" onSubmit={handleSubmit}>*/}
+                        <Grid container sx={{mt: 2}}>
+                            <Grid item xs={12}>
+                                <TextField type="text"
+                                           name="inputEmailLogin"
+                                           margin="normal"
+                                           label="Email"
+                                           value={email}
+                                           onChange={handleChange}
+                                           autoFocus
+                                           fullWidth
+                                           error={errors.email.error}
+                                           helperText={errors.email.error && errors.email.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField type={showPassword ? 'text' : 'password'}
+                                           name="inputPassword"
+                                           margin="normal"
+                                           label="Password"
+                                           value={password}
+                                           onChange={handleChange}
+                                           fullWidth
+                                           error={errors.password.error}
+                                           helperText={errors.password.error && errors.password.message}
+                                           InputProps={{
+                                               endAdornment: (
+                                                   <InputAdornment position="end">
+                                                       <IconButton onClick={handleTogglePasswordVisibility}>
+                                                           {showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                       </IconButton>
+                                                   </InputAdornment>
+                                               )
+                                           }}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{mt: 3, mb: 2}}
+                            onClick={handleSubmit}
+                        >
+                            Login
+                        </Button>
+                        <Link href="#" variant="body2">
+                            Non hai un account? Registrati
+                        </Link>
+                        {/*</Box>*/}
+                    </Paper>
+                </Box>
+            </Container>
+        </ThemeProvider>
     )
 }

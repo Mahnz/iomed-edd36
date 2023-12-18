@@ -21,7 +21,6 @@ export default function DatiProfessionali({
                                label="Email"
                                value={formData.email}
                                onChange={handleChange}
-                               autoComplete="email"
                                fullWidth
                                InputProps={{
                                    startAdornment: (
