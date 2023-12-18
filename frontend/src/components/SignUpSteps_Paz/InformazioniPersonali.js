@@ -1,10 +1,6 @@
 // InformazioniPersonali.js
-import React, {useState} from 'react'
-import {
-    TextField,
-    Grid,
-    MenuItem, Button, InputAdornment, FormHelperText, Autocomplete
-} from '@mui/material'
+import React from 'react'
+import {TextField, Grid, Button, InputAdornment, Autocomplete} from '@mui/material'
 import province from "../../province.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faIdBadge} from "@fortawesome/free-solid-svg-icons";

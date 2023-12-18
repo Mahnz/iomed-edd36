@@ -14,7 +14,7 @@ import {
     Link,
     Paper, InputAdornment, IconButton, Grid, createTheme, ThemeProvider
 } from "@mui/material";
-import {Person, Vaccines, Visibility, VisibilityOff} from "@mui/icons-material";
+import {Person, Visibility, VisibilityOff} from "@mui/icons-material";
 import Cookies from 'universal-cookie'
 import axios from 'axios'
 

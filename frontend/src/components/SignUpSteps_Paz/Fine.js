@@ -6,7 +6,7 @@ import {
     InputAdornment,
     Checkbox,
     Typography,
-    Link, IconButton, FormControlLabel, Tooltip
+    Link, IconButton, FormControlLabel
 } from '@mui/material'
 import {AlternateEmail, Lock, Visibility, VisibilityOff} from "@mui/icons-material";
 
