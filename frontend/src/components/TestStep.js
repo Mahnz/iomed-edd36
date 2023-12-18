@@ -8,19 +8,18 @@ import DatiProfessionali from "./SignUpSteps/DatiProfessionali.js";
 import Contatti from "./SignUpSteps/Contatti.js";
 import Fine from "./SignUpSteps/Fine.js";
 
-export default function Step({
-                                 step,
-                                 formData,
-                                 nextStep,
-                                 prevStep,
-                                 handleChange,
-                                 handleSubmit,
-                                 computeCF,
-                                 btnDisabled,
-                                 test
-                             }) {
-    const today = new Date()
-    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+export default function TestStep({
+                                     step,
+                                     formData,
+                                     nextStep,
+                                     prevStep,
+                                     handleChange,
+                                     handleSubmit,
+                                     computeCF,
+                                     btnDisabled,
+                                     errors,
+                                     test
+                                 }) {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -32,8 +31,8 @@ export default function Step({
                                            handleChange={handleChange}
                                            computeCF={computeCF}
                                            btnDisabled={btnDisabled}
-                                           maxDate={maxDate}
                                            nextStep={nextStep}
+                                           errors={errors}
                                            test={test}
                     />
 
@@ -62,6 +61,7 @@ export default function Step({
                 <>
                     <DatiProfessionali formData={formData}
                                        handleChange={handleChange}
+                                       errors={errors}
                                        showPassword={showPassword}
                                        setShowPassword={setShowPassword}
                                        showConfirmPassword={showConfirmPassword}
@@ -102,7 +102,7 @@ export default function Step({
 
             {step === 3 && (
                 <>
-                    <Contatti formData={formData} handleChange={handleChange}/>
+                    <Contatti formData={formData} handleChange={handleChange} errors={errors}/>
 
                     <Grid container spacing={2} sx={{mt: 2}}>
                         <Grid item xs={6}>
@@ -144,7 +144,7 @@ export default function Step({
 
             {step === 4 && (
                 <>
-                    <Fine formData={formData} handleChange={handleChange}/>
+                    <Fine formData={formData} handleChange={handleChange} errors={errors}/>
 
                     <Grid container spacing={2} sx={{mt: 2}}>
                         <Grid item xs={6}>

@@ -1,3 +1,4 @@
+// Fine.js
 import React, {useRef, useState} from 'react'
 import {
     Grid,
@@ -8,147 +9,165 @@ import {
     Typography,
     Link,
     Button,
-    ButtonBase, IconButton
+    ButtonBase, IconButton, FormControlLabel, Tooltip
 } from '@mui/material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faIdBadge} from "@fortawesome/free-solid-svg-icons";
 import {Cancel} from "@mui/icons-material";
 
 
-export default function Fine({formData, handleChange}) {
+export default function Fine({formData, handleChange, errors}) {
     const inputRefFront = useRef();
     const inputRefBack = useRef();
     const [selectedFronte, setSelectedFronte] = useState("");
     const [selectedRetro, setSelectedRetro] = useState("");
 
-    const handleClickFront = () => {
-        inputRefFront.current.click();
-    };
-    const handleClickBack = () => {
-        inputRefBack.current.click();
-    };
-
-    const handleFileChangeFronte = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            handleChange(e);
-            setSelectedFronte(file.name);
-        }
-    };
-    const handleFileChangeRetro = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            handleChange(e);
-            setSelectedRetro(file.name);
+    const handleClick = (value) => {
+        if (value === 'fronte') {
+            inputRefFront.current.click();
+        } else if (value === 'retro') {
+            inputRefBack.current.click();
         }
     };
 
-    const handleRemoveFileFronte = () => {
-        console.log("remove file");
-        setSelectedFronte("");
-    };
+    const handleUploadFile = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (e.target.name === 'frontID') {
+                handleChange(e);
+                setSelectedFronte(file.name);
+            } else if (e.target.name === 'backID') {
+                handleChange(e);
+                setSelectedRetro(file.name);
+            }
+        }
+    }
 
-    const handleRemoveFileRetro = () => {
-        console.log("remove file");
-        setSelectedRetro("");
-    };
+    const handleRemoveFile = (value) => {
+        if (value === 'fronte') {
+            console.log("Rimozione file: " + value);
+            setSelectedFronte("");
+        } else if (value === 'retro') {
+            console.log("Rimozione file: " + value);
+            setSelectedRetro("");
+        }
+    }
 
     return (
         <>
             <Grid container spacing={2}>
-                {/*Fronte del documento (jpg, jpeg, png, pdf)*/}
-
-
                 <Grid item xs={12}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Fronte del documento (jpg, jpeg, png, pdf)
+                    </Typography>
                     <TextField
                         type="text"
-                        name="frontId"
-                        onClick={handleClickFront}
-                        value={selectedFronte}
+                        name="frontID"
+                        onClick={() => handleClick('fronte')}
+                        value={selectedFronte === "" ? "Clicca per selezionare un file" : selectedFronte}
                         sx={{
                             cursor: 'pointer',
                         }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <IconButton onClick={handleClickFront}>
+                                    <IconButton onClick={() => handleClick('fronte')}>
                                         <FontAwesomeIcon icon={faIdBadge}/>
                                     </IconButton>
                                 </InputAdornment>
                             ),
-                            readOnly: true,
-                            // endAdornment: (
-                            //     <InputAdornment position="end">
-                            //         <IconButton onClick={handleRemoveFile}>
-                            //             <Cancel/>
-                            //         </IconButton>
-                            //     </InputAdornment>
-                            // ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {selectedFronte !== "" && (
+                                        <Tooltip title="Cambia file">
+                                            <IconButton onClick={() => handleRemoveFile('fronte')}>
+                                                <Cancel/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
+                                </InputAdornment>
+                            ),
+                            readOnly: true
                         }}
                         fullWidth
                         required
+                        error={errors.frontID}
+                        helperText={errors.frontID && 'Inserire il fronte del proprio documento'}
                     />
                     <input
                         ref={inputRefFront}
                         type="file"
-                        name="frontId"
+                        name="frontID"
                         accept="image/png, image/jpeg, image/jpg, application/pdf"
                         style={{display: 'none'}}
-                        onChange={handleFileChangeFronte}
+                        onChange={handleUploadFile}
 
                     />
                 </Grid>
 
-                {/*Retro del documento (jpg, jpeg, png, pdf)*/}
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{mt: 2}}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Retro del documento (jpg, jpeg, png, pdf)
+                    </Typography>
                     <TextField
                         type="text"
-                        name="backId"
-                        onClick={handleClickBack}
-                        value={selectedRetro}
-                        sx={{
-                            cursor: 'pointer',
-                        }}
+                        name="backID"
+                        onClick={() => handleClick('retro')}
+                        value={selectedRetro === "" ? "Clicca per selezionare un file" : selectedRetro}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <IconButton onClick={handleClickBack}>
+                                    <IconButton onClick={() => handleClick('retro')}>
                                         <FontAwesomeIcon icon={faIdBadge}/>
                                     </IconButton>
                                 </InputAdornment>
                             ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {selectedFronte !== "" && (
+                                        <Tooltip title="Cambia file">
+                                            <IconButton onClick={() => handleRemoveFile('retro')}>
+                                                <Cancel/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
+                                </InputAdornment>
+                            ),
                             readOnly: true,
-                            // endAdornment: (
-                            //     <InputAdornment position="end">
-                            //         <IconButton onClick={handleRemoveFile}>
-                            //             <Cancel/>
-                            //         </IconButton>
-                            //     </InputAdornment>
-                            // ),
                         }}
                         fullWidth
+                        required
+                        error={errors.backID}
+                        helperText={errors.backID && 'Inserire il retro del proprio documento'}
                     />
                     <input
                         ref={inputRefBack}
                         type="file"
-                        name="backId"
+                        name="backID"
                         accept="image/png, image/jpeg, image/jpg, application/pdf"
                         style={{display: 'none'}}
-                        onChange={handleFileChangeRetro}
+                        onChange={handleUploadFile}
                     />
                 </Grid>
-            </Grid>
 
-            <Grid container spacing={2} sx={{mt: 2}}>
                 <Grid item xs={12}>
-                    <Checkbox name="checkTerms"
-                              checked={formData.checkTerms}
-                              onChange={handleChange}
-                              inputProps={{'aria-label': 'controlled'}}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="checkTerms"
+                                checked={formData.checkTerms}
+                                onChange={handleChange}
+                                inputProps={{'aria-label': 'controlled'}}
+                            />
+                        }
+                        label={
+                            <Typography variant="body1">
+                                Accetto i <Link href="/terms" variant="body1">Termini e Condizioni</Link>
+                            </Typography>
+                        }
+                        // error={errors.checkTerms}
+                        // helperText={errors.checkTerms && 'È necessario accettare i termini e le condizioni'}
                     />
-                    <Typography variant="body2">
-                        Accetto i <Link href="/terms" variant="body2">Termini e Condizioni</Link>
-                    </Typography>
                 </Grid>
             </Grid>
         </>

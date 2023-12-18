@@ -1,11 +1,9 @@
-import * as React from 'react'
+// InformazioniPersonali.js
+import React, {useState} from 'react'
 import {
     TextField,
     Grid,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem, Button, InputAdornment, Typography, Link
+    MenuItem, Button, InputAdornment, FormHelperText, Autocomplete
 } from '@mui/material'
 import province from "../../province.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -16,8 +14,28 @@ export default function InformazioniPersonali({
                                                   handleChange,
                                                   computeCF,
                                                   btnDisabled,
-                                                  maxDate,
+                                                  errors
                                               }) {
+    const today = new Date()
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+
+    const options = ['', 'M', 'F']
+    const handleSexChange = (newValue) => {
+        if (newValue) {
+            handleChange({target: {name: 'sex', value: newValue}})
+        } else {
+            handleChange({target: {name: 'sex', value: ""}})
+        }
+    }
+
+    const handleProvinceChange = (newValue) => {
+        if (newValue) {
+            handleChange({target: {name: 'birthProvincia', value: newValue}})
+        } else {
+            handleChange({target: {name: 'birthProvincia', value: ""}})
+        }
+    }
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -29,6 +47,8 @@ export default function InformazioniPersonali({
                            autoComplete="name"
                            fullWidth
                            required
+                           error={errors.firstName}
+                           helperText={errors.firstName && 'Il campo Nome è obbligatorio'}
                 />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -40,27 +60,33 @@ export default function InformazioniPersonali({
                            autoComplete="family-name"
                            fullWidth
                            required
+                           error={errors.lastName}
+                           helperText={errors.lastName && 'Il campo Cognome è obbligatorio.'}
                 />
             </Grid>
 
             <Grid item xs={12} md={4}>
-                <FormControl fullWidth>
-                    <InputLabel id="sesso-label">Sesso</InputLabel>
-                    <Select
-                        name="sex"
-                        label="Sesso"
-                        labelId="sesso-label"
-                        value={formData.sex}
-                        onChange={handleChange}
-                        autoComplete="sex"
-                        required
-                        fullWidth
-                    >
-                        <MenuItem value="">Seleziona...</MenuItem>
-                        <MenuItem value="M">Maschio</MenuItem>
-                        <MenuItem value="F">Femmina</MenuItem>
-                    </Select>
-                </FormControl>
+                <Autocomplete
+                    name="sex"
+                    options={options}
+                    getOptionLabel={(option) => (option === "" ? "Seleziona..." : option === "M" ? "Maschio" : "Femmina")}
+                    isOptionEqualToValue={(option, value) => option === value}
+                    value={formData.sex}
+                    onChange={(event, value) => handleSexChange(value)}
+                    autoHighlight
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            name="sex"
+                            label="Sesso"
+                            autoComplete="sex"
+                            required
+                            fullWidth
+                            error={errors.sex}
+                            helperText={errors.sex && 'Il campo Sesso è obbligatorio'}
+                        />
+                    )}
+                />
             </Grid>
             <Grid item xs={12} md={8}>
                 <TextField type="date"
@@ -72,29 +98,32 @@ export default function InformazioniPersonali({
                            autoComplete="off"
                            fullWidth
                            required
+                           error={errors.birthDate}
+                           helperText={errors.birthDate && 'Inserisci la tua data di nascita'}
                 />
             </Grid>
 
             <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                    <InputLabel id="provincia-nascita-label">Provincia di nascita</InputLabel>
-                    <Select name="birthProvincia"
+                <Autocomplete
+                    name="birthProvincia"
+                    options={province}
+                    isOptionEqualToValue={(option, value) => option === value}
+                    value={formData.birthProvincia}
+                    onChange={(event, value) => handleProvinceChange(value)}
+                    autoHighlight
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            name="birthProvincia"
                             label="Provincia di nascita"
-                            labelId="provincia-nascita-label"
-                            value={formData.birthProvincia}
-                            onChange={handleChange}
                             autoComplete="off"
-                            fullWidth
                             required
-                    >
-                        <MenuItem value="" disabled>Seleziona la provincia</MenuItem>
-                        {province.map((provincia, index) => (
-                            <MenuItem key={index} value={provincia}>
-                                {provincia}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                            fullWidth
+                            error={errors.birthProvincia}
+                            helperText={errors.birthProvincia && 'Seleziona la provincia di nascita'}
+                        />
+                    )}
+                />
             </Grid>
             <Grid item xs={12} md={6}>
                 <TextField type="text"
@@ -105,6 +134,8 @@ export default function InformazioniPersonali({
                            autoComplete="off"
                            fullWidth
                            required
+                           error={errors.birthPlace}
+                           helperText={errors.birthPlace && 'Inserisci il comune di nascita'}
                 />
             </Grid>
 
@@ -130,10 +161,8 @@ export default function InformazioniPersonali({
             <Grid item xs={12} md={9}>
                 <TextField type="text"
                            name="CF"
-                           label={formData.CF === '' ? "Inserire i dati per il calcolo del codice fiscale..." : 'Codice fiscale'}
-                           // defaultValue="Inserire i dati per il calcolo del codice fiscale..."
-                           value={formData.CF === '' ? 'Inserire i dati per il calcolo del codice fiscale...' : formData.CF}
-                           disabled={formData.CF === ''}
+                           label='Codice fiscale'
+                           value={formData.CF === '' ? 'Inserire i dati e calcolare il codice fiscale...' : formData.CF}
                            autoComplete="off"
                            fullWidth
                            required
@@ -145,6 +174,8 @@ export default function InformazioniPersonali({
                                ),
                                readOnly: true,
                            }}
+                           error={errors.CF}
+                           helperText={errors.CF && 'Premere il pulsante per calcolare il codice fiscale'}
                 />
             </Grid>
         </Grid>

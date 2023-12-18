@@ -4,24 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Dashboard:&#10; - inserimento visita: IN CORSO&#10;&#10;Login e Signup medico: IN CORSO">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Login e Signup medico: IN CORSO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/IMPL_FUTURE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/IMPL_FUTURE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/ThemeProviderWrapper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpComponents/AddressForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/InformazioniPersonali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpComponents/PaymentForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/DatiProfessionali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpComponents/Review.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Contatti.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Step.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Step.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TestFrontendLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TestFrontend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TestFrontendSignup.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TestFrontendSignup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/ipfsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/ipfsController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Contatti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Contatti.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/DatiProfessionali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/DatiProfessionali.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Fine.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Fine.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/InformazioniPersonali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/InformazioniPersonali.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/TestStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/TestStep.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +98,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.FRONTEND">
+  <component name="RunManager" selected="npm.BACKEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -163,7 +153,8 @@
       <workItem from="1702458241705" duration="2779000" />
       <workItem from="1702464303230" duration="1433000" />
       <workItem from="1702727246066" duration="40933000" />
-      <workItem from="1702801497898" duration="2370000" />
+      <workItem from="1702801497898" duration="26567000" />
+      <workItem from="1702890672019" duration="15785000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -173,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701824406004</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Login e Signup medico: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1702804225394</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702804225394</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,6 +191,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small update" />
+    <MESSAGE value="Login e Signup medico: IN CORSO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login e Signup medico: IN CORSO" />
   </component>
 </project>

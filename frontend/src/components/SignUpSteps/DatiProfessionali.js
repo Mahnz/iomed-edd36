@@ -1,4 +1,5 @@
-import * as React from 'react'
+// DatiProfessionali.js
+import React from 'react'
 import {Grid, TextField, InputAdornment, IconButton} from '@mui/material'
 import {AlternateEmail, LocalHospital, Lock, Tag, Visibility, VisibilityOff} from "@mui/icons-material";
 
@@ -8,7 +9,8 @@ export default function DatiProfessionali({
                                               showPassword,
                                               setShowPassword,
                                               showConfirmPassword,
-                                              setShowConfirmPassword
+                                              setShowConfirmPassword,
+                                              errors
                                           }) {
     return (
         <>
@@ -29,6 +31,8 @@ export default function DatiProfessionali({
                                    ),
                                }}
                                required
+                               error={errors.email}
+                               helperText={errors.email && 'Devi inserire un indirizzo email'}
                     />
                 </Grid>
 
@@ -41,7 +45,6 @@ export default function DatiProfessionali({
                                aria-describedby="passwordHelpBlock"
                                minLength="8"
                                maxLength="20"
-                               required
                                fullWidth
                                InputProps={{
                                    startAdornment: (
@@ -56,7 +59,16 @@ export default function DatiProfessionali({
                                            </IconButton>
                                        </InputAdornment>
                                    ),
+                                   minLength: 8,
+                                   maxLength: 20
                                }}
+                               inputProps={{
+                                   minLength: 8,
+                                   maxLength: 20
+                               }}
+                               required
+                               error={errors.password}
+                               helperText={errors.password && 'Inserisci una password'}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -66,9 +78,6 @@ export default function DatiProfessionali({
                                value={formData.confirmPassword}
                                onChange={handleChange}
                                aria-describedby="passwordHelpBlock"
-                               minLength="8"
-                               maxLength="20"
-                               required
                                fullWidth
                                InputProps={{
                                    startAdornment: (
@@ -84,7 +93,16 @@ export default function DatiProfessionali({
                                            </IconButton>
                                        </InputAdornment>
                                    ),
+                                   minLength: 8,
+                                   maxLength: 20
                                }}
+                               inputProps={{
+                                   minLength: 8,
+                                   maxLength: 20
+                               }}
+                               required
+                               error={errors.confirmPassword}
+                               helperText={errors.confirmPassword && 'Devi confermare la password'}
                     />
                 </Grid>
             </Grid>
@@ -104,9 +122,16 @@ export default function DatiProfessionali({
                                            <Tag/>
                                        </InputAdornment>
                                    ),
+                                   minLength: 16,
+                                   maxLength: 16
+                               }}
+                               inputProps={{
+                                   minLength: 16,
                                    maxLength: 16
                                }}
                                required
+                               error={errors.id}
+                               helperText={errors.id && 'Inserisci un ID univoco'}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -118,6 +143,8 @@ export default function DatiProfessionali({
                                autoComplete="off"
                                fullWidth
                                required
+                               error={errors.spec}
+                               helperText={errors.spec && 'Seleziona il reparto di specializzazione'}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -136,11 +163,10 @@ export default function DatiProfessionali({
                                    ),
                                }}
                                required
+                               error={errors.hospital}
+                               helperText={errors.hospital && 'Inserisci ospedale/clinica di riferimento'}
                     />
                 </Grid>
-
-                {/*  SPECIALIZZAZIONE: reparto di riferimento, trovare una lista  */}
-                {/*  OSPEDALE DI RIFERIMENTO */}
             </Grid>
         </>
     )
