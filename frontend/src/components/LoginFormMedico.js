@@ -182,7 +182,6 @@ export default function LoginFormMedico() {
                 }
             }
         }
-
     }, [id])
 
 

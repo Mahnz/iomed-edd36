@@ -1,19 +1,65 @@
 // InformazioniPersonali.js
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {TextField, Grid, Button, InputAdornment, Autocomplete} from '@mui/material'
-import province from "../../province.js";
+import {provinces} from "../../utils.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faIdBadge} from "@fortawesome/free-solid-svg-icons";
+import CodiceFiscale from "codice-fiscale-js";
 
 export default function InformazioniPersonali({
                                                   formData,
+                                                  setFormData,
                                                   handleChange,
-                                                  computeCF,
-                                                  btnDisabled,
                                                   errors
                                               }) {
     const today = new Date()
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+    const [btnDisabled, setBtnDisabled] = useState(true)
+
+    useEffect(() => {
+        const isFormValid =
+            formData.firstName &&
+            formData.lastName &&
+            formData.birthDate &&
+            formData.sex &&
+            formData.birthPlace
+
+        setBtnDisabled(!isFormValid)
+    }, [formData])
+
+    const computeCF = () => {
+        console.log('Calcolo del Codice Fiscale...')
+        if (
+            formData.firstName &&
+            formData.lastName &&
+            formData.birthDate &&
+            formData.sex &&
+            formData.birthPlace
+        ) {
+            try {
+                const codFiscale = new CodiceFiscale({
+                    name: formData.firstName,
+                    surname: formData.lastName,
+                    gender: formData.sex,
+                    day: new Date(formData.birthDate).getDate(),
+                    month: new Date(formData.birthDate).getMonth() + 1,
+                    year: new Date(formData.birthDate).getFullYear(),
+                    dateOfBirth: new Date(formData.birthDate),
+                    birthplace: formData.birthPlace,
+                })
+
+                const calculatedCF = codFiscale.toString()
+
+                setFormData({
+                    ...formData,
+                    CF: calculatedCF,
+                })
+                console.log('Codice Fiscale calcolato:', calculatedCF)
+            } catch (error) {
+                console.error('Errore nel calcolo del Codice Fiscale:', error)
+            }
+        }
+    }
 
     const options = ['', 'M', 'F']
     const handleSexChange = (newValue) => {
@@ -102,7 +148,7 @@ export default function InformazioniPersonali({
             <Grid item xs={12} md={6}>
                 <Autocomplete
                     name="birthProvincia"
-                    options={province}
+                    options={provinces}
                     isOptionEqualToValue={(option, value) => option === value}
                     value={formData.birthProvincia}
                     onChange={(event, value) => handleProvinceChange(value)}

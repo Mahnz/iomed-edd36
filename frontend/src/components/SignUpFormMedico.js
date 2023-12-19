@@ -1,7 +1,6 @@
 // SignUpFormMedico.js
 import React, {useState, useEffect} from "react"
 import Steps from "./SignUpSteps_Med/Steps.js"
-import CodiceFiscale from 'codice-fiscale-js'
 import {
     Box,
     Container,
@@ -43,7 +42,6 @@ export default function SignUpFormMedico() {
     }
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState(initialForm)
-    const [btnDisabled, setBtnDisabled] = useState(true)
     const [errInfoPersonali, setErrInfoPersonali] = useState({
         firstName: true,
         lastName: true,
@@ -236,49 +234,6 @@ export default function SignUpFormMedico() {
         setFormData(initialForm)
     }
 
-
-// ? Controllo interattivo per il calcolo del Codice Fiscale
-    useEffect(() => {
-        const isFormValid =
-            formData.firstName &&
-            formData.lastName &&
-            formData.birthDate &&
-            formData.sex &&
-            formData.birthPlace
-        setBtnDisabled(!isFormValid)
-    }, [formData])
-    const computeCF = () => {
-        if (
-            formData.firstName &&
-            formData.lastName &&
-            formData.birthDate &&
-            formData.sex &&
-            formData.birthPlace
-        ) {
-            try {
-                const codFiscale = new CodiceFiscale({
-                    name: formData.firstName,
-                    surname: formData.lastName,
-                    gender: formData.sex,
-                    day: new Date(formData.birthDate).getDate(),
-                    month: new Date(formData.birthDate).getMonth() + 1,
-                    year: new Date(formData.birthDate).getFullYear(),
-                    dateOfBirth: new Date(formData.birthDate),
-                    birthplace: formData.birthPlace,
-                })
-
-                const calculatedCF = codFiscale.toString()
-
-                setFormData({
-                    ...formData,
-                    CF: calculatedCF,
-                })
-            } catch (error) {
-                console.error('Errore nel calcolo del Codice Fiscale:', error)
-            }
-        }
-    }
-
     return (
         <>
             <AppBar
@@ -337,12 +292,11 @@ export default function SignUpFormMedico() {
                             <Steps
                                 step={step}
                                 formData={formData}
+                                setFormData={setFormData}
                                 nextStep={nextStep}
                                 prevStep={prevStep}
                                 handleChange={handleChange}
                                 handleSubmit={handleSubmit}
-                                computeCF={computeCF}
-                                btnDisabled={btnDisabled}
                                 errors={
                                     step === 1 ? errInfoPersonali :
                                         step === 2 ? errDatiProfessionali :

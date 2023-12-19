@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Grid, MenuItem, TextField, InputAdornment} from '@mui/material'
-import province from "../../province.js";
+import {provinces} from "../../utils.js";
 import {Fax, LocalPhone, Place} from "@mui/icons-material";
 
 
@@ -9,19 +9,19 @@ export default function Contatti({formData, handleChange, errors}) {
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                    <TextField name="province"
+                    <TextField select
+                               name="province"
                                label="Provincia di residenza"
-                               select
                                value={formData.province}
                                onChange={handleChange}
                                autoComplete="off"
                                fullWidth
                                required
                                error={errors.province}
-                               helperText={errors.province && 'Inserire provincia di residenza'}
+                               helperText={errors.province && 'Campo obbligatorio'}
                     >
                         <MenuItem value="" disabled>Seleziona la provincia</MenuItem>
-                        {province.map((province, index) => (
+                        {provinces.map((province, index) => (
                             <MenuItem key={index} value={province}>
                                 {province}
                             </MenuItem>
@@ -38,7 +38,7 @@ export default function Contatti({formData, handleChange, errors}) {
                                fullWidth
                                required
                                error={errors.city}
-                               helperText={errors.city && 'Inserire città di residenza'}
+                               helperText={errors.city && 'Campo obbligatorio'}
                     />
                 </Grid>
                 <Grid item xs={3} md={3}>
@@ -59,7 +59,7 @@ export default function Contatti({formData, handleChange, errors}) {
                                }}
                                required
                                error={errors.cap}
-                               helperText={errors.cap && 'CAP obbligatorio'}
+                               helperText={errors.cap && 'Campo obbligatorio'}
                     />
                 </Grid>
                 <Grid item xs={9} md={9}>
@@ -79,7 +79,7 @@ export default function Contatti({formData, handleChange, errors}) {
                                }}
                                required
                                error={errors.address}
-                               helperText={errors.address && 'Inserire indirizzo di residenza'}
+                               helperText={errors.address && 'Campo obbligatorio'}
                     />
                 </Grid>
 
@@ -106,7 +106,7 @@ export default function Contatti({formData, handleChange, errors}) {
                                }}
                                required
                                error={errors.telefonoPersonale}
-                               helperText={errors.telefonoPersonale && 'Inserisci il tuo numero di telefono'}
+                               helperText={errors.telefonoPersonale && 'Campo obbligatorio'}
                     />
                 </Grid>
                 <Grid item xs={12} md={12}>
@@ -132,8 +132,6 @@ export default function Contatti({formData, handleChange, errors}) {
                                }}
                     />
                 </Grid>
-
-
             </Grid>
         </>
     )

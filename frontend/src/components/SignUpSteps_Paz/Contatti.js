@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Grid, MenuItem, TextField, InputAdornment, Typography, IconButton, Tooltip} from '@mui/material'
-import province from "../../province.js";
+import {provinces} from "../../utils.js";
 import {Cancel, Fax, LocalPhone, Place} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faIdBadge} from "@fortawesome/free-solid-svg-icons";
@@ -60,7 +60,7 @@ export default function Contatti({formData, handleChange, errors}) {
                                helperText={errors.province && 'Campo obbligatorio'}
                     >
                         <MenuItem value="" disabled>Seleziona la provincia</MenuItem>
-                        {province.map((province, index) => (
+                        {provinces.map((province, index) => (
                             <MenuItem key={index} value={province}>
                                 {province}
                             </MenuItem>
