@@ -321,23 +321,22 @@ export default function InserimentoVisitaMedica() {
                     // TODO - Scrittura della visita su IPFS
                     console.log(formData)
                     console.log("Sono arrivato alla POST")
-                    // await axios.post('http://localhost:3001/api/ipfs/addVisita', formData,
-                    //     {
-                    //         onUploadProgress: (progressEvent) => {
-                    //             const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                    //             setUploadProgress(progress)
-                    //         },
-                    //     },
-                    //     {
-                    //         'Content-Type': 'multipart/form-data'
-                    //     })
-                    //     .then(res => {
-                    //         setUploadProgress(0)
-                    //     })
-                    //     .catch(error => {
-                    //         console.error(error)
-                    //         setUploadProgress(0)
-                    //     })
+                    await axios.post('http://localhost:3001/api/ipfs/addVisita', formData, {
+                            onUploadProgress: (progressEvent) => {
+                                const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                                setUploadProgress(progress)
+                            },
+                        },
+                        {
+                            'Content-Type': 'multipart/form-data'
+                        })
+                        .then(res => {
+                            setUploadProgress(0)
+                        })
+                        .catch(error => {
+                            console.error(error)
+                            setUploadProgress(0)
+                        })
                 }
             }
         }

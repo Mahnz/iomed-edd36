@@ -26,28 +26,49 @@ const addUser = async (cf) => {
     }
 }
 
-const saveToIpfs = async (req, res) => {
-    const username = "test"
+const addVisita = async (req, res) => {
     const ipfs = await connect()
-    const files = req.files
+    // const files = req.files
+
     // const userDirectoryCID = await addUser(username, ipfs)
-    const userDirectory = `/users/${username}`
     try {
-        for (let file of files) {
-            console.log("Nome del file: " + file.originalname)
-            console.log("Tipo MIME: " + file.mimetype)
-            console.log("Dimensione: " + file.size + "\n")
-            console.log("- - - - - - - - - - - - - - - - - - - - - - - -")
+        const codiceFiscale = req.body.codiceFiscale
+        const userDirectory = `/patients/${codiceFiscale}`
+        const objUser = await ipfs.files.stat(userDirectory);
+        console.log(`DIRECTORY '${codiceFiscale}': - CID: ${objUser.cid.toString()}`);
 
-            const filePath = `/users/${username}/cartellaTest/${file.originalname}`
-            await ipfs.files.write(filePath, file.buffer, {create: true, parents: true})
+        const visitaDetails = {
+            nomeVisita: req.body.nomeVisita,
+            reparto: req.body.reparto,
+            descrizione: req.body.descrizione,
+        };
 
-            const fileObj = await ipfs.files.stat(filePath)
-            const dirObj = await ipfs.files.stat(userDirectory)
-            console.log(`FILE: ${file.originalname} - CID: ${fileObj.cid.toString()}`)
-            console.log(`DIRECTORY: '${userDirectory}' - CID: ${dirObj.cid.toString()}`)
-            res.status(200).json({success: true, fileCID: fileObj.cid.toString()})
-        }
+        const stringJSON = JSON.stringify(visitaDetails)
+        console.log(stringJSON)
+
+        const pathJSON = `${userDirectory}/details.json`;
+        console.log("DIRECTORY JSON: " + pathJSON + "\n")
+        await ipfs.files.write(pathJSON, stringJSON, {create: true, parents: true});
+
+        const objJSON = await ipfs.files.stat(pathJSON);
+        console.log("FILE: details.json: " + objJSON.cid.toString() + "\n")
+
+        console.log(ipfs.files.read(pathJSON))
+        //     for (let file of files) {
+        //         console.log("Nome del file: " + file.originalname)
+        //         console.log("Tipo MIME: " + file.mimetype)
+        //         console.log("Dimensione: " + file.size + "\n")
+        //         console.log("- - - - - - - - - - - - - - - - - - - - - - - -")
+        //
+        //         const filePath = `/users/${username}/cartellaTest/${file.originalname}`
+        //         await ipfs.files.write(filePath, file.buffer, {create: true, parents: true})
+        //
+        //         const fileObj = await ipfs.files.stat(filePath)
+        //         const dirObj = await ipfs.files.stat(userDirectory)
+        //         console.log(`FILE: ${file.originalname} - CID: ${fileObj.cid.toString()}`)
+        //         console.log(`DIRECTORY: '${userDirectory}' - CID: ${dirObj.cid.toString()}`)
+        //         res.status(200).json({success: true, fileCID: fileObj.cid.toString()})
+        //     }
     } catch (err) {
         console.error(err)
         res.status(500).json({error: 'Internal Server Error'})
@@ -82,5 +103,5 @@ export const ipfsController = {
     connect,
     addUser,
     getFilesByUsername,
-    saveToIpfs,
+    addVisita,
 }
