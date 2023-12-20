@@ -5,7 +5,7 @@ import axios from "axios"
 export default function TestIPFS() {
     const [files, setFiles] = useState([])
     const [uploadProgress, setUploadProgress] = useState(0)
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState('MZZDNC02B23A662Z')
     const [fileList, setFileList] = useState([])
     const [noFiles, setNoFiles] = useState(false)
     const [pressed, setPressed] = useState(false)
@@ -24,7 +24,9 @@ export default function TestIPFS() {
                 formData.append('file', file)
             })
 
-            await axios.post('http://localhost:3001/api/ipfs/upload', formData, {
+            console.log(formData)
+
+            await axios.post('http://localhost:3001/api/ipfs/saveToIpfs', formData, {
                     onUploadProgress: (progressEvent) => {
                         const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
                         setUploadProgress(progress)
@@ -53,9 +55,8 @@ export default function TestIPFS() {
         } else {
             setPressed(true)
             try {
-                const response = await axios.get(`http://localhost:3001/api/ipfs/getFilesByUsername/${username}`)
+                const response = await axios.get(`http://localhost:3001/api/ipfs/getVisiteByUsername/${username}`)
                 console.log(response.statusText);
-                console.log("Numero dei file letti: " + response.data.fileList.length);
 
                 if (response.data.fileList.length === 0) {
                     console.log("Nessun file presente per l'utente inserito");

@@ -6,17 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Inserimento visita: COMPLETATO&#10;&#10;Piccoli fix al SignUp">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Contatti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Contatti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/InformazioniPersonali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/InformazioniPersonali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Steps.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Steps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Contatti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Contatti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/InformazioniPersonali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/InformazioniPersonali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Steps.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Steps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/province.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TestIPFS.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TestIPFS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/ipfsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/ipfsController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/ipfsRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/ipfsRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +63,7 @@
     &quot;npm.BACKEND.executor&quot;: &quot;Run&quot;,
     &quot;npm.FRONTEND.executor&quot;: &quot;Run&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/Domenico/Desktop/packageOLD.json&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -104,7 +100,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.FRONTEND">
+  <component name="RunManager" selected="npm.BACKEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -162,6 +158,11 @@
       <workItem from="1702801497898" duration="26567000" />
       <workItem from="1702890672019" duration="31808000" />
       <workItem from="1702974667051" duration="22094000" />
+      <workItem from="1703031357844" duration="843000" />
+      <workItem from="1703065430068" duration="33000" />
+      <workItem from="1703065670157" duration="16346000" />
+      <workItem from="1703100643781" duration="42000" />
+      <workItem from="1703100699544" duration="11016000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />

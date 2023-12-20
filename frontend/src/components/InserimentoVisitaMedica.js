@@ -6,13 +6,14 @@ import {
     TextField,
     Button,
     Grid,
-    Paper, styled, IconButton, Tooltip, Autocomplete
+    Paper, styled, IconButton, Tooltip, Autocomplete, CircularProgress
 } from '@mui/material'
-import {useNavigate} from "react-router-dom";
-import {Add, CloudUpload, RemoveCircleOutlined} from "@mui/icons-material";
-import {departments} from "../utils.js";
-import axios from "axios";
-import CodiceFiscale from "codice-fiscale-js";
+import {useNavigate} from "react-router-dom"
+import {Add, CloudUpload, RemoveCircleOutlined, Send} from "@mui/icons-material"
+import {departments} from "../utils.js"
+import axios from "axios"
+import CodiceFiscale from "codice-fiscale-js"
+import Cookie from "universal-cookie"
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -27,12 +28,17 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function InserimentoVisitaMedica() {
+    const cookies = new Cookie()
+    const navigate = useNavigate()
     const initialFormData = {
-        codiceFiscale: '',
+        codiceFiscale: 'MZZDNC02B23A662Z',
         nomeVisita: '',
         reparto: null,
         descrizione: '',
         allegati: [],
+        // TODO - Inserire il codice fiscale del medico
+        // medico: cookies.get("medico"),
+        medico: "medico"
     }
     const [formData, setFormData] = useState(initialFormData)
     const [errors, setErrors] = useState({
@@ -53,12 +59,10 @@ export default function InserimentoVisitaMedica() {
     const [isFirstRender, setIsFirstRender] = useState(true)
     const [isFirstClick, setIsFirstClick] = useState(true)
     const [isCFVerified, setIsCFVerified] = useState(false)
-    const [uploadProgress, setUploadProgress] = useState(0)
-    const navigate = useNavigate()
 
     const handleCancel = () => {
         setFormData(initialFormData)
-        navigate(-1);
+        navigate(-1)
     }
 
     const handleChange = (e) => {
@@ -67,7 +71,7 @@ export default function InserimentoVisitaMedica() {
             setFormData((prevData) => ({
                 ...prevData,
                 codiceFiscale: value.toUpperCase(),
-            }));
+            }))
         } else {
             setFormData((prevData) => ({...prevData, [name]: value}))
         }
@@ -78,33 +82,31 @@ export default function InserimentoVisitaMedica() {
         setFormData((prevData) => ({
             ...prevData,
             allegati: [...prevData.allegati, {file: null}],
-        }));
-    };
+        }))
+    }
     const handleRemoveAllegato = (index) => {
         setFormData((prevData) => {
-            const newAllegati = [...prevData.allegati];
-            newAllegati.splice(index, 1);
-            return {...prevData, allegati: newAllegati};
-        });
-    };
+            const newAllegati = [...prevData.allegati]
+            newAllegati.splice(index, 1)
+            return {...prevData, allegati: newAllegati}
+        })
+    }
     const handleAllegatoChange = (index, file) => {
         setFormData((prevData) => {
-            const newAllegati = [...prevData.allegati];
-            newAllegati[index] = {file};
-            return {...prevData, allegati: newAllegati};
-        });
-    };
+            const newAllegati = [...prevData.allegati]
+            newAllegati[index] = {file}
+            return {...prevData, allegati: newAllegati}
+        })
+    }
 
     // ! Gestione del bottone di verifica del codice fiscale
     const checkCF = () => {
-        // TODO - Realizza una funzione che verifica la correttezza del codice fiscale inserito, al click del pulsante
-
         const cf = formData.codiceFiscale
 
         try {
             const test = new CodiceFiscale(cf)
             if (test.isValid()) {
-                console.log("Il codice fiscale è valido");
+                console.log("Il codice fiscale è valido")
                 setErrors((prevErrors) => ({
                     ...prevErrors,
                     codiceFiscale: {
@@ -115,7 +117,7 @@ export default function InserimentoVisitaMedica() {
             }
             setIsCFVerified(true)
         } catch (e) {
-            console.log("Il codice fiscale non è valido");
+            console.log("Il codice fiscale non è valido")
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 codiceFiscale: {
@@ -133,12 +135,12 @@ export default function InserimentoVisitaMedica() {
             setFormData((prevData) => ({
                 ...prevData,
                 reparto: newValue,
-            }));
+            }))
         } else {
             setFormData((prevData) => ({
                 ...prevData,
                 reparto: "",
-            }));
+            }))
         }
     }
 
@@ -196,6 +198,7 @@ export default function InserimentoVisitaMedica() {
                     message: ""
                 }
             }))
+            setFormData(initialFormData)
         }
     }, [formData.codiceFiscale])
 
@@ -246,6 +249,9 @@ export default function InserimentoVisitaMedica() {
             }
         }
     }, [formData.reparto])
+
+
+    const [showOverlay, setShowOverlay] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -318,215 +324,251 @@ export default function InserimentoVisitaMedica() {
                 setIsFirstClick(false)
             } else {
                 if (!errors.codiceFiscale.error && !errors.nomeVisita.error && !errors.reparto.error && isCFVerified) {
-                    // TODO - Scrittura della visita su IPFS
                     console.log(formData)
-                    console.log("Sono arrivato alla POST")
-                    await axios.post('http://localhost:3001/api/ipfs/addVisita', formData, {
-                            onUploadProgress: (progressEvent) => {
-                                const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                                setUploadProgress(progress)
-                            },
-                        },
-                        {
-                            'Content-Type': 'multipart/form-data'
+                    const formValues = new FormData()
+
+                    // Aggiungi i dati del form
+                    formValues.append('codiceFiscale', formData.codiceFiscale)
+                    formValues.append('nomeVisita', formData.nomeVisita)
+                    formValues.append('reparto', formData.reparto)
+                    formValues.append('descrizione', formData.descrizione)
+
+                    // Aggiungi i file
+                    formData.allegati.forEach((file, index) => {
+                        formValues.append('allegati', file.file)
+                    })
+                    console.log(formValues)
+                    setShowOverlay(true)
+                    try {
+                        const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
+                            'Content-Type': 'multipart/form-data',
                         })
-                        .then(res => {
-                            setUploadProgress(0)
-                        })
-                        .catch(error => {
-                            console.error(error)
-                            setUploadProgress(0)
-                        })
+
+                        if (res.status === 200) {
+                            console.log(res.data);
+                        }
+                    } catch (error) {
+                        console.error("Errore nella chiamata", error);
+                    } finally {
+                        setShowOverlay(false);
+                    }
                 }
             }
         }
     }
 
     return (
-        <Container sx={{mt: 4}}>
-            <Typography variant="h4" color="primary" gutterBottom>
-                <b>Inserimento Visita Medica</b>
-            </Typography>
-            <Paper elevation={3} sx={{padding: 3, borderRadius: 4}}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={9}>
-                        <TextField type="text"
-                                   name="codiceFiscale"
-                                   label="Codice Fiscale del Paziente"
-                                   value={formData.codiceFiscale}
-                                   onChange={handleChange}
-                                   fullWidth
-                                   variant="outlined"
-                                   required
-                                   InputProps={{
-                                       minLength: 16,
-                                       maxLength: 16
-                                   }}
-                                   inputProps={{
-                                       minLength: 16,
-                                       maxLength: 16
-                                   }}
-                                   error={errors.codiceFiscale.error}
-                                   helperText={errors.codiceFiscale.error && errors.codiceFiscale.message}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                        <Button
-                            variant="contained"
-                            color={btnDisabled ? 'error' : "success"}
-                            disabled={btnDisabled}
-                            onClick={checkCF}
-                            sx={{
-                                '&:disabled': {
-                                    backgroundColor: '#6f7174',
-                                    borderColor: '#6f7174',
-                                    color: '#fff',
-                                    boxShadow: 'none',
-                                }
-                            }}
-                            style={{height: "100%"}}
-                            fullWidth
-                        >
-                            Verifica
-                        </Button>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} sx={{mt: 5}}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6"><b>Dettagli</b></Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField type="text"
-                                   label="Nome della Visita"
-                                   name="nomeVisita"
-                                   value={formData.nomeVisita}
-                                   onChange={handleChange}
-                                   fullWidth
-                                   variant="outlined"
-                                   required
-                                   error={errors.nomeVisita.error}
-                                   helperText={errors.nomeVisita.error && errors.nomeVisita.message}
-                                   disabled={!isCFVerified}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Autocomplete
-                            name="reparto"
-                            options={departments}
-                            isOptionEqualToValue={(option, value) => {
-                                if (value === "") {
-                                    return false;
-                                } else if (value === option) {
-                                    return true
-                                }
-                            }}
-                            onChange={(event, value) => handleChangeReparto(value)}
-                            value={formData.reparto}
-                            autoHighlight
-                            disabled={!isCFVerified}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    name="reparto"
-                                    label="Reparto di Competenza"
-                                    autoComplete="off"
-                                    required
-                                    fullWidth
-                                    error={errors.reparto.error}
-                                    helperText={errors.reparto.error && errors.reparto.message}
-                                    disabled={!isCFVerified}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField type="text"
-                                   name="descrizione"
-                                   label="Descrizione/Note aggiuntive"
-                                   variant="outlined"
-                                   multiline
-                                   rows={4}
-                                   fullWidth
-                                   value={formData.descrizione}
-                                   onChange={handleChange}
-                                   disabled={!isCFVerified}
-                        />
-                    </Grid>
-                </Grid>
-
-                <Grid container spacing={2} sx={{mt: 5}}>
-                    <Grid item xs={8} sm={8}>
-                        <Typography variant="h6"><b>Allegati</b></Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                        <Button
-                            variant="contained"
-                            color="success"
-                            onClick={handleAddAllegato}
-                            endIcon={<Add/>}
-                        >
-                            Aggiungi Allegato
-                        </Button>
-                    </Grid>
-                    {formData.allegati.map((allegato, index) => (
-                        <React.Fragment key={index}>
-                            <Grid item xs={2}>
-                                <Tooltip title="Carica file da allegare" placement="left">
-                                    <Button component="label" variant="contained" startIcon={<CloudUpload/>}
-                                            style={{height: '100%'}}>
-                                        Carica file
-                                        <VisuallyHiddenInput
-                                            name="allegato"
-                                            type="file"
-                                            onChange={(e) => handleAllegatoChange(index, e.target.files[0])}
-                                            accept="image/png, image/jpeg, image/jpg, application/pdf"
-                                        />
-                                    </Button>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField type="text"
-                                           label={`Allegato ${index + 1}`}
-                                           fullWidth
-                                           size="medium"
-                                           value={allegato.file ? allegato.file.name : ""}
-                                           onChange={(e) => handleAllegatoChange(index, e.target.value)}
-                                           InputProps={{
-                                               readOnly: true
-                                           }}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Tooltip title="Rimuovi file" placement="right">
-                                    <IconButton
-                                        variant="contained"
-                                        color="error"
-                                        onClick={() => handleRemoveAllegato(index)}
-                                        style={{height: '100%'}}
-                                        aria-label="Rimuovi file"
-                                    >
-                                        <RemoveCircleOutlined/>
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
-                        </React.Fragment>
-                    ))}
-
-
-                    <Grid container spacing={2} justifyContent="center" sx={{mt: 3}}>
-                        <Grid item>
-                            <Button variant="outlined" color="primary" onClick={handleCancel}>
-                                Annulla
-                            </Button>
+        <>
+            {showOverlay && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 999, // Assicura che l'overlay sia sopra tutto il resto
+                    }}
+                >
+                    <CircularProgress color="primary"/>
+                    <p
+                        style={{
+                            color: '#fff'
+                        }}
+                    >Caricamento in corso...</p>
+                </div>
+            )}
+            <Container sx={{mt: 4}}>
+                <Typography variant="h4" color="primary" gutterBottom>
+                    <b>Inserimento Visita Medica</b>
+                </Typography>
+                <Paper elevation={3} sx={{padding: 3, borderRadius: 4}}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={9}>
+                            <TextField type="text"
+                                       name="codiceFiscale"
+                                       label="Codice Fiscale del Paziente"
+                                       value={formData.codiceFiscale}
+                                       onChange={handleChange}
+                                       fullWidth
+                                       variant="outlined"
+                                       required
+                                       InputProps={{
+                                           minLength: 16,
+                                           maxLength: 16
+                                       }}
+                                       inputProps={{
+                                           minLength: 16,
+                                           maxLength: 16
+                                       }}
+                                       error={errors.codiceFiscale.error}
+                                       helperText={errors.codiceFiscale.error && errors.codiceFiscale.message}
+                            />
                         </Grid>
-                        <Grid item>
-                            <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
-                                Fine
+                        <Grid item xs={12} sm={3}>
+                            <Button
+                                variant="contained"
+                                color={btnDisabled ? 'error' : "success"}
+                                disabled={btnDisabled}
+                                onClick={checkCF}
+                                sx={{
+                                    '&:disabled': {
+                                        backgroundColor: '#6f7174',
+                                        borderColor: '#6f7174',
+                                        color: '#fff',
+                                        boxShadow: 'none',
+                                    }
+                                }}
+                                style={{height: "100%"}}
+                                fullWidth
+                            >
+                                Verifica
                             </Button>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Paper>
-        </Container>
+                    <Grid container spacing={2} sx={{mt: 5}}>
+                        <Grid item xs={12}>
+                            <Typography variant="h6"><b>Dettagli</b></Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField type="text"
+                                       label="Nome della Visita"
+                                       name="nomeVisita"
+                                       value={formData.nomeVisita}
+                                       onChange={handleChange}
+                                       fullWidth
+                                       variant="outlined"
+                                       required
+                                       error={errors.nomeVisita.error}
+                                       helperText={errors.nomeVisita.error && errors.nomeVisita.message}
+                                       disabled={!isCFVerified}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                                name="reparto"
+                                options={departments}
+                                isOptionEqualToValue={(option, value) => {
+                                    if (value === "") {
+                                        return false
+                                    } else if (value === option) {
+                                        return true
+                                    }
+                                }}
+                                onChange={(event, value) => handleChangeReparto(value)}
+                                value={formData.reparto}
+                                autoHighlight
+                                disabled={!isCFVerified}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name="reparto"
+                                        label="Reparto di Competenza"
+                                        autoComplete="off"
+                                        required
+                                        fullWidth
+                                        error={errors.reparto.error}
+                                        helperText={errors.reparto.error && errors.reparto.message}
+                                        disabled={!isCFVerified}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField type="text"
+                                       name="descrizione"
+                                       label="Descrizione/Note aggiuntive"
+                                       variant="outlined"
+                                       multiline
+                                       rows={4}
+                                       fullWidth
+                                       value={formData.descrizione}
+                                       onChange={handleChange}
+                                       disabled={!isCFVerified}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={2} sx={{mt: 5}}>
+                        <Grid item xs={8} sm={8}>
+                            <Typography variant="h6"><b>Allegati</b></Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={4}>
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={handleAddAllegato}
+                                endIcon={<Add/>}
+                                disabled={!isCFVerified}
+                            >
+                                Aggiungi Allegato
+                            </Button>
+                        </Grid>
+                        {formData.allegati.map((allegato, index) => (
+                            <React.Fragment key={index}>
+                                <Grid item xs={2}>
+                                    <Tooltip title="Carica file da allegare" placement="left">
+                                        <Button component="label" variant="contained" startIcon={<CloudUpload/>}
+                                                style={{height: '100%'}}>
+                                            Carica file
+                                            <VisuallyHiddenInput
+                                                name="allegato"
+                                                type="file"
+                                                onChange={(e) => handleAllegatoChange(index, e.target.files[0])}
+                                                accept="image/png, image/jpeg, image/jpg, application/pdf"
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField type="text"
+                                               label={`Allegato ${index + 1}`}
+                                               fullWidth
+                                               size="medium"
+                                               value={allegato.file ? allegato.file.name : ""}
+                                               onChange={(e) => handleAllegatoChange(index, e.target.value)}
+                                               InputProps={{
+                                                   readOnly: true
+                                               }}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Tooltip title="Rimuovi file" placement="right">
+                                        <IconButton
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => handleRemoveAllegato(index)}
+                                            style={{height: '100%'}}
+                                            aria-label="Rimuovi file"
+                                        >
+                                            <RemoveCircleOutlined/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </Grid>
+                            </React.Fragment>
+                        ))}
+
+
+                        <Grid container spacing={2} justifyContent="center" sx={{mt: 3}}>
+                            <Grid item>
+                                <Button variant="outlined" color="primary" onClick={handleCancel}>
+                                    Annulla
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}
+                                        endIcon={<Send/>}>
+                                    Aggiungi visita
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </Container>
+        </>
     )
 }
