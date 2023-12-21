@@ -1,4 +1,4 @@
-// TestStep.js
+// Steps.js - Paziente
 import React from 'react'
 import {Button, Grid, Link, Typography} from "@mui/material"
 
@@ -7,17 +7,16 @@ import Contatti from "./Contatti.js";
 import Fine from "./Fine.js";
 
 export default function Steps({
-                                     step,
-                                     formData,
-                                     nextStep,
-                                     prevStep,
-                                     handleChange,
-                                     handleSubmit,
-                                     computeCF,
-                                     btnDisabled,
-                                     errors,
-                                     test
-                                 }) {
+                                  step,
+                                  formData,
+                                  setFormData,
+                                  nextStep,
+                                  prevStep,
+                                  handleChange,
+                                  handleSubmit,
+                                  errors,
+                                  test
+                              }) {
 
     return (
         <>
@@ -25,8 +24,7 @@ export default function Steps({
                 <>
                     <InformazioniPersonali formData={formData}
                                            handleChange={handleChange}
-                                           computeCF={computeCF}
-                                           btnDisabled={btnDisabled}
+                                           setFormData={setFormData}
                                            nextStep={nextStep}
                                            errors={errors}
                                            test={test}

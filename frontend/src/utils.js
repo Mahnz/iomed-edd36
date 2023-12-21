@@ -1,4 +1,4 @@
-const province = [
+const provinces = [
     'Agrigento',
     'Alessandria',
     'Ancona',
@@ -108,4 +108,57 @@ const province = [
     'Viterbo'
 ];
 
-export default province;
+const departments = [
+    'Cardiologia',
+    'Ortopedia',
+    'Neurologia',
+    'Oculistica',
+    'Dermatologia',
+    'Gastroenterologia',
+    'Pediatria',
+    'Radiologia',
+    'Chirurgia Generale',
+    'Oncologia',
+    'Psichiatria',
+    'Endocrinologia',
+    'Urologia',
+    'Otorinolaringoiatria (ORL)',
+    'Odontoiatria',
+    'Ginecologia',
+    'Ostetricia',
+    'Medicina Interna',
+    'Nefrologia',
+    'Reumatologia',
+    'Ematologia',
+    'Allergologia',
+    'Cardiologia Pediatrica',
+    'Chirurgia Vascolare',
+    'Medicina dello Sport',
+    'Neonatologia',
+    'Nefrologia Pediatrica',
+    'Neurochirurgia',
+    'Neurologia Pediatrica',
+    'Neuroradiologia',
+    'Oftalmologia Pediatrica',
+    'Ortopedia Pediatrica',
+    'Pneumologia',
+    'Proctologia',
+    'Psicologia Clinica',
+    'Psicoterapia',
+    'Radiologia Interventistica',
+    'Reumatologia Pediatrica',
+    'Senologia',
+    'Terapia Intensiva',
+    'Terapia Intensiva Neonatale',
+    'Terapia Intensiva Pediatrica',
+    'Urologia Pediatrica',
+    'Chirurgia Plastica e Ricostruttiva',
+    'Genetica Medica',
+    'Malattie Infettive',
+    'Medicina Fisica e Riabilitazione',
+    'Medicina Nucleare',
+    'Medicina Termale',
+    'Neuropsichiatria Infantile'
+];
+
+export {provinces, departments}

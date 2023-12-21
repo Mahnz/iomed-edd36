@@ -13,7 +13,6 @@ import {
     Typography, createTheme, ThemeProvider,
 } from "@mui/material"
 import axios from "axios"
-import CodiceFiscale from 'codice-fiscale-js'
 
 const theme = createTheme({
     palette: {
@@ -47,7 +46,6 @@ export default function SignUpFormPaziente({handle}) {
     }
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState(initialForm)
-    const [btnDisabled, setBtnDisabled] = useState(true)
     const [errInfoPersonali, setErrInfoPersonali] = useState({
         firstName: true,
         lastName: true,
@@ -219,49 +217,6 @@ export default function SignUpFormPaziente({handle}) {
         //setFormData(initialForm)
     }
 
-    useEffect(() => {
-        const isFormValid =
-            formData.firstName &&
-            formData.lastName &&
-            formData.birthDate &&
-            formData.sex &&
-            formData.birthPlace
-
-        setBtnDisabled(!isFormValid)
-    }, [formData])
-
-    const computeCF = () => {
-        if (
-            formData.firstName &&
-            formData.lastName &&
-            formData.birthDate &&
-            formData.sex &&
-            formData.birthPlace
-        ) {
-            try {
-                const codFiscale = new CodiceFiscale({
-                    name: formData.firstName,
-                    surname: formData.lastName,
-                    gender: formData.sex,
-                    day: new Date(formData.birthDate).getDate(),
-                    month: new Date(formData.birthDate).getMonth() + 1,
-                    year: new Date(formData.birthDate).getFullYear(),
-                    dateOfBirth: new Date(formData.birthDate),
-                    birthplace: formData.birthPlace,
-                })
-
-                const calculatedCF = codFiscale.toString()
-
-                setFormData({
-                    ...formData,
-                    CF: calculatedCF,
-                })
-            } catch (error) {
-                console.error('Errore nel calcolo del Codice Fiscale:', error)
-            }
-        }
-    }
-
 
     return (
         <ThemeProvider theme={theme}>
@@ -322,8 +277,7 @@ export default function SignUpFormPaziente({handle}) {
                                 prevStep={prevStep}
                                 handleChange={handleChange}
                                 handleSubmit={handleSubmit}
-                                computeCF={computeCF}
-                                btnDisabled={btnDisabled}
+                                setFormData={setFormData}
                                 errors={
                                     step === 1 ? errInfoPersonali :
                                         step === 2 ? errContatti :

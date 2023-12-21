@@ -1,87 +1,89 @@
 // InserimentoVisitaMedica.js
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Container,
     Typography,
     TextField,
     Button,
     Grid,
-    MenuItem,
-    Paper, Input
+    Paper, styled, IconButton, Tooltip, Autocomplete, CircularProgress
 } from '@mui/material'
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
-import {AttachFile, Close} from "@mui/icons-material";
-import CustomFileInput from "../pages/TestFrontend.js";
+import {useNavigate} from "react-router-dom"
+import {Add, CloudUpload, RemoveCircleOutlined, Send} from "@mui/icons-material"
+import {departments} from "../utils.js"
+import axios from "axios"
+import CodiceFiscale from "codice-fiscale-js"
+import Cookie from "universal-cookie"
 
-const departments = ['Cardiologia', 'Ortopedia', 'Neurologia', 'Oculistica', 'Altro']
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1
+})
 
 export default function InserimentoVisitaMedica() {
+    const cookies = new Cookie()
+    const navigate = useNavigate()
     const initialFormData = {
-        codiceFiscale: '',
+        codiceFiscale: 'MZZDNC02B23A662Z',
         nomeVisita: '',
-        reparto: '',
+        reparto: null,
         descrizione: '',
         allegati: [],
+        // TODO - Inserire il codice fiscale del medico
+        // medico: cookies.get("medico"),
+        medico: "medico"
     }
     const [formData, setFormData] = useState(initialFormData)
-    const navigate = useNavigate()
+    const [errors, setErrors] = useState({
+        codiceFiscale: {
+            error: false,
+            message: ''
+        },
+        nomeVisita: {
+            error: false,
+            message: ''
+        },
+        reparto: {
+            error: false,
+            message: ''
+        },
+    })
+    const [btnDisabled, setBtnDisabled] = useState(true)
+    const [isFirstRender, setIsFirstRender] = useState(true)
+    const [isFirstClick, setIsFirstClick] = useState(true)
+    const [isCFVerified, setIsCFVerified] = useState(false)
+
     const handleCancel = () => {
         setFormData(initialFormData)
-        navigate(-1);
+        navigate(-1)
     }
 
     const handleChange = (e) => {
         const {name, value} = e.target
-        setFormData((prevData) => ({...prevData, [name]: value}))
+        if (name === "codiceFiscale") {
+            setFormData((prevData) => ({
+                ...prevData,
+                codiceFiscale: value.toUpperCase(),
+            }))
+        } else {
+            setFormData((prevData) => ({...prevData, [name]: value}))
+        }
     }
 
-    const handleAllegatoChange = (index, newName, newFile) => {
-        setFormData((prevData) => {
-            const newAllegati = [...prevData.allegati];
-            newAllegati[index] = {...newAllegati[index], file: newFile};
-            return {...prevData, allegati: newAllegati};
-        });
-
-        // setFormData((prevData) => {
-        //     const newAllegati = [...prevData.allegati];
-        //     newAllegati[index] = {...newAllegati[index], nome: newName, file: newFile};
-        //     return {...prevData, allegati: newAllegati};
-        // });
-
-        // TODO - Test con la ridenominazione del file con la TextField
-        // setFormData((prevData) => {
-        //     const newAllegati = [...prevData.allegati];
-        //     const allegatoToUpdate = {...newAllegati[index], nome: newName};
-        //
-        //     // Verifica se l'utente ha specificato un'estensione nel nome del file
-        //     const userProvidedExtension = newName.split('.').pop();
-        //     const fileExtension = newFile ? newFile.name.split('.').pop() : '';
-        //
-        //     // Aggiungi l'estensione solo se l'utente non l'ha fornita
-        //     const finalFileName = userProvidedExtension ? newName : `${newName}.${fileExtension}`;
-        //
-        //     allegatoToUpdate.nome = finalFileName;
-        //     allegatoToUpdate.file = newFile;
-        //
-        //     newAllegati[index] = allegatoToUpdate;
-        //     console.log(newAllegati[index]);
-        //     return {...prevData, allegati: newAllegati};
-        // });
-    };
-
-
+    // ! Gestione dinamica degli allegati, con aggiunta e rimozione
     const handleAddAllegato = () => {
-        // setFormData((prevData) => ({
-        //     ...prevData,
-        //     allegati: [...prevData.allegati, {name: '', file: null}],
-        // }))
         setFormData((prevData) => ({
             ...prevData,
             allegati: [...prevData.allegati, {file: null}],
         }))
     }
-
     const handleRemoveAllegato = (index) => {
         setFormData((prevData) => {
             const newAllegati = [...prevData.allegati]
@@ -89,129 +91,468 @@ export default function InserimentoVisitaMedica() {
             return {...prevData, allegati: newAllegati}
         })
     }
+    const handleAllegatoChange = (index, file) => {
+        setFormData((prevData) => {
+            const newAllegati = [...prevData.allegati]
+            newAllegati[index] = {file}
+            return {...prevData, allegati: newAllegati}
+        })
+    }
+
+    // ! Gestione del bottone di verifica del codice fiscale
+    const checkCF = () => {
+        const cf = formData.codiceFiscale
+
+        try {
+            const test = new CodiceFiscale(cf)
+            if (test.isValid()) {
+                console.log("Il codice fiscale è valido")
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    codiceFiscale: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+            setIsCFVerified(true)
+        } catch (e) {
+            console.log("Il codice fiscale non è valido")
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                codiceFiscale: {
+                    error: true,
+                    message: "Codice fiscale non valido"
+                }
+            }))
+            setIsCFVerified(false)
+        }
+    }
+
+    // ! Gestione dell'autocomplete per il reparto
+    const handleChangeReparto = (newValue) => {
+        if (newValue) {
+            setFormData((prevData) => ({
+                ...prevData,
+                reparto: newValue,
+            }))
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                reparto: "",
+            }))
+        }
+    }
+
+    // ! Controllo dinamico sull'inserimento dei campi
+    useEffect(() => {
+        if (isFirstRender) {
+            setIsFirstRender(false)
+        } else {
+            if (!formData.codiceFiscale) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    codiceFiscale: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                if (formData.codiceFiscale.length !== 16) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        codiceFiscale: {
+                            error: true,
+                            message: ""
+                        }
+                    }))
+                } else {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        codiceFiscale: {
+                            error: false,
+                            message: ""
+                        }
+                    }))
+                }
+            }
+        }
+
+        if (formData.codiceFiscale.length === 16) {
+            setBtnDisabled(false)
+        } else {
+            setBtnDisabled(true)
+            setIsCFVerified(false)
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                codiceFiscale: {
+                    error: false,
+                    message: ""
+                },
+                nomeVisita: {
+                    error: false,
+                    message: ""
+                },
+                reparto: {
+                    error: false,
+                    message: ""
+                }
+            }))
+            setFormData(initialFormData)
+        }
+    }, [formData.codiceFiscale])
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setIsFirstRender(false)
+        } else {
+            if (!formData.nomeVisita) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    nomeVisita: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    nomeVisita: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+        }
+    }, [formData.nomeVisita])
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setIsFirstRender(false)
+        } else {
+            if (!formData.reparto) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    reparto: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    reparto: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+        }
+    }, [formData.reparto])
+
+
+    const [showOverlay, setShowOverlay] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData)
-        // await axios.post('http://localhost:3001/api/ipfs/addVisita', formData,
-        //     // {
-        //     //     onUploadProgress: (progressEvent) => {
-        //     //         const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-        //     //         setUploadProgress(progress)
-        //     //     },
-        //     // },
-        //     {
-        //         'Content-Type': 'multipart/form-data'
-        //     })
-        //     .then(res => {
-        //         // setUploadProgress(0)
-        //     })
-        //     .catch(error => {
-        //         console.error(error)
-        //         // setUploadProgress(0)
-        //     })
+        if (isCFVerified) {
+            if (!formData.codiceFiscale) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    codiceFiscale: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                if (formData.codiceFiscale.length !== 16) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        codiceFiscale: {
+                            error: true,
+                            message: "Codice fiscale non valido"
+                        }
+                    }))
+                } else {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        codiceFiscale: {
+                            error: false,
+                            message: ""
+                        }
+                    }))
+                }
+            }
+
+            if (!formData.nomeVisita) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    nomeVisita: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    nomeVisita: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+
+            if (!formData.reparto) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    reparto: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    reparto: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+
+            if (isFirstClick) {
+                setIsFirstClick(false)
+            } else {
+                if (!errors.codiceFiscale.error && !errors.nomeVisita.error && !errors.reparto.error && isCFVerified) {
+                    console.log(formData)
+                    const formValues = new FormData()
+
+                    // Aggiungi i dati del form
+                    formValues.append('codiceFiscale', formData.codiceFiscale)
+                    formValues.append('nomeVisita', formData.nomeVisita)
+                    formValues.append('reparto', formData.reparto)
+                    formValues.append('descrizione', formData.descrizione)
+
+                    // Aggiungi i file
+                    formData.allegati.forEach((file, index) => {
+                        formValues.append('allegati', file.file)
+                    })
+                    console.log(formValues)
+                    setShowOverlay(true)
+                    try {
+                        const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
+                            'Content-Type': 'multipart/form-data',
+                        })
+
+                        if (res.status === 200) {
+                            console.log(res.data);
+                        }
+                    } catch (error) {
+                        console.error("Errore nella chiamata", error);
+                    } finally {
+                        setShowOverlay(false);
+                    }
+                }
+            }
+        }
     }
 
-
     return (
-        <Container sx={{mt: 4}}>
-            <Typography variant="h4" color="primary" gutterBottom>
-                <b>Inserimento Visita Medica</b>
-            </Typography>
-            <Paper elevation={3} sx={{padding: 3, borderRadius: 4}}>
-
-                <form onSubmit={handleSubmit}>
+        <>
+            {showOverlay && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 999, // Assicura che l'overlay sia sopra tutto il resto
+                    }}
+                >
+                    <CircularProgress color="primary"/>
+                    <p
+                        style={{
+                            color: '#fff'
+                        }}
+                    >Caricamento in corso...</p>
+                </div>
+            )}
+            <Container sx={{mt: 4}}>
+                <Typography variant="h4" color="primary" gutterBottom>
+                    <b>Inserimento Visita Medica</b>
+                </Typography>
+                <Paper elevation={3} sx={{padding: 3, borderRadius: 4}}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                label="Codice Fiscale del Paziente"
-                                name="codiceFiscale"
-                                value={formData.codiceFiscale}
-                                onChange={handleChange}
+                        <Grid item xs={12} sm={9}>
+                            <TextField type="text"
+                                       name="codiceFiscale"
+                                       label="Codice Fiscale del Paziente"
+                                       value={formData.codiceFiscale}
+                                       onChange={handleChange}
+                                       fullWidth
+                                       variant="outlined"
+                                       required
+                                       InputProps={{
+                                           minLength: 16,
+                                           maxLength: 16
+                                       }}
+                                       inputProps={{
+                                           minLength: 16,
+                                           maxLength: 16
+                                       }}
+                                       error={errors.codiceFiscale.error}
+                                       helperText={errors.codiceFiscale.error && errors.codiceFiscale.message}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                label="Nome della Visita"
-                                name="nomeVisita"
-                                value={formData.nomeVisita}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                select
-                                required
-                                fullWidth
-                                label="Reparto di Competenza"
-                                name="reparto"
-                                value={formData.reparto}
-                                onChange={handleChange}
-                            >
-                                {departments.map((department) => (
-                                    <MenuItem key={department} value={department}>
-                                        {department}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                multiline
-                                fullWidth
-                                label="Descrizione o Note Aggiuntive"
-                                name="descrizione"
-                                value={formData.descrizione}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12} sx={{mt: 4}}>
-                            <Typography variant="h6">Allegati:</Typography>
-                        </Grid>
-                        {formData.allegati.map((allegato, index) => (
-                            <React.Fragment key={index}>
-                                <Grid item xs={4} sm={4}>
-                                    <Input
-                                        placeholder="Inserisci un file"
-                                        type="file"
-                                        name="file"
-                                        accept=".png, .jpeg, .jpg, .pdf"
-                                        fullWidth
-                                        onChange={(e) => handleAllegatoChange(index, allegato.nome, e.target.files[0])}
-                                    />
-                                </Grid>
-                                <Grid item xs={8} sm={8}>
-                                    <TextField
-                                        fullWidth
-                                        label={`Nome Allegato ${index + 1}`}
-                                        value={allegato.nome}
-                                        onChange={(e) => handleAllegatoChange(index, e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        color="secondary"
-                                        onClick={() => handleRemoveAllegato(index)}
-                                    >
-                                        Rimuovi
-                                    </Button>
-                                </Grid>
-                            </React.Fragment>
-                        ))}
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={3}>
                             <Button
-                                variant="outlined"
-                                color="primary"
+                                variant="contained"
+                                color={btnDisabled ? 'error' : "success"}
+                                disabled={btnDisabled}
+                                onClick={checkCF}
+                                sx={{
+                                    '&:disabled': {
+                                        backgroundColor: '#6f7174',
+                                        borderColor: '#6f7174',
+                                        color: '#fff',
+                                        boxShadow: 'none',
+                                    }
+                                }}
+                                style={{height: "100%"}}
+                                fullWidth
+                            >
+                                Verifica
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={2} sx={{mt: 5}}>
+                        <Grid item xs={12}>
+                            <Typography variant="h6"><b>Dettagli</b></Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField type="text"
+                                       label="Nome della Visita"
+                                       name="nomeVisita"
+                                       value={formData.nomeVisita}
+                                       onChange={handleChange}
+                                       fullWidth
+                                       variant="outlined"
+                                       required
+                                       error={errors.nomeVisita.error}
+                                       helperText={errors.nomeVisita.error && errors.nomeVisita.message}
+                                       disabled={!isCFVerified}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                                name="reparto"
+                                options={departments}
+                                isOptionEqualToValue={(option, value) => {
+                                    if (value === "") {
+                                        return false
+                                    } else if (value === option) {
+                                        return true
+                                    }
+                                }}
+                                onChange={(event, value) => handleChangeReparto(value)}
+                                value={formData.reparto}
+                                autoHighlight
+                                disabled={!isCFVerified}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        name="reparto"
+                                        label="Reparto di Competenza"
+                                        autoComplete="off"
+                                        required
+                                        fullWidth
+                                        error={errors.reparto.error}
+                                        helperText={errors.reparto.error && errors.reparto.message}
+                                        disabled={!isCFVerified}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField type="text"
+                                       name="descrizione"
+                                       label="Descrizione/Note aggiuntive"
+                                       variant="outlined"
+                                       multiline
+                                       rows={4}
+                                       fullWidth
+                                       value={formData.descrizione}
+                                       onChange={handleChange}
+                                       disabled={!isCFVerified}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={2} sx={{mt: 5}}>
+                        <Grid item xs={8} sm={8}>
+                            <Typography variant="h6"><b>Allegati</b></Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={4}>
+                            <Button
+                                variant="contained"
+                                color="success"
                                 onClick={handleAddAllegato}
+                                endIcon={<Add/>}
+                                disabled={!isCFVerified}
                             >
                                 Aggiungi Allegato
                             </Button>
                         </Grid>
+                        {formData.allegati.map((allegato, index) => (
+                            <React.Fragment key={index}>
+                                <Grid item xs={2}>
+                                    <Tooltip title="Carica file da allegare" placement="left">
+                                        <Button component="label" variant="contained" startIcon={<CloudUpload/>}
+                                                style={{height: '100%'}}>
+                                            Carica file
+                                            <VisuallyHiddenInput
+                                                name="allegato"
+                                                type="file"
+                                                onChange={(e) => handleAllegatoChange(index, e.target.files[0])}
+                                                accept="image/png, image/jpeg, image/jpg, application/pdf"
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField type="text"
+                                               label={`Allegato ${index + 1}`}
+                                               fullWidth
+                                               size="medium"
+                                               value={allegato.file ? allegato.file.name : ""}
+                                               onChange={(e) => handleAllegatoChange(index, e.target.value)}
+                                               InputProps={{
+                                                   readOnly: true
+                                               }}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Tooltip title="Rimuovi file" placement="right">
+                                        <IconButton
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => handleRemoveAllegato(index)}
+                                            style={{height: '100%'}}
+                                            aria-label="Rimuovi file"
+                                        >
+                                            <RemoveCircleOutlined/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </Grid>
+                            </React.Fragment>
+                        ))}
+
+
                         <Grid container spacing={2} justifyContent="center" sx={{mt: 3}}>
                             <Grid item>
                                 <Button variant="outlined" color="primary" onClick={handleCancel}>
@@ -219,14 +560,15 @@ export default function InserimentoVisitaMedica() {
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
-                                    Fine
+                                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}
+                                        endIcon={<Send/>}>
+                                    Aggiungi visita
                                 </Button>
                             </Grid>
                         </Grid>
                     </Grid>
-                </form>
-            </Paper>
-        </Container>
+                </Paper>
+            </Container>
+        </>
     )
 }

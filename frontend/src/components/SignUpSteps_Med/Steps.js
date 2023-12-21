@@ -1,4 +1,4 @@
-// TestStep.js
+// Steps.js - Medico
 import React, {useState} from 'react'
 import {Button, Grid, Link, Typography} from "@mui/material"
 
@@ -8,17 +8,16 @@ import Contatti from "./Contatti.js";
 import Fine from "./Fine.js";
 
 export default function Steps({
-                                     step,
-                                     formData,
-                                     nextStep,
-                                     prevStep,
-                                     handleChange,
-                                     handleSubmit,
-                                     computeCF,
-                                     btnDisabled,
-                                     errors,
-                                     test
-                                 }) {
+                                  step,
+                                  formData,
+                                  setFormData,
+                                  nextStep,
+                                  prevStep,
+                                  handleChange,
+                                  handleSubmit,
+                                  errors,
+                                  test
+                              }) {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -28,9 +27,8 @@ export default function Steps({
                 <>
                     <InformazioniPersonali formData={formData}
                                            handleChange={handleChange}
-                                           computeCF={computeCF}
-                                           btnDisabled={btnDisabled}
                                            nextStep={nextStep}
+                                           setFormData={setFormData}
                                            errors={errors}
                                            test={test}
                     />
