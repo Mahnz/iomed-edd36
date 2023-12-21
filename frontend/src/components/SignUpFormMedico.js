@@ -15,7 +15,7 @@ import {
 } from "@mui/material"
 import axios from "axios"
 
-export default function SignUpFormMedico() {
+export default function SignUpFormMedico({handle}) {
     const initialForm = {
         firstName: '',
         lastName: '',
@@ -233,7 +233,7 @@ export default function SignUpFormMedico() {
         }
 
         // ? Reset allo stato iniziale del form
-        setFormData(initialForm)
+        //setFormData(initialForm)
     }
 
 

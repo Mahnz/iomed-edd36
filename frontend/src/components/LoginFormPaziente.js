@@ -26,7 +26,7 @@ const theme = createTheme({
     },
 });
 
-export default function LoginFormPaziente() {
+export default function LoginFormPaziente({handle}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -147,14 +147,7 @@ export default function LoginFormPaziente() {
                     .then(res => {
                         console.log("Login effettuato")
                         console.log(res.data)
-
-                        cookies.set('email', email, {
-                            path: '/',
-                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                            httpOnly: true,      // Non accessibile tramite JavaScript
-                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                        });
-                        navigate("/dashboard/home");
+                        handle(res.data);
                     })
                     .catch(error => {
                         console.error(error);

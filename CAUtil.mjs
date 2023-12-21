@@ -55,11 +55,15 @@ const enrollAdmin = async (caClient, wallet, orgMspId) => {
 
 const registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affiliation) => {
     try {
+        let privateKeyPEMContent;
         // Check to see if we've already enrolled the user
         const userIdentity = await wallet.get(userId);
         if (userIdentity) {
             console.log(`An identity for the user ${userId} already exists in the wallet`);
-            return;
+            privateKeyPEMContent = userIdentity.credentials.privateKey.replace(/-----BEGIN PRIVATE KEY-----/, '')
+                .replace(/-----END PRIVATE KEY-----/, '')
+                .replace(/\s/g, '');
+            return privateKeyPEMContent;
         }
 
         // Must use an admin to register a new user
@@ -94,7 +98,14 @@ const registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affilia
             type: 'X.509',
         };
         await wallet.put(userId, x509Identity);
+
         console.log(`Successfully registered and enrolled user ${userId} and imported it into the wallet`);
+        privateKeyPEMContent = x509Identity.credentials.privateKey.replace(/-----BEGIN PRIVATE KEY-----/, '')
+            .replace(/-----END PRIVATE KEY-----/, '')
+            .replace(/\s/g, '');
+
+        return privateKeyPEMContent;
+
     } catch (error) {
         console.error(`Failed to register user : ${error}`);
     }

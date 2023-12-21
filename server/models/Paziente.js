@@ -11,11 +11,11 @@ class Paziente {
         this.firstName=form.firstName;
         this.lastName=form.lastName;
         this.password=form.password;
-        this.phoneNumber=form.phoneNumber;
+        this.telefono=form.telefono;
         this.province=form.province;
         this.sex=form.sex;
         this.cid=null;
-        this.doctors=[];
+        this.docType=form.docType;
     }
 }
 export default Paziente;

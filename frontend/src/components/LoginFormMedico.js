@@ -26,7 +26,7 @@ const theme = createTheme({
     },
 });
 
-export default function LoginFormMedico() {
+export default function LoginFormMedico({handle}) {
     const [id, setId] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -128,12 +128,12 @@ export default function LoginFormMedico() {
                     password: password
                 };
                 console.log("Sono arrivato alla POST")
-                axios.post('http://localhost:3001/api/bc/login', user)
+                axios.post('http://localhost:3001/api/bc/loginM', user)
                     .then(res => {
                         console.log("Login effettuato")
                         console.log(res.data)
 
-                        cookies.set('email', email, {
+                        cookies.set('id', id, {
                             path: '/',
                             expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                             httpOnly: true,      // Non accessibile tramite JavaScript

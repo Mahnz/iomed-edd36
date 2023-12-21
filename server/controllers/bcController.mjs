@@ -1,9 +1,10 @@
 'use strict';
 import {createRequire} from "module";
-
+import Doctor from "../models/Dottore.js"
 const require = createRequire(import.meta.url);
 const {Gateway, Wallets} = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
+import {ipfsController} from "./ipfsController.js";
 import path from 'path';
 import {fileURLToPath} from 'url';
 
@@ -22,52 +23,7 @@ const chaincodeName = 'basic';
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
 const org1UserId = 'javascriptAppUser';
-const ccp =
 
-    function prettyJSONString(inputString) {
-        return JSON.stringify(JSON.parse(inputString), null, 2);
-    }
-
-const example = async (req, res) => {
-    const gateway = new Gateway();
-    try {
-        const ccp = buildCCPOrg1();
-        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
-
-        const wallet = await buildWallet(Wallets, walletPath);
-
-        await enrollAdmin(caClient, wallet, mspOrg1);
-
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-        console.log("Prima dell'errore")
-
-        await gateway.connect(ccp, {
-            wallet,
-            identity: org1UserId,
-            discovery: {enabled: true, asLocalhost: true}
-        });
-
-        console.log("Dopo l'errore")
-
-        // Ritrovamento canale su cui è applicato il chaincode
-        const network = await gateway.getNetwork(channelName);
-
-        // Ritrovamento smartContract da chaincode
-        const contract = network.getContract(chaincodeName);
-
-        // Eseguire funzione istantiate
-        await contract.submitTransaction("istantiate");
-        res.status(200).json("Istanziato");
-
-        gateway.disconnect();
-
-    } catch (e) {
-        console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-        res.status(500).json(`Errore ${e.message}`);
-        throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-    }
-}
 
 const addPatient = async (req, res) => {
     const gateway = new Gateway();
@@ -80,7 +36,7 @@ const addPatient = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         await gateway.connect(ccp, {
             wallet,
@@ -94,38 +50,148 @@ const addPatient = async (req, res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        //Eseguire funzione di inserimento paziente
-        const p = new Patient(req.body.formData);
-        console.log(p);
-
-        console.log("inizio critto pass");
-        const s=await bcrypt.genSalt(10);
-        const pass=await bcrypt.hash(p.password,s);
-        p.password=pass;
-
-        console.log("Fine critto");
-
-        console.log(p);
-
-        console.log("Inizio transazione di aggiunta utente");
-
-        const r=await contract.submitTransaction("createPatient", p.CF, JSON.stringify(p));
-        gateway.disconnect();
-        console.log(Buffer.from(r).toString());
-
-        const v= await contract.evaluateTransaction()
-
-        if(Buffer.from(r).toString()=="true")
+        //Inizio controlli
+        console.log(req.body.formData);
+        console.log(req.body.formData.docType);
+        let q;
+        if(req.body.formData.docType=="patient")
         {
-            console.log("Aggiunta avvenuta");
-            res.status(200).json("Inserimento avvenuto correttamente");
+            q = {
+                selector: {
+                    email: req.body.formData.email,
+                }
+            };
+
+            console.log('\n--> Evaluate Transaction: Verifica paziente con stessa mail');
+            let result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
+
+            result=JSON.parse(prettyJSONString(result));
+
+            if(result.length!=0)
+                return res.status(409).json("Email associata già ad un altro utente");
+
+            else
+            {
+                const p = new Patient(req.body.formData);
+                console.log(p);
+                let cid=await ipfsController.addUser(p.CF);
+                p.cid=cid;
+
+                console.log("inizio critto pass");
+                const s=await bcrypt.genSalt(10);
+                const pass=await bcrypt.hash(p.password,s);
+                p.password=pass;
+
+                console.log("Fine critto");
+
+                console.log(p);
+
+                console.log("Inizio transazione di aggiunta utente");
+
+                const r=await contract.submitTransaction("createPatient", p.CF, JSON.stringify(p));
+                gateway.disconnect();
+                console.log(Buffer.from(r).toString());
+
+                if(Buffer.from(r).toString()=="true")
+                {
+                    console.log("Aggiunta avvenuta");
+                    return res.status(200).json("Inserimento avvenuto correttamente");
+                }
+                else
+                {
+                    console.log("Utente già esistente");
+                    return res.status(409).json("Utente già esistente");
+                }
+            }
         }
         else
         {
-            console.log("Utente già esistente");
-            res.status(409).json("Utente già esistente");
-        }
+            q = {
+                selector: {
+                    id: req.body.formData.id,
+                }
+            };
 
+            console.log('\n--> Evaluate Transaction: Verifica medico con stesso id');
+            let result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
+            result=JSON.parse(prettyJSONString(result));
+
+            if(result.length!=0)
+                return res.status(409).json("Id già esistente, account creato in precedenza");
+            else
+            {
+                let a= {
+                    selector: {
+                        email: req.body.formData.email
+                    }
+                };
+
+                console.log('\n--> Evaluate Transaction: Verifica se esiste un paziente con la mail del medico');
+                let r=await contract.evaluateTransaction('QueryAssets', JSON.stringify(a));
+
+                r=JSON.parse(prettyJSONString(r));
+
+                if(r.length==0)
+                {
+                    let d=new Doctor(req.body.formData);
+                    console.log(d);
+                    let cid=await ipfsController.addUser(d.CF);
+                    d.cid=cid;
+
+                    console.log("inizio critto pass");
+                    let s=await bcrypt.genSalt(10);
+                    let pass=await bcrypt.hash(d.password,s);
+                    d.password=pass;
+
+                    console.log("Fine critto");
+
+                    console.log(d);
+
+                    console.log("Inizio transazione di aggiunta medico");
+
+                    const i=await contract.submitTransaction("createPatient", d.CF, JSON.stringify(d));
+                    gateway.disconnect();
+                    console.log(Buffer.from(i).toString());
+
+                    if(Buffer.from(i).toString()=="true")
+                    {
+                        console.log("Aggiunta avvenuta");
+                        return res.status(200).json("Inserimento avvenuto correttamente");
+                    }
+                    else
+                    {
+                        console.log("Utente già esistente");
+                        return res.status(409).json("Utente già esistente");
+                    }
+                }
+                else
+                {
+                    if(r[0].Record.docType=="doctor")
+                        return res.status(409).json("Medico già registrato con questa mail");
+                    else
+                    {
+                        console.log("Inizio operazione di update paziente a medico");
+                        console.log(a);
+                        console.log("Verifica password");
+                        console.log(r[0].Record);
+                        const verify=await bcrypt.compare(req.body.formData.password, r[0].Record.password);
+                        if(verify)
+                        {
+                            let d=r[0].Record;
+                            console.log(d);
+                            d.id=req.body.formData.id;
+                            d.hospital=req.body.formData.hospital;
+                            d.telefonoUfficio=req.body.formData.telefonoUfficio;
+                            d.spec=req.body.formData.spec;
+                            console.log("Inizio transazione di modifica paziente in medico");
+                            await contract.submitTransaction("updatePatient", d.CF, JSON.stringify(d));
+                            res.status(200).json("Medico inserito correttamente da paziente");
+                        }
+
+                    }
+                }
+            }
+        }
     } catch (e) {
         console.log(e);
         console.error(`Errore durante il richiamo della funzione`);
@@ -144,7 +210,7 @@ const deletePatient = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         await gateway.connect(ccp, {
             wallet,
@@ -182,7 +248,7 @@ const updatePatient = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         await gateway.connect(ccp, {
             wallet,
@@ -220,7 +286,7 @@ const getPatient = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         await gateway.connect(ccp, {
             wallet,
@@ -259,7 +325,7 @@ const getAll = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         const gateway = new Gateway();
 
@@ -296,7 +362,7 @@ const query = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         const gateway = new Gateway();
 
@@ -340,7 +406,7 @@ const login = async (req, res) => {
 
         await enrollAdmin(caClient, wallet, mspOrg1);
 
-        await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
 
         const gateway = new Gateway();
 
@@ -359,6 +425,68 @@ const login = async (req, res) => {
         const q = {
             selector: {
                 email: req.body.email,
+            },
+        };
+
+        console.log('\n--> Evaluate Transaction: Login paziente');
+        let result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
+
+        result=JSON.parse(prettyJSONString(result));
+
+        console.log("Verifica password");
+        const verify=await bcrypt.compare(req.body.password, result[0].Record.password);
+
+        console.log(result);
+        console.log(verify);
+
+        if(verify)
+        {
+            console.log("Andato tutto");
+            res.status(200).json({CF: result[0].Record.CF, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
+        }
+
+        else
+        {
+            console.log("Password diversa");
+            res.status(401).json("Credenziali errate");
+        }
+
+
+        gateway.disconnect();
+    } catch (e) {
+        console.log(e);
+        res.status(401).json("Accesso fallito");
+    }
+}
+
+const loginM = async (req, res) => {
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        const gateway = new Gateway();
+
+        await gateway.connect(ccp, {
+            wallet: wallet,
+            identity: org1UserId,
+            discovery: {enabled: true, asLocalhost: true}
+        });
+
+        //Ritrovamento canale su cui è applicato il chaincode
+        const network = await gateway.getNetwork(channelName);
+
+        //Ritrovamento smartContract da chaincode
+        const contract = network.getContract(chaincodeName);
+
+        const q = {
+            selector: {
+                id: req.body.id,
             },
         };
 
@@ -389,170 +517,36 @@ const login = async (req, res) => {
     }
 }
 
+const testpv = async (req, res) => {
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        let p=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        console.log("Test pv");
+
+        console.log(p);
+
+        gateway.disconnect();
+    } catch (e) {
+        res.status(401).json("Accesso fallito");
+    }
+}
+
 export const bcController = {
-    example,
     addPatient,
     deletePatient,
     updatePatient,
     getPatient,
     getAll,
     query,
-    login
+    login,
+    loginM,
+    testpv
 };
-
-
-// module.exports = {
-//     example: async (req, res) => {
-//
-//         const gateway = new Gateway();
-//
-//         try {
-//             //Instaurazione connessione con blockchain
-//             await gateway.connect(conn, {
-//                 wallet: await Wallets.newFileSystemWallet("./wallet"),
-//                 identity: "admin",
-//                 discovery: {enabled: true, asLocalhost: true}
-//             });
-//
-//             //Ritrovamento canale su cui è applicato il chaincode
-//             const network = await gateway.getNetwork("mychannel");
-//
-//             //Ritrovamento smartContract da chaincode
-//             const contract = network.getContract("patientContract");
-//
-//             //Eseguire funzione istantiate
-//             await contract.submitTransaction("istantiate");
-//             res.status(200).json("Istanziato");
-//
-//             gateway.disconnect();
-//
-//         } catch (e) {
-//             console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-//             res.status(500).json(`Errore ${e.message}`);
-//             throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-//         }
-//     },
-//
-//     addPatient: async (req, res) => {
-//         const gateway = new Gateway();
-//
-//         try {
-//             //Instaurazione connessione con blockchain
-//             await gateway.connect(conn, {
-//                 wallet: await Wallets.newFileSystemWallet("./wallet"),
-//                 identity: "admin",
-//                 discovery: {enabled: true, asLocalhost: true}
-//             });
-//
-//             //Ritrovamento canale su cui è applicato il chaincode
-//             const network = await gateway.getNetwork("mychannel");
-//
-//             //Ritrovamento smartContract da chaincode
-//             const contract = network.getContract("patientContract");
-//
-//             //Eseguire funzione di inserimento paziente
-//             const p = new Patient(req.nome, req.cognome, req.cf);
-//             await contract.submitTransaction("createPatient", req.cf, p);
-//             res.status(200).json("Inserimento avvenuto correttamente");
-//
-//             gateway.disconnect();
-//
-//         } catch (e) {
-//             console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-//             res.status(500).json(`Errore ${e.message}`);
-//             throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-//
-//         }
-//     },
-//
-//     deletePatient: async (req, res) => {
-//         const gateway = new Gateway();
-//
-//         try {
-//             //Instaurazione connessione con blockchain
-//             await gateway.connect(conn, {
-//                 wallet: await Wallets.newFileSystemWallet("./wallet"),
-//                 identity: "admin",
-//                 discovery: {enabled: true, asLocalhost: true}
-//             });
-//
-//             //Ritrovamento canale su cui è applicato il chaincode
-//             const network = await gateway.getNetwork("mychannel");
-//
-//             //Ritrovamento smartContract da chaincode
-//             const contract = network.getContract("patientContract");
-//
-//             //Funzione di cancellazione paziente
-//             await contract.submitTransaction("deletePatient", req.cf);
-//             res.status(200).json("Eliminazione avvenuta correttamente");
-//
-//             gateway.disconnect();
-//
-//         } catch (e) {
-//             console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-//             res.status(500).json(`Errore ${e.message}`);
-//             throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-//         }
-//     },
-//
-//     updatePatient: async (req, res) => {
-//         const gateway = new Gateway();
-//
-//         try {
-//             //Instaurazione connessione con blockchain
-//             await gateway.connect(conn, {
-//                 wallet: await Wallets.newFileSystemWallet("./wallet"),
-//                 identity: "admin",
-//                 discovery: {enabled: true, asLocalhost: true}
-//             });
-//
-//             //Ritrovamento canale su cui è applicato il chaincode
-//             const network = await gateway.getNetwork("mychannel");
-//
-//             //Ritrovamento smartContract da chaincode
-//             const contract = network.getContract("patientContract");
-//
-//             //Funzione di aggiornamento paziente
-//             await contract.submitTransaction("updatePatient", req.cf, req.nome);
-//             res.status(200).json("Aggiornamento effettuato con successo");
-//
-//             gateway.disconnect();
-//
-//         } catch (e) {
-//             console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-//             res.status(500).json(`Errore ${e.message}`);
-//             throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-//         }
-//     },
-//
-//     getPatient: async (req, res) => {
-//         const gateway = new Gateway();
-//
-//         try {
-//             //Instaurazione connessione con blockchain
-//             await gateway.connect(conn, {
-//                 wallet: await Wallets.newFileSystemWallet("./wallet"),
-//                 identity: "admin",
-//                 discovery: {enabled: true, asLocalhost: true}
-//             });
-//
-//             //Ritrovamento canale su cui è applicato il chaincode
-//             const network = await gateway.getNetwork("mychannel");
-//
-//             //Ritrovamento smartContract da chaincode
-//             const contract = network.getContract("patientContract");
-//
-//             //funzione di lettura paziente
-//             const p = await contract.evaluateTransaction("getPatient", req.cf);
-//             res.status(200).json({message: "Lettura eseguita correttamente", value: p});
-//
-//             gateway.disconnect();
-//
-//         } catch (e) {
-//             console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-//             res.status(500).json(`Errore ${e.message}`);
-//             throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-//         }
-//     }
-// }
 

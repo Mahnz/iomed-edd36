@@ -23,7 +23,7 @@ const theme = createTheme({
     },
 })
 
-export default function SignUpFormPaziente() {
+export default function SignUpFormPaziente({handle}) {
     const initialForm = {
         firstName: '',
         lastName: '',
@@ -216,7 +216,7 @@ export default function SignUpFormPaziente() {
         }
 
         // ? Reset allo stato iniziale del form
-        setFormData(initialForm)
+        //setFormData(initialForm)
     }
 
     useEffect(() => {

@@ -16,6 +16,10 @@ router.post("/insertUser", bcController.addPatient);
 
 router.post("/login", bcController.login);
 
+router.post("/loginM", bcController.loginM);
+
+router.get("/testpv", bcController.testpv);
+
 router.get("/getData", (req, res) => {
     console.log("Richiesta arrivata");
     bcController.getAll();
