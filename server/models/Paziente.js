@@ -16,6 +16,8 @@ class Paziente {
         this.sex=form.sex;
         this.cid=null;
         this.docType=form.docType;
+        this.doctors=[];
+        this.requests=[];
     }
 }
 export default Paziente;
