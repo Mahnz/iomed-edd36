@@ -1,6 +1,6 @@
 // UserIconPanel.js
 import React from 'react'
-import {useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom";
 import Cookies from 'universal-cookie'
 import {
     Menu,
@@ -10,7 +10,8 @@ import {
     List, ListItemText, ListItemSecondaryAction,
     Tooltip, ListItemButton
 } from '@mui/material'
-import {Logout, Settings} from "@mui/icons-material"
+import {Logout, Settings} from "@mui/icons-material";
+import Cookies from "universal-cookie";
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -37,7 +38,7 @@ const StyledMenu = styled((props) => (
         boxShadow:
             'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
-}))
+}));
 
 export default function UserIconPanel({
                                           anchorEl,
@@ -46,13 +47,24 @@ export default function UserIconPanel({
                                           setSelectedTab,
                                           setLoggedUser
                                       }) {
-    const navigate = useNavigate()
-    const cookie = new Cookies()
 
-    const logout = () => {
-        setLoggedUser("")
-        cookie.remove("email")
-        navigate("/")
+    const navigate = useNavigate()
+    const cookies = new Cookies()
+
+    const logout= () => {
+        cookies.remove('token', {
+            path: '/',
+            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+        });
+        cookies.remove('firstName',{
+            path: '/',
+            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+        });
+        cookies.remove('lastName',{
+            path: '/',
+            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+        });
+        navigate("/homepage")
     }
 
     const getHandler = (tab) => {

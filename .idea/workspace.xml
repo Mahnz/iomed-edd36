@@ -5,23 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Contatti.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Fine.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/InformazioniPersonali.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Paz/Steps.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Contatti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Contatti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/DatiProfessionali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/DatiProfessionali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/Fine.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Fine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps/InformazioniPersonali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/InformazioniPersonali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Step.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/TestStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Steps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TestFrontendSignup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/UserIconPanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/UserIconPanel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Authentication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,31 +48,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Node.js.index.js.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Domenico/Desktop/software-edd36/frontend/src/components",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.BACKEND.executor": "Run",
-    "npm.FRONTEND.executor": "Run",
-    "npm.start.executor": "Run",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "two.files.diff.last.used.file": "C:/Users/Domenico/Desktop/packageOLD.json",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.BACKEND.executor&quot;: &quot;Run&quot;,
+    &quot;npm.FRONTEND.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/Domenico/Desktop/packageOLD.json&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactBuddySettings">
     <option name="extensionsIgnore" value="true" />
   </component>
@@ -166,6 +161,9 @@
       <workItem from="1702727246066" duration="40933000" />
       <workItem from="1702801497898" duration="26567000" />
       <workItem from="1702890672019" duration="31101000" />
+      <workItem from="1703181781917" duration="15000" />
+      <workItem from="1703181804190" duration="6047000" />
+      <workItem from="1703267052098" duration="3421000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -191,7 +189,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702908268395</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703190020612</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1703190020612</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703267877848</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703267877848</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -26,7 +26,7 @@ const theme = createTheme({
     },
 });
 
-export default function LoginFormMedico({handle}) {
+export default function LoginFormMedico() {
     const [id, setId] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -70,7 +70,7 @@ export default function LoginFormMedico({handle}) {
 
     const [isFirstRender, setIsFirstRender] = useState(true)
     const [isFirstClick, setIsFirstClick] = useState(true)
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (!id) {
             setErrors((prevErrors) => ({
@@ -128,21 +128,36 @@ export default function LoginFormMedico({handle}) {
                     password: password
                 };
                 console.log("Sono arrivato alla POST")
-                axios.post('http://localhost:3001/api/bc/loginM', user)
+                await axios.post('http://localhost:3001/api/bc/loginM', user)
                     .then(res => {
-                        console.log("Login effettuato")
+                        console.log("Login medico effettuato")
                         console.log(res.data)
-
-                        cookies.set('id', id, {
+                        cookies.set('token', res.data.id, {
                             path: '/',
                             expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                            httpOnly: true,      // Non accessibile tramite JavaScript
                             sameSite: 'Strict',  // Cookie limitato al proprio dominio
                         });
+                        cookies.set('type', "medico", {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        cookies.set('firstName', res.data.firstName, {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        cookies.set('lastName', res.data.lastName, {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        alert("Login medico effettuato");
                         navigate("/dashboard/home");
                     })
                     .catch(error => {
-                        console.error(error);
+                        console.error(error)
+                        alert("Errore "+e.status+" "+e.response);
                     });
             }
         }

@@ -1,9 +1,9 @@
 import React from 'react'
 import {Grid, Card, CardContent, Typography, CardActions, Button} from "@mui/material";
-import Cookie from "universal-cookie"
+import Cookies from "universal-cookie"
 
 export default function HomeContent({handleSelectTab}) {
-    const cookie = new Cookie()
+    const cookies = new Cookies()
     const loggedUser = "Mario Rossi"
     // const loggedUser = cookie.get('name')
 

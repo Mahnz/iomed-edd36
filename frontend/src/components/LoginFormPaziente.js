@@ -26,7 +26,7 @@ const theme = createTheme({
     },
 });
 
-export default function LoginFormPaziente({handle}) {
+export default function LoginFormPaziente() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -47,8 +47,8 @@ export default function LoginFormPaziente({handle}) {
 
     useEffect(() => {
         // Verifica se il cookie è impostato
-        if (cookies.get("email")) {
-            console.log(cookies.get("email"))
+        if (cookies.get("token")) {
+            console.log(cookies.get("token"))
             navigate("/dashboard/home");
         }
     })
@@ -85,7 +85,7 @@ export default function LoginFormPaziente({handle}) {
 
     const [isFirstRender, setIsFirstRender] = useState(true)
     const [isFirstClick, setIsFirstClick] = useState(true)
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (!email) {
             setErrors((prevErrors) => ({
@@ -143,14 +143,36 @@ export default function LoginFormPaziente({handle}) {
                     password: password
                 };
                 console.log("Sono arrivato alla POST")
-                axios.post('http://localhost:3001/api/bc/login', user)
+                await axios.post('http://localhost:3001/api/bc/login', user)
                     .then(res => {
-                        console.log("Login effettuato")
+                        console.log("Login paziente effettuato")
                         console.log(res.data)
-                        handle(res.data);
+                        cookies.set('token', res.data.CF, {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        cookies.set('type', "paziente", {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        cookies.set('firstName', res.data.firstName, {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        cookies.set('lastName', res.data.lastName, {
+                            path: '/',
+                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        });
+                        alert("Login paziente effettuato");
+                        navigate("/dashboard/home")
                     })
                     .catch(error => {
                         console.error(error);
+                        alert("Errore "+e.status+" "+e.response);
                     });
             }
         }

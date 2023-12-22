@@ -14,54 +14,18 @@ import {useNavigate} from "react-router-dom";
 
 export default function App() {
 
-    const [name, setName] = useState({firstName: "", lastName: ""});
-    const navigate = useNavigate();
-    const cookies = new Cookies();
-
-    useEffect(() => {
-        console.log(document.cookie);
-        console.log(name);
-    })
-
-    function setLoggedUser(data) {
-        console.log("Cookie:")
-        console.log(document.cookie);
-        console.log("Dati: ")
-        console.log(data);
-        if (data == null) {
-            console.log("Cancellazione cookie, logout");
-
-            cookies.remove("token", {
-                path: "/"
-            });
-
-            console.log(document.cookie);
-            setName({firstName: "", lastName: ""});
-            navigate("/dashboard/home");
-        } else {
-            cookies.set('token', data.CF, {
-                path: '/',
-                expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                sameSite: 'Strict',  // Cookie limitato al proprio dominio
-            });
-            console.log(document.cookie);
-            setName({firstName: data.firstName, lastName: data.lastName});
-            navigate("/dashboard/home");
-        }
-    }
-
     return (
         <>
             <Routes>
                 <Route path="/loginPaziente"
-                       element={<Authentication medico={false} login={true} handle={setLoggedUser}/>}/>
+                       element={<Authentication medico={false} login={true}/>}/>
                 <Route path="/signupPaziente"
-                       element={<Authentication medico={false} login={false} handle={setLoggedUser}/>}/>
+                       element={<Authentication medico={false} login={false}/>}/>
 
                 <Route path="/loginMedico"
-                       element={<Authentication medico={true} login={true} handle={setLoggedUser}/>}/>
+                       element={<Authentication medico={true} login={true}/>}/>
                 <Route path="/signupMedico"
-                       element={<Authentication medico={true} login={false} handle={setLoggedUser}/>}/>
+                       element={<Authentication medico={true} login={false}/>}/>
 
                 <Route path="/dashboard/*" element={<Dashboard/>}/>
                 <Route path="/homepage" element={<HomePage/>}/>
