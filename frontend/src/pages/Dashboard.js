@@ -99,10 +99,6 @@ export default function Dashboard() {
     //     }
     //     init(loggedUsername).then(() => console.log("Inizializzazione effettuata"))
     // }, [])
-    const handleLogout = () => {
-        // cookies.remove(["email", "password"])
-        navigate("/homepage")
-    }
 
     // ? GESTIONE DELLE TAB
     const [selectedTab, setSelectedTab] = useState("")

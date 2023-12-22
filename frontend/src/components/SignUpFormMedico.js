@@ -13,8 +13,12 @@ import {
     Typography,
 } from "@mui/material"
 import axios from "axios"
+import Cookies from "universal-cookie";
+import {useNavigate} from "react-router-dom";
 
-export default function SignUpFormMedico({handle}) {
+export default function SignUpFormMedico() {
+    const cookies=new Cookies();
+    const navigate=useNavigate();
     const initialForm = {
         firstName: '',
         lastName: '',
@@ -214,7 +218,7 @@ export default function SignUpFormMedico({handle}) {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (!Object.values(errInfoPersonali).some((error) => error) &&
@@ -224,10 +228,37 @@ export default function SignUpFormMedico({handle}) {
             // TODO - Gestire l'invio dei dati in blockchain
             console.log('Dati inviati:', formData)
             console.log("Chiamata funzione axios")
-            axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
-                .then(res => console.log(res)).catch(e => console.log(e))
+            await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
+                .then(res =>{
+                    console.log("Registrazione medico effettuata")
+                    console.log(res.data)
+                    cookies.set('token', res.data.id, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('type', "medico", {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('firstName', res.data.firstName, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('lastName', res.data.lastName, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    alert("Registrazione medico effettuata");
+                    navigate("/dashboard/home");
+                })
+                .catch(e => console.log(e))
         } else {
-            console.log('Dati non inviati')
+            console.log('Dati non inviati');
+            alert("Errore "+e.status+" "+e.response);
         }
 
         // ? Reset allo stato iniziale del form

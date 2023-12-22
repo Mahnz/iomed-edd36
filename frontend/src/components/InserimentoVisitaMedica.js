@@ -13,7 +13,7 @@ import {Add, CloudUpload, RemoveCircleOutlined, Send} from "@mui/icons-material"
 import {departments} from "../utils.js"
 import axios from "axios"
 import CodiceFiscale from "codice-fiscale-js"
-import Cookie from "universal-cookie"
+import Cookies from "universal-cookie"
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -28,7 +28,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function InserimentoVisitaMedica() {
-    const cookies = new Cookie()
+    const cookies = new Cookies()
     const navigate = useNavigate()
     const today = new Date()
     const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)

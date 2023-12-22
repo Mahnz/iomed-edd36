@@ -96,7 +96,8 @@ const addPatient = async (req, res) => {
                 if(Buffer.from(r).toString()=="true")
                 {
                     console.log("Aggiunta avvenuta");
-                    return res.status(200).json("Inserimento avvenuto correttamente");
+                    let CF=await jwt.sign(p.CF, pk, {expiresIn: "3600s"})
+                    return res.status(200).json({CF: CF, firstName: p.firstName, lastName: p.lastName});
                 }
                 else
                 {
@@ -157,7 +158,8 @@ const addPatient = async (req, res) => {
                     if(Buffer.from(i).toString()=="true")
                     {
                         console.log("Aggiunta avvenuta");
-                        return res.status(200).json("Inserimento avvenuto correttamente");
+                        let id= await jwt.sign(d.id, pk, {expiresIn: "3600s"});
+                        return res.status(200).json({id: id, firstName: d.firstName, lastName: d.lastName});
                     }
                     else
                     {
@@ -186,7 +188,8 @@ const addPatient = async (req, res) => {
                             d.spec=req.body.formData.spec;
                             console.log("Inizio transazione di modifica paziente in medico");
                             await contract.submitTransaction("updatePatient", d.CF, JSON.stringify(d));
-                            res.status(200).json("Medico inserito correttamente da paziente");
+                            let id=await jwt.sign(d.id, pk, {expiresIn: "3600s"});
+                            res.status(200).json({id: id, firstName:d.firstName, lastName: d.lastName});
                         }
 
                     }
@@ -446,7 +449,8 @@ const login = async (req, res) => {
         if(verify)
         {
             console.log("Andato tutto");
-            res.status(200).json({CF: result[0].Record.CF, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
+            let CF= await jwt.sign(result[0].Record.CF, pk, { expiresIn: '3600s' })
+            res.status(200).json({CF: CF, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
         }
 
         else
@@ -505,7 +509,8 @@ const loginM = async (req, res) => {
         if(verify)
         {
             console.log("Andato tutto");
-            res.status(200).json({sessionid: 10});
+            let id=await jwt.sign(result[0].Record.id, pk, {expiresIn: "3600s"})
+            res.status(200).json({id: id, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
         }
 
         else

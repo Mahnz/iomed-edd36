@@ -11,6 +11,7 @@ import {
     Tooltip, ListItemButton
 } from '@mui/material'
 import {Logout, Settings} from "@mui/icons-material";
+import Cookies from "universal-cookie";
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -48,12 +49,22 @@ export default function UserIconPanel({
                                       }) {
 
     const navigate = useNavigate()
-    const cookie = new Cookies()
+    const cookies = new Cookies()
 
-    const logout = () => {
-        setLoggedUser("")
-        cookie.remove("email")
-        navigate("/")
+    const logout= () => {
+        cookies.remove('token', {
+            path: '/',
+            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+        });
+        cookies.remove('firstName',{
+            path: '/',
+            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+        });
+        cookies.remove('lastName',{
+            path: '/',
+            sameSite: 'Strict',  // Cookie limitato al proprio dominio
+        });
+        navigate("/homepage")
     }
 
     const getHandler = (tab) => {

@@ -4,7 +4,7 @@ import LoginFormMedico from "../components/LoginFormMedico.js";
 import SignUpFormPaziente from "../components/SignUpFormPaziente.js";
 import SignUpFormMedico from "../components/SignUpFormMedico.js";
 
-export default function Authentication({login, medico,handle}) {
+export default function Authentication({login, medico}) {
     useEffect(() => {
         document.title = login ? 'MED Project | Login' : 'MED Project | Registrazione';
     })
@@ -15,8 +15,8 @@ export default function Authentication({login, medico,handle}) {
     return (
         <>
             {login ?
-                (medico ? <LoginFormMedico handle={handle}/> : <LoginFormPaziente handle={handle}/>)
-                : (medico ? <SignUpFormMedico handle={handle}/> : <SignUpFormPaziente handle={handle}/>)
+                (medico ? <LoginFormMedico/> : <LoginFormPaziente/>)
+                : (medico ? <SignUpFormMedico/> : <SignUpFormPaziente/>)
             }
         </>
     )

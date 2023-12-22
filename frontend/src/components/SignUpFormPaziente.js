@@ -12,7 +12,9 @@ import {
     Toolbar,
     Typography, createTheme, ThemeProvider,
 } from "@mui/material"
-import axios from "axios"
+import axios from "axios";
+import Cookies from "universal-cookie";
+import {useNavigate} from "react-router-dom";
 
 const theme = createTheme({
     palette: {
@@ -22,7 +24,9 @@ const theme = createTheme({
     },
 })
 
-export default function SignUpFormPaziente({handle}) {
+export default function SignUpFormPaziente() {
+    const cookies=new Cookies();
+    const navigate=useNavigate();
     const initialForm = {
         firstName: '',
         lastName: '',
@@ -198,7 +202,7 @@ export default function SignUpFormPaziente({handle}) {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
 
         if (!Object.values(errInfoPersonali).some((error) => error) &&
@@ -207,10 +211,37 @@ export default function SignUpFormPaziente({handle}) {
             // TODO - Gestire l'invio dei dati in blockchain
             console.log('Dati inviati:', formData)
             console.log("Chiamata funzione axios")
-            axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
-                .then(res => console.log(res)).catch(e => console.log(e))
+            await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
+                .then(res =>{
+                    console.log("Registrazione paziente effettuata")
+                    console.log(res.data)
+                    cookies.set('token', res.data.CF, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('type', "paziente", {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('firstName', res.data.firstName, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('lastName', res.data.lastName, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    alert("Registrazione paziente effettuata");
+                    navigate("/dashboard/home");
+                })
+                .catch(e => console.log(e))
         } else {
-            console.log('Dati non inviati')
+            console.log('Dati non inviati');
+            alert("Errore "+e.status+" "+e.response);
         }
 
         // ? Reset allo stato iniziale del form
