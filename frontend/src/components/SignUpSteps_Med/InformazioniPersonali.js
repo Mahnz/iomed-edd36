@@ -12,9 +12,9 @@ export default function InformazioniPersonali({
                                                   handleChange,
                                                   errors
                                               }) {
+    const [btnDisabled, setBtnDisabled] = useState(true)
     const today = new Date()
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
-    const [btnDisabled, setBtnDisabled] = useState(true)
 
     // ? Controllo interattivo per il calcolo del Codice Fiscale
     useEffect(() => {
@@ -134,7 +134,6 @@ export default function InformazioniPersonali({
             <Grid item xs={12} md={8}>
                 <TextField type="date"
                            name="birthDate"
-                           placeholder="Inserire data nascita"
                            value={formData.birthDate}
                            onChange={handleChange}
                            inputProps={{min: "1890-01-01", max: maxDate.toISOString().split('T')[0]}}

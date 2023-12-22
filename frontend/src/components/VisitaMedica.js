@@ -1,29 +1,18 @@
 // VisitaMedica.js
-import React, {useEffect} from 'react';
-import {Paper, Typography, Button, Container, Grid, Divider, IconButton, Menu, MenuItem} from '@mui/material';
-import {ArrowBack, CloudDownload, MoreVert} from '@mui/icons-material';
-import {Link, useNavigate} from 'react-router-dom';
+import React, {useState, useEffect} from 'react'
+import {Paper, Typography, Button, Container, Grid, Divider, IconButton, Menu, MenuItem} from '@mui/material'
+import {ArrowBack, CloudDownload, MoreVert} from '@mui/icons-material'
+import {Link, useNavigate} from 'react-router-dom'
+import axios from "axios"
+import dayjs from 'dayjs'
+import {BufferList} from 'bl'
 
 export default function VisitaMedica({visita}) {
-    const navigate = useNavigate();
 
     // TODO - Da rimuovere quando la visita viene passata come parametro
-    const files = [
-        {
-            name: "Referto.pdf",
-            type: "pdf",
-            size: "1.2 MB",
-            date: "11/12/2021",
-            url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-        },
-        {
-            name: "Immagini radiografia.pdf",
-            type: "pdf",
-            size: "1.2 MB",
-            date: "11/12/2021",
-            url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-        }
-    ];
+    const navigate = useNavigate();
+    const [details, setDetails] = useState({});
+    const [files, setFiles] = useState([]);
 
     useEffect(() => {
         if (visita === "") {
@@ -31,22 +20,63 @@ export default function VisitaMedica({visita}) {
         }
     }, [visita]);
 
+    useEffect(() => {
+        const readVisitaMedica = async () => {
+            try {
+                // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
+                // const codiceFiscale = cookies.get('codiceFiscale')
+                const codiceFiscale = 'MZZDNC02B23A662Z'
+                const response = await axios.get(`http://localhost:3001/api/ipfs/getSingleVisitaByCF/${codiceFiscale}/${visita.fullName}`);
+
+                if (response.status === 200) {
+                    setDetails(response.data.details)
+                    setFiles(response.data.files)
+                    console.log('Dettagli visita:', details)
+                    console.log('File della visita:', files)
+                } else {
+                    console.error('Errore nella richiesta:', response.status);
+                }
+
+            } catch (error) {
+                console.error("Errore durante la lettura della visita:", error)
+            }
+        };
+
+        readVisitaMedica()
+    }, [])
+
     // ? Gestione del menù di opzioni per i file
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null)
     const handleMenuClick = (event) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget)
     };
     const handleMenuClose = () => {
-        setAnchorEl(null);
+        setAnchorEl(null)
     };
-    const handleDownload = () => {
-        window.alert('Scarica il file qui');
-        handleMenuClose();
-    };
+    const handleDownload = async (file) => {
+        try {
+            const content = file.content;
+            console.log(content)
+            const blob = new Blob([content], {type: 'application/pdf'})
+            console.log(blob)
+            // const blob = new Blob([file.content], {type: 'application/pdf'})
+            const link = document.createElement('a')
+            const url = URL.createObjectURL(blob)
+            link.href = url
+            link.download = file.name
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+        } catch (error) {
+            console.error('Errore durante la conversione del contenuto in Blob:', error)
+        }
+    }
+
     const handleOpenInNewTab = () => {
-        window.alert('Apri il file in una nuova pagina');
-        handleMenuClose();
-    };
+        window.alert('Apri il file in una nuova pagina')
+        handleMenuClose()
+    }
 
     return (
         <Container sx={{mt: 4}}>
@@ -54,17 +84,17 @@ export default function VisitaMedica({visita}) {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="h4" color="primary">
-                            <b>{visita.name}</b>
+                            <b>{details.nomeVisita}</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography color="text.secondary">
-                            <b>Data:</b> {visita.date}
+                            <b>Data:</b> {details.dataVisita}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography color="text.secondary">
-                            <b>Medico:</b> {visita.doctor}
+                            <b>Medico:</b> {details.medico}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -72,15 +102,18 @@ export default function VisitaMedica({visita}) {
                     </Grid>
                     <Grid item xs={12}>
                         <Typography color="text.secondary">
-                            <b>Descrizione:</b> {visita.description}
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a leo aliquet, pharetra
-                            nulla sed, hendrerit diam. Mauris tortor eros, porttitor ut laoreet non, varius vel quam.
-                            Nullam efficitur, massa ut tristique molestie, leo risus aliquet eros, vitae porttitor nisi
-                            sapien scelerisque metus. Nulla facilisi. Phasellus quis odio venenatis velit laoreet
-                            bibendum sit amet at neque. Vivamus sed dui a ante consequat efficitur. Donec feugiat ipsum
-                            felis, quis cursus lorem semper vel. Vivamus sed augue iaculis erat rutrum efficitur eget
-                            tristique elit. Quisque non est efficitur, gravida libero a, ullamcorper dui. Nam dictum, ex
-                            ac egestas tristique, turpis lacus efficitur turpis, a lobortis sem elit in elit.
+                            <b>Descrizione: </b>
+                            {details.descrizione ? (
+                                // <Typography color="text.secondary">{details.descrizione}</Typography>
+                                details.descrizione.split('\n').map((line, index) => (
+                                    <Typography key={index}>
+                                        {line}
+                                        <br/>
+                                    </Typography>
+                                ))
+                            ) : (
+                                <em>Nessuna descrizione presente</em>
+                            )}
                         </Typography>
                     </Grid>
 
@@ -115,8 +148,7 @@ export default function VisitaMedica({visita}) {
                                     size="small"
                                     color="primary"
                                     startIcon={<CloudDownload/>}
-                                    onClick={handleDownload}
-                                >
+                                    onClick={() => handleDownload(file)}>
                                     Scarica
                                 </Button>
                                 <IconButton
@@ -132,7 +164,7 @@ export default function VisitaMedica({visita}) {
                     </Grid>
                     <Grid item xs={12}>
                         <Typography color="text.secondary">
-                            <b>Ultimo aggiornamento:</b> 13:50, 11/12/2021
+                            <b>Ultimo aggiornamento: </b> {dayjs(details.lastUpdate).format('HH:mm, DD/MM/YYYY')}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>

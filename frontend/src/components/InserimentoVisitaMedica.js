@@ -30,19 +30,27 @@ const VisuallyHiddenInput = styled('input')({
 export default function InserimentoVisitaMedica() {
     const cookies = new Cookie()
     const navigate = useNavigate()
+    const today = new Date()
+    const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+
     const initialFormData = {
-        codiceFiscale: 'MZZDNC02B23A662Z',
+        codiceFiscale: '',
+        dataVisita: '',
         nomeVisita: '',
         reparto: null,
         descrizione: '',
         allegati: [],
         // TODO - Inserire il codice fiscale del medico
-        // medico: cookies.get("medico"),
+        // medico: cookies.get("id"),
         medico: "medico"
     }
     const [formData, setFormData] = useState(initialFormData)
     const [errors, setErrors] = useState({
         codiceFiscale: {
+            error: false,
+            message: ''
+        },
+        dataVisita: {
             error: false,
             message: ''
         },
@@ -72,6 +80,25 @@ export default function InserimentoVisitaMedica() {
                 ...prevData,
                 codiceFiscale: value.toUpperCase(),
             }))
+        } else if (name === "dataVisita") {
+            if (value <= maxDate.toISOString().split('T')[0]) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    dataVisita: value,
+                }))
+            } else {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    dataVisita: "",
+                }))
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    dataVisita: {
+                        error: true,
+                        message: "La data non può essere successiva a quella odierna"
+                    }
+                }))
+            }
         } else {
             setFormData((prevData) => ({...prevData, [name]: value}))
         }
@@ -100,7 +127,7 @@ export default function InserimentoVisitaMedica() {
     }
 
     // ! Gestione del bottone di verifica del codice fiscale
-    const checkCF = () => {
+    const checkCF = async () => {
         const cf = formData.codiceFiscale
 
         try {
@@ -114,8 +141,48 @@ export default function InserimentoVisitaMedica() {
                         message: ""
                     }
                 }))
+
+                setIsCFVerified(true)
+                setFormData((prevData) => ({
+                    ...prevData,
+                    nomeVisita: '',
+                    reparto: '',
+                    descrizione: '',
+                    dataVisita: '',
+                    allegati: []
+                }))
+                // const response = await axios.post("http://localhost:3001/api/bc/verify", cf)
+                // if (response.status === 200) {
+                //     console.log("Il codice fiscale è presente sulla blockchain")
+                //     setIsCFVerified(true)
+                //     setErrors((prevErrors) => ({
+                //         ...prevErrors,
+                //         codiceFiscale: {
+                //             error: false,
+                //             message: ""
+                //         }
+                //     }))
+                // } else {
+                //     console.log("Il codice fiscale non è presente sulla blockchain")
+                //     setIsCFVerified(false)
+                //     setErrors((prevErrors) => ({
+                //         ...prevErrors,
+                //         codiceFiscale: {
+                //             error: true,
+                //             message: "Il paziente non è registrato alla piattaforma"
+                //         }
+                //     }))
+                // }
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    codiceFiscale: {
+                        error: true,
+                        message: "Il codice fiscale non è valido"
+                    }
+                }))
             }
-            setIsCFVerified(true)
+
         } catch (e) {
             console.log("Il codice fiscale non è valido")
             setErrors((prevErrors) => ({
@@ -189,6 +256,10 @@ export default function InserimentoVisitaMedica() {
                     error: false,
                     message: ""
                 },
+                dataVisita: {
+                    error: false,
+                    message: ""
+                },
                 nomeVisita: {
                     error: false,
                     message: ""
@@ -198,7 +269,7 @@ export default function InserimentoVisitaMedica() {
                     message: ""
                 }
             }))
-            setFormData(initialFormData)
+            // setFormData(initialFormData)
         }
     }, [formData.codiceFiscale])
 
@@ -249,6 +320,30 @@ export default function InserimentoVisitaMedica() {
             }
         }
     }, [formData.reparto])
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setIsFirstRender(false)
+        } else {
+            if (!formData.dataVisita) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    dataVisita: {
+                        error: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    dataVisita: {
+                        error: false,
+                        message: ""
+                    }
+                }))
+            }
+        }
+    }, [formData.dataVisita])
 
 
     const [showOverlay, setShowOverlay] = useState(false);
@@ -329,6 +424,7 @@ export default function InserimentoVisitaMedica() {
 
                     // Aggiungi i dati del form
                     formValues.append('codiceFiscale', formData.codiceFiscale)
+                    formValues.append('dataVisita', formData.dataVisita)
                     formValues.append('nomeVisita', formData.nomeVisita)
                     formValues.append('reparto', formData.reparto)
                     formValues.append('descrizione', formData.descrizione)
@@ -436,7 +532,7 @@ export default function InserimentoVisitaMedica() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField type="text"
-                                       label="Nome della Visita"
+                                       label="Nome della visita"
                                        name="nomeVisita"
                                        value={formData.nomeVisita}
                                        onChange={handleChange}
@@ -488,6 +584,21 @@ export default function InserimentoVisitaMedica() {
                                        fullWidth
                                        value={formData.descrizione}
                                        onChange={handleChange}
+                                       disabled={!isCFVerified}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <TextField type="date"
+                                       name="dataVisita"
+                                       variant="outlined"
+                                       autoComplete="off"
+                                       value={formData.dataVisita}
+                                       onChange={handleChange}
+                                       inputProps={{min: "1890-01-01", max: maxDate.toISOString().split('T')[0]}}
+                                       fullWidth
+                                       required
+                                       error={errors.dataVisita.error}
+                                       helperText={errors.dataVisita.error && errors.dataVisita.message}
                                        disabled={!isCFVerified}
                             />
                         </Grid>

@@ -1,7 +1,9 @@
 // ElencoVisite.js
-import React from 'react'
-import {Button, Container, Grid, Paper, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import React, {useState, useEffect} from 'react'
+import {useNavigate} from "react-router-dom"
+import axios from "axios"
+import Cookies from "universal-cookie"
+import {Button, Container, Grid, Paper, Typography} from "@mui/material"
 
 export default function ElencoVisite({setVisita}) {
 
@@ -59,9 +61,26 @@ export default function ElencoVisite({setVisita}) {
         },
     ]
     const navigate = useNavigate()
+    const cookies = new Cookies()
+    const [visite, setVisite] = useState([])
+
+    useEffect(() => {
+        const fetchVisiteMediche = async () => {
+            try {
+                // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
+                // const codiceFiscale = cookies.get('codiceFiscale')
+                const codiceFiscale = 'MZZDNC02B23A662Z'
+                const response = await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${codiceFiscale}`)
+                setVisite(response.data.visite)
+            } catch (error) {
+                console.error("Errore durante il recupero delle visite mediche:", error)
+            }
+        }
+
+        fetchVisiteMediche()
+    }, []) // Avviato solo al primo rendering della pagina
 
     const handleOpen = (visita) => {
-        console.log(visita.date)
         setVisita(visita)
         navigate('/dashboard/visite/visualizzaVisita')
     }
@@ -72,7 +91,7 @@ export default function ElencoVisite({setVisita}) {
                 Le tue ultime visite mediche
             </Typography>
             <Grid container spacing={5}>
-                {temp.map((visit, index) => (
+                {visite.map((visit, index) => (
                     <Grid item xs={12} md={8} lg={6} key={index}>
                         <Paper
                             sx={{
@@ -85,18 +104,17 @@ export default function ElencoVisite({setVisita}) {
                                 '&:hover': {
                                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
                                 },
-                            }}
-                        >
+                            }}>
                             <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
                                 <div style={{flexGrow: 1}}>
                                     <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                        <b>{visit.name}</b>
+                                        <b>{visit.nomeVisita}</b>
                                     </Typography>
                                     <Typography color="text.secondary" gutterBottom>
-                                        <b>Data:</b> {visit.date}
+                                        <b>Data:</b> {visit.dataVisita}
                                     </Typography>
                                     <Typography color="text.secondary" gutterBottom>
-                                        <b>Medico:</b> {visit.doctor}
+                                        <b>Medico:</b> {visit.medico}
                                     </Typography>
                                     <Typography color="text.secondary" sx={{flex: 1}}>
                                         <b>Ultimo aggiornamento:</b> 13:50, 11/12/2021
