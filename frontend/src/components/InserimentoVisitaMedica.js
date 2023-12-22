@@ -415,39 +415,35 @@ export default function InserimentoVisitaMedica() {
                 }))
             }
 
-            if (isFirstClick) {
-                setIsFirstClick(false)
-            } else {
-                if (!errors.codiceFiscale.error && !errors.nomeVisita.error && !errors.reparto.error && isCFVerified) {
-                    console.log(formData)
-                    const formValues = new FormData()
+            if (!errors.codiceFiscale.error && !errors.nomeVisita.error && !errors.reparto.error && isCFVerified) {
+                console.log(formData)
+                const formValues = new FormData()
 
-                    // Aggiungi i dati del form
-                    formValues.append('codiceFiscale', formData.codiceFiscale)
-                    formValues.append('dataVisita', formData.dataVisita)
-                    formValues.append('nomeVisita', formData.nomeVisita)
-                    formValues.append('reparto', formData.reparto)
-                    formValues.append('descrizione', formData.descrizione)
+                // Aggiungi i dati del form
+                formValues.append('codiceFiscale', formData.codiceFiscale)
+                formValues.append('dataVisita', formData.dataVisita)
+                formValues.append('nomeVisita', formData.nomeVisita)
+                formValues.append('reparto', formData.reparto)
+                formValues.append('descrizione', formData.descrizione)
 
-                    // Aggiungi i file
-                    formData.allegati.forEach((file, index) => {
-                        formValues.append('allegati', file.file)
+                // Aggiungi i file
+                formData.allegati.forEach((file, index) => {
+                    formValues.append('allegati', file.file)
+                })
+                console.log(formValues)
+                setShowOverlay(true)
+                try {
+                    const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
+                        'Content-Type': 'multipart/form-data',
                     })
-                    console.log(formValues)
-                    setShowOverlay(true)
-                    try {
-                        const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
-                            'Content-Type': 'multipart/form-data',
-                        })
 
-                        if (res.status === 200) {
-                            console.log(res.data);
-                        }
-                    } catch (error) {
-                        console.error("Errore nella chiamata", error);
-                    } finally {
-                        setShowOverlay(false);
+                    if (res.status === 200) {
+                        console.log(res.data);
                     }
+                } catch (error) {
+                    console.error("Errore nella chiamata", error);
+                } finally {
+                    setShowOverlay(false);
                 }
             }
         }
@@ -548,13 +544,14 @@ export default function InserimentoVisitaMedica() {
                             <Autocomplete
                                 name="reparto"
                                 options={departments}
-                                isOptionEqualToValue={(option, value) => {
-                                    if (value === "") {
-                                        return false
-                                    } else if (value === option) {
-                                        return true
-                                    }
-                                }}
+                                isOptionEqualToValue={(option, value) => option.value === value.value}
+                                // isOptionEqualToValue={(option, value) => {
+                                //     if (value === "") {
+                                //         return false
+                                //     } else if (value === option) {
+                                //         return true
+                                //     }
+                                // }}
                                 onChange={(event, value) => handleChangeReparto(value)}
                                 value={formData.reparto}
                                 autoHighlight

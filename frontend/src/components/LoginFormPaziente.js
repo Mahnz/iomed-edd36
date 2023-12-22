@@ -311,10 +311,9 @@ export default function LoginFormPaziente({handle}) {
                         >
                             Login
                         </Button>
-                        <Link href="#" variant="body2">
-                            Non hai un account? Registrati
-                        </Link>
-                        {/*</Box>*/}
+                        <Typography variant="body2">
+                            Non hai un account? <Link href="/signupPaziente">Registrati</Link>
+                        </Typography>
                     </Paper>
                 </Box>
             </Container>

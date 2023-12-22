@@ -316,9 +316,9 @@ export default function LoginFormMedico({handle}) {
                         >
                             Login
                         </Button>
-                        <Link href="#" variant="body2">
-                            Non hai un account? Registrati
-                        </Link>
+                        <Typography variant="body2">
+                            Non hai un account? <Link href="/signupMedico">Registrati</Link>
+                        </Typography>
                     </Paper>
                 </Box>
             </Container>

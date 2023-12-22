@@ -6,60 +6,6 @@ import Cookies from "universal-cookie"
 import {Button, Container, Grid, Paper, Typography} from "@mui/material"
 
 export default function ElencoVisite({setVisita}) {
-
-    // TODO - Da rimuovere quando le visite vengono lette da IPFS
-    const temp = [
-        {
-            name: "Visita allergologica",
-            date: "12/12/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita oculistica",
-            date: "04/10/2021",
-            doctor: "Rario Mossi"
-        },
-        {
-            name: "Visita cardiologica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita dermatologica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita ortopedica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita ortopedica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita ortopedica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita ortopedica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita ortopedica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-        {
-            name: "Visita ortopedica",
-            date: "12/09/2021",
-            doctor: "Mario Rossi"
-        },
-    ]
     const navigate = useNavigate()
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
@@ -80,8 +26,9 @@ export default function ElencoVisite({setVisita}) {
         fetchVisiteMediche()
     }, []) // Avviato solo al primo rendering della pagina
 
-    const handleOpen = (visita) => {
-        setVisita(visita)
+    const handleOpen = (visit) => {
+        setVisita(visit)
+        console.log(visit)
         navigate('/dashboard/visite/visualizzaVisita')
     }
 

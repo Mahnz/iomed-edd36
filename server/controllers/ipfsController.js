@@ -1,10 +1,11 @@
 import {create} from 'ipfs-http-client'
 import all from 'it-all'
 import {bcController} from "./bcController.mjs";
+import {concat as uint8ArrayConcat} from "uint8arrays";
 
 const address = 'http://127.0.0.1:5002'
 const connect = async (req, res) => {
-    const ipfs = create(new URL("http://127.0.0.1:5002"))
+    const ipfs = create(new URL(address))
     const isOnline = ipfs.isOnline()
 
     if (isOnline) {
@@ -27,7 +28,6 @@ const addUser = async (cf) => {
         console.error(err)
     }
 }
-
 
 const addVisita = async (req, res) => {
     const ipfs = await connect()
@@ -114,42 +114,18 @@ const getAllVisiteByCF = async (req, res) => {
         const visiteDirectories = await ipfs.files.ls(dirPath)
 
         for await (const element of visiteDirectories) {
-            const visitaData = element.name.split('!');
+            const visitaData = element.name.split('!')
             const visita = {
+                codiceFiscale: cf,
                 fullName: element.name,
                 nomeVisita: visitaData[0],
                 medico: visitaData[1],
                 dataVisita: visitaData[2]
             }
             visiteList.push(visita)
-            // console.log(visita)
         }
         console.log("Visite presenti: ", visiteList.length)
         res.status(200).json({success: true, visite: visiteList})
-
-        // console.log("Elenco di file: " + rootDirectoryContents)
-        // console.log("Numero di file: " + rootDirectoryContents.length)
-
-        // // ? LETTURA DEL FILE dettagli.json DALLA CARTELLA DELLA VISITA
-        // const chunks = [];
-        // for await (const chunk of ipfs.files.read(`${visitaDirectory}/details.json`)) {
-        //     chunks.push(chunk);
-        // }
-        // const fileContent = Buffer.concat(chunks).toString();
-        // console.log(JSON.parse(fileContent));
-
-
-        // let rootDirectoryContents = await all(ipfs.files.ls(dirPath))
-        // for (const file of rootDirectoryContents) {
-        //     const filePath = `${dirPath}/${file.name}`
-        //     const fileContent = await ipfs.files.read(filePath, {timeout: 10000})
-        //
-        //     filesList.push({name: file.name, content: fileContent});
-        // }
-        // console.log("Contenuto dei file:", filesList);
-
-        // console.log(`Elenco dei file nella directory '${dirPath}':`, filesList)
-        // res.status(200).json({success: true, fileList: filesList})
     } catch (err) {
         console.log(`Errore nella lettura della directory '${dirPath}'`)
         res.status(500).json({error: 'Internal Server Error'})
@@ -169,44 +145,45 @@ const getSingleVisitaByCF = async (req, res) => {
         console.log(`Lettura dei file in '${dirPath}'`)
 
         const files = await ipfs.files.ls(dirPath)
-        console.log("Contenuto della directory: " + files)
-
         for await (const element of files) {
             if (element.name === "details.json") {
-                const chunks = [];
+                console.log("- - - - - - - - - - - - - - - - - - - - - - -")
+                const chunks = []
                 for await (const chunk of ipfs.files.read(`${dirPath}/details.json`)) {
-                    chunks.push(chunk);
+                    chunks.push(chunk)
                 }
-                const content = Buffer.concat(chunks).toString();
+                const content = Buffer.concat(chunks).toString('utf8')
                 details = JSON.parse(content)
                 console.log("Dettagli della visita:", details)
-                console.log("- - - - - - - - - - - - - - - - - -")
+                console.log("- - - - - - - - - - - - - - - - - - - - - - -")
             } else {
-                const filePath = `${dirPath}/${element.name}`
-                // const fileContent = await ipfs.files.read(filePath)
-                const chunks = [];
-                for await (const chunk of ipfs.files.read(filePath)) {
-                    chunks.push(chunk);
-                }
-                const fileContent = Buffer.concat(chunks)
-
-                console.log("Contenuto del file: " + fileContent)
-                filesList.push({name: element.name, content: fileContent});
+                filesList.push({name: element.name, size: element.size})
             }
         }
         console.log("Elenco di file allegati:", filesList)
         res.status(200).json({success: true, details: details, files: filesList})
-
-        // let rootDirectoryContents = await all(ipfs.files.ls(dirPath))
-        // for (const file of rootDirectoryContents) {
-        //     const filePath = `${dirPath}/${file.name}`
-        //     const fileContent = await ipfs.files.read(filePath, {timeout: 10000})
-        //
-        //     filesList.push({name: file.name, content: fileContent});
-        // }
     } catch (err) {
         console.log(`Errore nella lettura della directory '${dirPath}'`)
         res.status(500).json({error: 'Internal Server Error'})
+    }
+}
+
+const downloadFile = async (req, res) => {
+    const ipfs = await connect()
+    const cf = req.params.codiceFiscale
+    const nomeVisita = req.params.nomeVisita
+    const filename = req.params.filename;
+    const filePath = `/patients/${cf}/${nomeVisita}/${filename}`;
+
+    try {
+        const data = uint8ArrayConcat(await all(ipfs.files.read(filePath)));
+        // console.log("Data: " + data)
+        res.setHeader('Content-Type', 'application/octet-stream'); // Imposta il tipo di contenuto come dati binari
+        res.send(Buffer.from(data));
+    } catch (error) {
+        console.error(error);
+        console.log(`Errore nella lettura di '${filename}'`)
+        res.status(500).json({error: 'Internal Server Error'});
     }
 }
 
@@ -227,5 +204,6 @@ export const ipfsController = {
     addVisita,
     getAllVisiteByCF,
     getSingleVisitaByCF,
+    downloadFile,
     saveToIpfs
 }

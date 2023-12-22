@@ -9,6 +9,7 @@ const upload = multer({storage: storage})
 router.post('/addVisita', upload.array('allegati'), ipfsController.addVisita)
 router.get('/getAllVisiteByCF/:codiceFiscale', ipfsController.getAllVisiteByCF)
 router.get('/getSingleVisitaByCF/:codiceFiscale/:nomeVisita', ipfsController.getSingleVisitaByCF)
+router.get('/download/:codiceFiscale/:nomeVisita/:filename', ipfsController.downloadFile)
 
 // ? TEST AGGIUNTA DELLA VISITA
 router.post('/saveToIpfs', upload.array('file'), ipfsController.saveToIpfs)
