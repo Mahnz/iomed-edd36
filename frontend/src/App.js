@@ -3,7 +3,7 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 
 import Authentication from "./pages/Authentication.js"
 import Dashboard from "./pages/Dashboard.js"
-import TestIPFS from "./pages/TestIPFS.js"
+import HomePage from "./pages/HomePage.js"
 import TestFrontend from "./pages/TestFrontend.js"
 import TestBC from "./pages/TestBC.js"
 import {useState, useEffect} from "react"
@@ -64,13 +64,13 @@ export default function App() {
                        element={<Authentication medico={true} login={false} handle={setLoggedUser}/>}/>
 
                 <Route path="/dashboard/*" element={<Dashboard/>}/>
-                <Route path="/upload" element={<TestIPFS/>}/>
+                <Route path="/homepage" element={<HomePage/>}/>
                 <Route path="/testFE" element={<TestFrontend/>}/>
                 <Route path="/blockchain" element={<TestBC/>}/>
 
 
                 {/* TODO - Redirect per motivi di test */}
-                <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
+                <Route path="*" element={<Navigate to='/homepage' replace/>}/>
             </Routes>
         </>
     )
