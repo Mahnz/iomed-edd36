@@ -304,14 +304,15 @@ const getPatient = async (req, res) => {
         console.log("Ricerca iniziata");
 
         //funzione di lettura paziente
-        const p = await contract.evaluateTransaction("getPatient", req.body);
+        let p = await contract.evaluateTransaction("getPatient", req.body);
+        p=JSON.parse(prettyJSONString(p));
         console.log(p);
 
         console.log("Ricerca finita");
 
         gateway.disconnect();
 
-        return p;
+        return res.status(200).json(p);
 
     } catch (e) {
         console.log(e);
@@ -520,8 +521,7 @@ const loginM = async (req, res) => {
     }
 }
 
-const enrolling=async (req,res) => {
-
+const enrolling=async () => {
     try {
         const ccp = buildCCPOrg1();
         const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
@@ -531,8 +531,6 @@ const enrolling=async (req,res) => {
         await enrollAdmin(caClient, wallet, mspOrg1);
 
         let p=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-        gateway.disconnect();
 
         return p;
 
