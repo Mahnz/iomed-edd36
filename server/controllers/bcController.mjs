@@ -775,7 +775,7 @@ const getDoctors= async (req,res) => {
         const contract = network.getContract(chaincodeName);
 
         console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
-        let CF= await jwt.verify(req.body.token,pk);
+        let CF= await jwt.verify(req.params.token,pk);
 
         console.log("Troviamo il paziente col CF");
         let user=await contract.evaluateTransaction("getPatient", CF);
@@ -798,7 +798,9 @@ const getDoctors= async (req,res) => {
                 lastName: result[0].Record.lastName,
                 id: result[0].Record.id,
                 hospital: result[0].Record.hospital,
-                spec: result[0].Record.spec
+                spec: result[0].Record.spec,
+                birthDate: result[0].Record.birthDate,
+
             });
         }
         gateway.disconnect();
@@ -956,7 +958,7 @@ const getPatients= async (req,res) => {
         const contract = network.getContract(chaincodeName);
 
         console.log("Decriptiamo l'id del medico che sta passando tramite token");
-        let id= await jwt.verify(req.body.token,pk);
+        let id= await jwt.verify(req.params.token,pk);
 
         const q = {
             selector: {

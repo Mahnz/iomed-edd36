@@ -358,24 +358,22 @@ export default function ElencoUtenti() {
         }
     ]
 
-    useEffect(() => {
+    useEffect(async() => {
         if (cookies.get("token")) {
             if (cookies.get("type") === "medico") {
                 setMedico(true)
                 // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
-                setId('A4S5S8W9Q5A4S8W5D8')
-                // setId(cookies.get('id'))
+                setId(cookies.get('token'))
                 // BLOCKCHAIN
-                // const response = await axios.get(`http://localhost:3001/api/bc/getAllDoctorsByCF/${codiceFiscale}`)
-                // setUsers(response.data.medici)
+                await axios.get(`http://localhost:3001/api/bc/getPatientsById/${id}`)
+                    .then(res=> setUsers(res.data)).catch(e=>console.log(e));
             } else {
                 setMedico(false)
                 // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
-                // const codiceFiscale = 'MZZDNC02B23A662Z'
-                // const codiceFiscale = cookies.get('token')
+                const codiceFiscale = cookies.get('token');
                 // BLOCKCHAIN
-                // const response = await axios.get(`http://localhost:3001/api/bc/getAllDoctorsByCF/${codiceFiscale}`)
-                // setUsers(response.data.medici)
+                await axios.get(`http://localhost:3001/api/bc/getDoctorsByCF/${codiceFiscale}`)
+                    .then(res=> setUsers(res.data)).catch(e=>console.log(e));
             }
         }
     }, [])
@@ -397,6 +395,7 @@ export default function ElencoUtenti() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {/*TODO Da Sostituire tableData con users.map e l'attributo codicefiscale con CF*/}
                         {tableData.map((row, index) => (
                             <TableRow key={index} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                 <TableCell component="th" scope="row">{row.lastName}</TableCell>
