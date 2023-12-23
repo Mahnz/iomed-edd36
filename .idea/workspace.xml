@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Small changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/MediciAutorizzati.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MediciAutorizzati.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/UserIconPanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/UserIconPanel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Authentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +98,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.BACKEND">
+  <component name="RunManager" selected="npm.FRONTEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -123,6 +117,13 @@
       <item itemvalue="npm.BACKEND" />
       <item itemvalue="npm.FRONTEND" />
     </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-c44b541a36ca-JavaScript-WS-233.13135.92" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -161,9 +162,7 @@
       <workItem from="1702727246066" duration="40933000" />
       <workItem from="1702801497898" duration="26567000" />
       <workItem from="1702890672019" duration="31101000" />
-      <workItem from="1703181781917" duration="15000" />
-      <workItem from="1703181804190" duration="6047000" />
-      <workItem from="1703267052098" duration="3421000" />
+      <workItem from="1703319723507" duration="3456000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -189,23 +188,7 @@
       <option name="project" value="LOCAL" />
       <updated>1702908268395</updated>
     </task>
-    <task id="LOCAL-00004" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
-      <option name="closed" value="true" />
-      <created>1703190020612</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1703190020612</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
-      <option name="closed" value="true" />
-      <created>1703267877848</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1703267877848</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

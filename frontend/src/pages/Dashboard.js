@@ -14,7 +14,7 @@ import {
     Person,
     Home,
     PersonAddAlt1,
-    Brightness7, Brightness4
+    Brightness7, Brightness4, FormatListBulleted
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
@@ -30,54 +30,14 @@ import "../style/dashboard.css"
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import VisitaMedica from "../components/VisitaMedica.js"
 import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
+import ElencoUtenti from "../components/ElencoUtenti.js";
 
 const drawerWidth = 240
 
-const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
-(({theme, open}) => ({
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        ...(open && {
-            marginLeft: drawerWidth,
-            width: `calc(100% - ${drawerWidth}px)`,
-            transition: theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        }),
-    })
-)
-
-const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme, open}) => ({
-        '& .MuiDrawer-paper': {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: theme.spacing(7),
-                [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
-                },
-            }),
-        },
-    }),)
 
 export default function Dashboard() {
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
+    const [medico, setMedico] = useState(false)
     const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
@@ -88,17 +48,21 @@ export default function Dashboard() {
     const [loggedUser, setLoggedUser] = useState("test")
     const cookies = new Cookies()
     const navigate = useNavigate()
-    // useEffect(() => {
-    //     let loggedUsername = cookies.get("email")
-    //     if (!loggedUsername) {
-    //         console.log("Login non effettuato. Reindirizzamento...")
-    //         navigate("/login")
-    //         return
-    //     } else {
-    //         setLoggedUser(loggedUsername)
-    //     }
-    //     init(loggedUsername).then(() => console.log("Inizializzazione effettuata"))
-    // }, [])
+    useEffect(() => {
+        // if (!cookies.get("token")) {
+        //     console.log("Login non effettuato. Reindirizzamento...")
+        //     navigate("/homepage")
+        // } else {
+        //     if (cookies.get("type") === "medico") {
+        //         setMedico(true)
+        //         setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
+        //     } else {
+        //         setMedico(false)
+        //         setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
+        //     }
+        // }
+        // init(token).then(() => console.log("Inizializzazione effettuata"))
+    }, [])
 
     // ? GESTIONE DELLE TAB
     const [selectedTab, setSelectedTab] = useState("")
@@ -110,16 +74,24 @@ export default function Dashboard() {
         if (selectedTab === "H") {
             document.title = 'MedPlatform - Home'
             navigate('/dashboard/home')
-        } else if (selectedTab === "V") {
+        } else if (selectedTab === "V" && !medico) {
             document.title = 'MedPlatform - Ultime visite'
             navigate('/dashboard/visite')
             setSelectedVisita("")
         } else if (selectedTab === "P") {
             document.title = 'MedPlatform - Il mio profilo'
             navigate('/dashboard/profilo')
-        } else if (selectedTab === "I") {
+        } else if (selectedTab === "I" && medico) {
             document.title = 'MedPlatform - Nuova visita'
             navigate('/dashboard/inserimentoVisita')
+        } else if (selectedTab === "E") {
+            if (medico) {
+                document.title = 'MedPlatform - Elenco assistiti'
+                navigate('/dashboard/listaAssistiti')
+            } else {
+                document.title = 'MedPlatform - Elenco medici'
+                navigate('/dashboard/mediciAutorizzati')
+            }
         } else if (selectedTab === "S") {
             document.title = 'MedPlatform - Impostazioni'
             navigate('/dashboard/settings')
@@ -166,7 +138,6 @@ export default function Dashboard() {
     }
 
     return (
-        // <ThemeProvider theme={responsiveTheme}>
         <Box sx={{display: 'flex'}}>
             <CssBaseline/>
             <AppBar position="absolute" open={openDrawer}>
@@ -295,13 +266,23 @@ export default function Dashboard() {
                         </ListItemIcon>
                         <ListItemText primary="Home"/>
                     </ListItemButton>
+                    {!medico && (
+                        <ListItemButton
+                            onClick={() => handleSelectTab('V')}
+                            className={selectedTab === 'V' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Healing/>
+                            </ListItemIcon>
+                            <ListItemText primary="Visite mediche"/>
+                        </ListItemButton>
+                    )}
                     <ListItemButton
-                        onClick={() => handleSelectTab('V')}
-                        className={selectedTab === 'V' ? 'selected-tab' : ''}>
+                        onClick={() => handleSelectTab("E")}
+                        className={selectedTab === 'E' ? 'selected-tab' : ''}>
                         <ListItemIcon>
-                            <Healing/>
+                            <FormatListBulleted/>
                         </ListItemIcon>
-                        <ListItemText primary="Visite mediche"/>
+                        <ListItemText primary={medico ? "Elenco assistiti" : "Medici autorizzati"}/>
                     </ListItemButton>
                     <ListItemButton
                         onClick={() => handleSelectTab('P')}
@@ -311,15 +292,16 @@ export default function Dashboard() {
                         </ListItemIcon>
                         <ListItemText primary="Il mio profilo"/>
                     </ListItemButton>
-                    <ListItemButton
-                        onClick={() => handleSelectTab('I')}
-                        className={selectedTab === 'I' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <PersonAddAlt1/>
-                        </ListItemIcon>
-                        <ListItemText primary="Inserimento visita"/>
-                    </ListItemButton>
-
+                    {medico && (
+                        <ListItemButton
+                            onClick={() => handleSelectTab('I')}
+                            className={selectedTab === 'I' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <PersonAddAlt1/>
+                            </ListItemIcon>
+                            <ListItemText primary="Inserimento visita"/>
+                        </ListItemButton>
+                    )}
                     <Divider sx={{my: 1}}/>
 
                     {/* Qui è possibile aggiungere le voci di un menù secondario (idea: visite dell'ultimo anno, mese, settimana */}
@@ -343,20 +325,72 @@ export default function Dashboard() {
                 <Toolbar/>
                 <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                     <Routes>
-                        <Route index
-                               element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
+                        <Route index element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/visite" element={<ElencoVisite setVisita={setSelectedVisita}/>}/>
-                        <Route path="/visite/visualizzaVisita"
-                               element={<VisitaMedica visita={selectedVisita}/>}/>
+                        <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={selectedVisita}/>}/>
                         <Route path="/profilo" element={<MyProfile/>}/>
-                        <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>
-
+                        {medico && <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>}
+                        <Route path="/settings" element={<div>Impostazioni</div>}/>
+                        <Route path="/mediciAutorizzati"
+                               element={medico
+                                   ? <Navigate to='/dashboard/home' replace/>
+                                   : <ElencoUtenti/>
+                               }
+                        />
+                        <Route path="/listaAssistiti"
+                               element={!medico
+                                   ? <Navigate to='/dashboard/home' replace/>
+                                   : <ElencoUtenti/>
+                               }
+                        />
                         <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
                     </Routes>
                 </Container>
             </Box>
         </Box>
-        // </ThemeProvider>
     )
 }
+
+const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
+(({theme, open}) => ({
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(open && {
+            marginLeft: drawerWidth,
+            width: `calc(100% - ${drawerWidth}px)`,
+            transition: theme.transitions.create(['width', 'margin'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+        }),
+    })
+)
+
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
+        '& .MuiDrawer-paper': {
+            position: 'relative',
+            whiteSpace: 'nowrap',
+            width: drawerWidth,
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            boxSizing: 'border-box',
+            ...(!open && {
+                overflowX: 'hidden',
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                }),
+                width: theme.spacing(7),
+                [theme.breakpoints.up('sm')]: {
+                    width: theme.spacing(9),
+                },
+            }),
+        },
+    }),)

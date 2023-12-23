@@ -432,6 +432,10 @@ export default function InserimentoVisitaMedica() {
                 })
                 console.log(formValues)
                 setShowOverlay(true)
+
+                // BLOCKCHAIN
+                // TODO - Validare la transazione in blockchain
+
                 try {
                     const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
                         'Content-Type': 'multipart/form-data',
