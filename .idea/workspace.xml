@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/routes/bcRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/bcRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -205,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703356465948</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703357578793</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1703357578793</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

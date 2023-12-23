@@ -22,10 +22,11 @@ router.post("/deleteRequest", bcController.deleteRequest);
 router.post("/confirmRequest", bcController.confirmRequest);
 router.get("/getDoctorsByCF/:token", bcController.getDoctors);
 router.get("/getPatientsById/:token",bcController.getPatients);
-router.get("/getRequest", bcController.getRequests);
+router.get("/getRequest/:token", bcController.getRequests);
 router.post("/deleteDoctor", bcController.deleteDoctor);
 router.post("/addRequest", bcController.addRequest);
 router.get("/getCF/:token",bcController.getCF);
+router.post("/patientExist", bcController.patientExist);
 
 router.get("/testpv", bcController.testpv);
 
