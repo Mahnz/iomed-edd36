@@ -9,15 +9,22 @@ export default function ElencoVisite({setVisita}) {
     const navigate = useNavigate()
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
+    const [codiceFiscale,setCodiceFiscale]=useState("");
 
-    useEffect(() => {
+    useEffect(async() => {
         const fetchVisiteMediche = async () => {
             try {
                 // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
-                // const codiceFiscale = cookies.get('codiceFiscale')
-                const codiceFiscale = 'MZZDNC02B23A662Z'
-                const response = await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${codiceFiscale}`)
-                setVisite(response.data.visite)
+                if(cookies.get("token"))
+                {
+                    const CF= cookies.get('token');
+                    await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
+                        .then(res=>setCodiceFiscale(res)).catch(e=>console.log(e));
+                    await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${codiceFiscale}`)
+                    setVisite(response.data.visite)
+                }
+
+
             } catch (error) {
                 console.error("Errore durante il recupero delle visite mediche:", error)
             }

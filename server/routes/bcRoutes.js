@@ -25,6 +25,7 @@ router.get("/getPatientsById/:token",bcController.getPatients);
 router.get("/getRequest", bcController.getRequests);
 router.post("/deleteDoctor", bcController.deleteDoctor);
 router.post("/addRequest", bcController.addRequest);
+router.get("/getCF/:token",bcController.getCF);
 
 router.get("/testpv", bcController.testpv);
 

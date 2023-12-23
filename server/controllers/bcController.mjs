@@ -749,7 +749,7 @@ const getDoctors= async (req,res) => {
     const gateway = new Gateway();
     let v=[];
 
-    if(req.body.token==null)
+    if(req.params.token==null)
         return res.status(401).json("Errore autenticazione");
 
     try {
@@ -863,9 +863,8 @@ const deleteDoctor= async(req,res) =>{
     }
 }
 
-const getRequests= async (req,res) =>{
+const patientExist=async(req,res)=>{
     const gateway = new Gateway();
-    let v=[];
 
     if(req.body.token==null)
         return res.status(401).json("Errore autenticazione");
@@ -892,8 +891,52 @@ const getRequests= async (req,res) =>{
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
+        let CF=await jwt.verify(req.body.token,pk);
+
+        let aux=await contract.evaluateTransaction("patientExist", CF);
+        gateway.disconnect();
+
+        if(aux)
+            return res.status(200).json("Rimozione autorizzazione medico effettuata");
+        else
+            return res.status(400).json("Non trovato il CF");
+    } catch (e) {
+        console.log(e);
+        res.status(404).json("Errore");
+    }
+}
+
+const getRequests= async (req,res) =>{
+    const gateway = new Gateway();
+    let v=[];
+
+    if(req.params.token==null)
+        return res.status(401).json("Errore autenticazione");
+
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        await gateway.connect(ccp, {
+            wallet,
+            identity: org1UserId,
+            discovery: {enabled: true, asLocalhost: true}
+        });
+
+        //Ritrovamento canale su cui è applicato il chaincode
+        const network = await gateway.getNetwork(channelName);
+
+        //Ritrovamento smartContract da chaincode
+        const contract = network.getContract(chaincodeName);
+
         console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
-        let CF= await jwt.verify(req.body.token,pk);
+        let CF= await jwt.verify(req.params.token,pk);
 
         console.log("Troviamo il paziente col CF");
         let user=await contract.evaluateTransaction("getPatient", CF);
@@ -932,7 +975,7 @@ const getPatients= async (req,res) => {
     const gateway = new Gateway();
     let v=[];
 
-    if(req.body.token==null)
+    if(req.params.token==null)
         return res.status(401).json("Errore autenticazione");
 
     try {
@@ -1013,6 +1056,27 @@ const testpv = async (req, res) => {
     }
 }
 
+const getCF=async (req,res)=>{
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        let p=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        let CF=await jwt.verify(req.params.token,p);
+
+        gateway.disconnect();
+
+        return res.status(200).json(CF);
+    } catch (e) {
+        res.status(401).json("Accesso fallito");
+    }
+}
+
 export const bcController = {
     addPatient,
     deletePatient,
@@ -1031,6 +1095,8 @@ export const bcController = {
     getRequests,
     deleteDoctor,
     getPatients,
-    addRequest
+    addRequest,
+    getCF,
+    patientExist
 };
 
