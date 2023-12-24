@@ -82,16 +82,16 @@ export default function ElencoUtenti() {
         setOpenDialog(false);
     }
 
-    const handleDeleteUser = (user) => {
+    const handleDeleteUser = async (user) => {
         handleCloseDialog();
-        if (medico) {
+        if (!medico) {
             // BLOCKCHAIN
             // TODO - Chiamata alla backend per andare a cancellare l'utente
-            // const response = await axios.delete(`http://localhost:3001/api/bc/deletePatient/${user.CF}`)
-        } else {
-            // BLOCKCHAIN
-            // TODO - Chiamata alla backend per andare a cancellare l'utente
-            // const response = await axios.delete(`http://localhost:3001/api/bc/deleteDoctor/${user.id}`)
+            let CF= cookies.get("token");
+            await axios.delete(`http://localhost:3001/api/bc/deleteDoctor`, {
+                token: CF,
+                id: user.id
+            }).then(res=> alert(res.data)).catch(e=>console.log(e));
         }
     }
 
