@@ -23,7 +23,7 @@ import {
     Tooltip,
     Dialog,
     DialogTitle,
-    DialogContent, DialogActions, Button, useMediaQuery, useTheme
+    DialogContent, DialogActions, Button
 } from "@mui/material"
 import {Cancel} from "@mui/icons-material";
 import axios from "axios";
@@ -109,7 +109,7 @@ export default function ElencoUtenti() {
                                 <StyledTableCell sx={{width: '25%'}} align="left">Nome</StyledTableCell>
                                 <StyledTableCell sx={{width: '15%'}} align="center">Data di nascita</StyledTableCell>
                                 <StyledTableCell sx={{width: '30%'}} align="center">Codice fiscale</StyledTableCell>
-                                <StyledTableCell sx={{width: '5%'}} align="center"> </StyledTableCell>
+                                {!medico && <StyledTableCell sx={{width: '5%'}} align="center"> </StyledTableCell>}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -122,14 +122,16 @@ export default function ElencoUtenti() {
                                         <StyledTableCell align="left">{row.firstName}</StyledTableCell>
                                         <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
                                         <StyledTableCell align="center">{row.CF}</StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            <Tooltip title="Rimuovi medico dalla lista" placement="right">
-                                                <IconButton aria-label="delete"
-                                                            onClick={() => handleOpenDialog(row)}>
-                                                    <Cancel color="error"/>
-                                                </IconButton>
-                                            </Tooltip>
-                                        </StyledTableCell>
+                                        {!medico && (
+                                            <StyledTableCell align="center">
+                                                <Tooltip title="Rimuovi medico dalla lista" placement="right">
+                                                    <IconButton aria-label="delete"
+                                                                onClick={() => handleOpenDialog(row)}>
+                                                        <Cancel color="error"/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </StyledTableCell>
+                                        )}
                                     </StyledTableRow>
                                 ))}
                         </TableBody>
@@ -145,23 +147,22 @@ export default function ElencoUtenti() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Conferma cancellazione</DialogTitle>
-                <DialogContent>
-                    {medico
-                        ? "Sei sicuro di voler rimuovere il paziente dall'elenco degli assistiti ?"
-                        : "Sei sicuro di voler revocare l'autorizzazione al medico ?"
-                    }
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">
-                        Annulla
-                    </Button>
-                    <Button onClick={handleDeleteUser} color="primary">
-                        Conferma
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {!medico && (
+                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                    <DialogTitle>Conferma cancellazione</DialogTitle>
+                    <DialogContent>
+                        Sei sicuro di voler revocare l'autorizzazione al medico ?
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog} color="primary">
+                            Annulla
+                        </Button>
+                        <Button onClick={handleDeleteUser} color="primary">
+                            Conferma
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
         </>
     )
 }

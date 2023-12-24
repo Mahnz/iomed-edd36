@@ -2,18 +2,17 @@
 class Paziente {
     constructor(form) {
         this.CF = form.CF;
-        this.address = form.address;
-        this.birthDate = form.birthDate;
-        this.birthPlace = form.birthPlace;
-        this.city = form.city;
-        this.confirmPassword = form.confirmPassword;
-        this.email = form.email;
         this.firstName = form.firstName;
         this.lastName = form.lastName;
+        this.sex = form.sex;
+        this.birthDate = form.birthDate;
+        this.birthPlace = form.birthPlace;
+        this.address = form.address;
+        this.city = form.city;
+        this.email = form.email;
         this.password = form.password;
         this.telefono = form.telefono;
         this.province = form.province;
-        this.sex = form.sex;
         this.cid = null;
         this.docType = form.docType;
         this.doctors = [];
