@@ -5,13 +5,13 @@ import axios from "axios"
 import Cookies from "universal-cookie"
 import {Button, Container, Grid, Paper, Typography} from "@mui/material"
 
-export default function ElencoVisite({setVisita}) {
+export default function ElencoVisite({setVisita,codiceUtente}) {
     const navigate = useNavigate()
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
     const [codiceFiscale,setCodiceFiscale]=useState("");
 
-    useEffect(async() => {
+    useEffect(() => {
         const fetchVisiteMediche = async () => {
             try {
                 // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
@@ -19,9 +19,9 @@ export default function ElencoVisite({setVisita}) {
                 {
                     const CF= cookies.get('token');
                     await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
-                        .then(res=>setCodiceFiscale(res)).catch(e=>console.log(e));
+                        .then(res=>setCodiceFiscale(res.data)).catch(e=>console.log(e));
                     await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${codiceFiscale}`)
-                    setVisite(response.data.visite)
+                        .then(res=> setVisite(res.data.visite)).catch(e=>console.log(e));
                 }
 
 

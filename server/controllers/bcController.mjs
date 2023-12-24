@@ -96,7 +96,7 @@ const addPatient = async (req, res) => {
                 if(Buffer.from(r).toString()=="true")
                 {
                     console.log("Aggiunta avvenuta");
-                    let CF=await jwt.sign(p.CF, pk, {expiresIn: "3600s"})
+                    let CF=await jwt.sign(p.CF, pk)
                     return res.status(200).json({CF: CF, firstName: p.firstName, lastName: p.lastName});
                 }
                 else
@@ -158,7 +158,7 @@ const addPatient = async (req, res) => {
                     if(Buffer.from(i).toString()=="true")
                     {
                         console.log("Aggiunta avvenuta");
-                        let id= await jwt.sign(d.id, pk, {expiresIn: "3600s"});
+                        let id= await jwt.sign(d.id, pk);
                         return res.status(200).json({id: id, firstName: d.firstName, lastName: d.lastName});
                     }
                     else
@@ -188,7 +188,7 @@ const addPatient = async (req, res) => {
                             d.spec=req.body.formData.spec;
                             console.log("Inizio transazione di modifica paziente in medico");
                             await contract.submitTransaction("updatePatient", d.CF, JSON.stringify(d));
-                            let id=await jwt.sign(d.id, pk, {expiresIn: "3600s"});
+                            let id=await jwt.sign(d.id, pk);
                             res.status(200).json({id: id, firstName:d.firstName, lastName: d.lastName});
                         }
 
@@ -449,7 +449,7 @@ const login = async (req, res) => {
         if(verify)
         {
             console.log("Andato tutto");
-            let CF= await jwt.sign(result[0].Record.CF, pk, { expiresIn: '3600s' })
+            let CF= await jwt.sign(result[0].Record.CF, pk)
             res.status(200).json({CF: CF, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
         }
 
@@ -509,7 +509,7 @@ const loginM = async (req, res) => {
         if(verify)
         {
             console.log("Andato tutto");
-            let id=await jwt.sign(result[0].Record.id, pk, {expiresIn: "3600s"})
+            let id=await jwt.sign(result[0].Record.id, pk)
             res.status(200).json({id: id, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
         }
 
