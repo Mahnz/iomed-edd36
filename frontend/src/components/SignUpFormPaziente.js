@@ -25,8 +25,8 @@ const theme = createTheme({
 })
 
 export default function SignUpFormPaziente() {
-    const cookies=new Cookies();
-    const navigate=useNavigate();
+    const cookies = new Cookies();
+    const navigate = useNavigate();
     const initialForm = {
         firstName: '',
         lastName: '',
@@ -202,7 +202,7 @@ export default function SignUpFormPaziente() {
         }
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (!Object.values(errInfoPersonali).some((error) => error) &&
@@ -212,7 +212,7 @@ export default function SignUpFormPaziente() {
             console.log('Dati inviati:', formData)
             console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
-                .then(res =>{
+                .then(res => {
                     console.log("Registrazione paziente effettuata")
                     console.log(res.data)
                     cookies.set('token', res.data.CF, {
@@ -241,7 +241,7 @@ export default function SignUpFormPaziente() {
                 .catch(e => console.log(e))
         } else {
             console.log('Dati non inviati');
-            alert("Errore "+e.status+" "+e.response);
+            alert("Errore " + e.status + " " + e.response);
         }
 
         // ? Reset allo stato iniziale del form

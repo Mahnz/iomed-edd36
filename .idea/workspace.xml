@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Fix su ElencoUtenti.js">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/connection-org1.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/connection-org1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models/Paziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/Paziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/VisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VisitaMedica.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +51,6 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components&quot;,
@@ -157,8 +157,9 @@
       <workItem from="1702727246066" duration="40933000" />
       <workItem from="1702801497898" duration="26567000" />
       <workItem from="1702890672019" duration="31101000" />
-      <workItem from="1703415896978" duration="1425000" />
-      <workItem from="1703418968070" duration="1335000" />
+      <workItem from="1703181781917" duration="15000" />
+      <workItem from="1703181804190" duration="6047000" />
+      <workItem from="1703267052098" duration="3421000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -184,7 +185,39 @@
       <option name="project" value="LOCAL" />
       <updated>1702908268395</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703190020612</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1703190020612</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703267877848</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703267877848</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703356465948</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1703356465948</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703357578793</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1703357578793</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

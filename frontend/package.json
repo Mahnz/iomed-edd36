@@ -15,7 +15,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.2",
-    "bl": "^6.0.9",
     "body-parser": "^1.20.2",
     "bootstrap": "^5.3.2",
     "codice-fiscale-js": "^2.3.20",

@@ -1,21 +1,12 @@
 import React from 'react';
 import {
-    AppBar,
-    Toolbar,
     Typography,
     Container,
     Card,
     CardContent,
-    Button,
     Grid,
-    TextField,
-    IconButton,
-    Paper,
-    Box,
-    Link
 } from '@mui/material';
 import styled from "styled-components";
-import {KeyboardArrowUp} from '@mui/icons-material';
 
 import ContactImg1 from "../style/contact-1.png";
 import ContactImg2 from "../style/contact-2.png";
@@ -88,14 +79,6 @@ export default function HomePage() {
         <div>
             {/* ... altre parti del codice ... */}
 
-            <Header>
-                <Typography variant="h2">Your Platform Name</Typography>
-            </Header>
-
-            <FeaturesContainer>
-                {/* ... altre parti del codice ... */}
-            </FeaturesContainer>
-
             <Container>
                 <Grid container justifyContent="center">
                     <Card>
@@ -155,11 +138,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </Wrapper>
-
-            {/* Footer */}
-            <ScrollToTopButton>
-                {/* ... altre parti del codice ... */}
-            </ScrollToTopButton>
         </div>
     );
 };

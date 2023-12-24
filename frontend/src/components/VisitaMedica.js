@@ -7,16 +7,12 @@ import {
     Container,
     Grid,
     Divider,
-    IconButton,
-    Menu,
-    MenuItem,
     CircularProgress
 } from '@mui/material'
-import {ArrowBack, CloudDownload, MoreVert} from '@mui/icons-material'
+import {ArrowBack, CloudDownload} from '@mui/icons-material'
 import {Link, useNavigate} from 'react-router-dom'
 import axios from "axios"
 import dayjs from 'dayjs'
-import {BufferList} from 'bl'
 
 export default function VisitaMedica({visita}) {
 

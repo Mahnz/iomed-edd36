@@ -1,4 +1,4 @@
-// MediciAutorizzati.js
+// ElencoUtenti.js
 // Creare una tabella che vada a mappare l'array di medici autorizzati relativi ad un certo codice fiscale.
 // Ogni riga della tabella deve contenere:
 // - Nome e cognome del medico
@@ -82,17 +82,15 @@ export default function ElencoUtenti() {
         setOpenDialog(false);
     }
 
-    const handleDeleteUser = async (user) => {
-        handleCloseDialog();
-        if (!medico) {
-            // BLOCKCHAIN
-            // TODO - Chiamata alla backend per andare a cancellare l'utente
-            let CF= cookies.get("token");
-            await axios.delete(`http://localhost:3001/api/bc/deleteDoctor`, {
-                token: CF,
-                id: user.id
-            }).then(res=> alert(res.data)).catch(e=>console.log(e));
-        }
+    const handleDeleteUser = async () => {
+        handleCloseDialog()
+        // BLOCKCHAIN
+        // TODO - Chiamata alla backend per andare a cancellare l'utente
+        let CF = cookies.get("token");
+        await axios.delete(`http://localhost:3001/api/bc/deleteDoctor`, {
+            token: CF,
+            id: userToDelete.id
+        }).then(res => alert(res.data)).catch(e => console.log(e));
     }
 
     return (
