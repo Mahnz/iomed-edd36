@@ -6,16 +6,25 @@ import Dashboard from "./pages/Dashboard.js"
 import HomePage from "./pages/HomePage.js"
 import TestFrontend from "./pages/TestFrontend.js"
 import TestBC from "./pages/TestBC.js"
-import {useState, useEffect} from "react"
+import {createTheme, ThemeProvider} from "@mui/material";
 
-import Cookies from "universal-cookie";
-import {useNavigate} from "react-router-dom";
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
-
+const theme = createTheme({
+    typography: {
+        fontFamily: [
+            'Poppins',
+            'sans-serif',
+        ].join(','),
+    },
+})
 export default function App() {
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <Routes>
                 <Route path="/loginPaziente"
                        element={<Authentication medico={false} login={true}/>}/>
@@ -36,6 +45,6 @@ export default function App() {
                 {/* TODO - Redirect per motivi di test */}
                 <Route path="*" element={<Navigate to='/homepage' replace/>}/>
             </Routes>
-        </>
+        </ThemeProvider>
     )
 }
