@@ -22,7 +22,7 @@ const chaincodeName = 'basic';
 
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
-const org1UserId = 'javascriptAppUser';
+const org1UserId = 'javascriptAppUser1';
 
 
 
@@ -203,85 +203,12 @@ const addPatient = async (req, res) => {
     }
 }
 
-const deletePatient = async (req, res) => {
-    const gateway = new Gateway();
-
-    try {
-        const ccp = buildCCPOrg1();
-        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
-
-        const wallet = await buildWallet(Wallets, walletPath);
-
-        await enrollAdmin(caClient, wallet, mspOrg1);
-
-        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-        await gateway.connect(ccp, {
-            wallet,
-            identity: org1UserId,
-            discovery: {enabled: true, asLocalhost: true}
-        });
-
-        //Ritrovamento canale su cui è applicato il chaincode
-        const network = await gateway.getNetwork(channelName);
-
-        //Ritrovamento smartContract da chaincode
-        const contract = network.getContract(chaincodeName);
-
-        //Funzione di cancellazione paziente
-        await contract.submitTransaction("deletePatient", req.cf);
-        res.status(200).json("Eliminazione avvenuta correttamente");
-
-        gateway.disconnect();
-
-    } catch (e) {
-        console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-        res.status(500).json(`Errore ${e.message}`);
-        throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-    }
-}
-
-const updatePatient = async (req, res) => {
-    const gateway = new Gateway();
-
-    try {
-        const ccp = buildCCPOrg1();
-        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
-
-        const wallet = await buildWallet(Wallets, walletPath);
-
-        await enrollAdmin(caClient, wallet, mspOrg1);
-
-        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-        await gateway.connect(ccp, {
-            wallet,
-            identity: org1UserId,
-            discovery: {enabled: true, asLocalhost: true}
-        });
-
-        //Ritrovamento canale su cui è applicato il chaincode
-        const network = await gateway.getNetwork(channelName);
-
-        //Ritrovamento smartContract da chaincode
-        const contract = network.getContract(chaincodeName);
-
-        //Funzione di aggiornamento paziente
-        await contract.submitTransaction("updatePatient", req.cf, req.nome);
-        res.status(200).json("Aggiornamento effettuato con successo");
-
-        gateway.disconnect();
-
-    } catch (e) {
-        console.error(`Errore durante il richiamo della funzione: ${e.message}`);
-        res.status(500).json(`Errore ${e.message}`);
-        throw new Error("Errore durante il richiamo della funzione: ${e.message}")
-    }
-}
-
 const getPatient = async (req, res) => {
     const gateway = new Gateway();
 
+    if(req.params.token==null)
+        return res.status(401).json("Non autorizzato");
+
     try {
         const ccp = buildCCPOrg1();
         const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
@@ -304,14 +231,27 @@ const getPatient = async (req, res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
+        console.log("Ritrovo il CF");
+
+        let CF=await jwt.verify(req.params.token, pk);
+
+        console.log("CF: "+CF);
+
         console.log("Ricerca iniziata");
 
+        let q={
+            selector:
+                {
+                    CF: CF
+                }
+        }
+
         //funzione di lettura paziente
-        let p = await contract.evaluateTransaction("getPatient", req.body);
+        let p = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         p=JSON.parse(prettyJSONString(p));
-        console.log(p);
 
         console.log("Ricerca finita");
+        console.log(p);
 
         gateway.disconnect();
 
@@ -320,6 +260,68 @@ const getPatient = async (req, res) => {
     } catch (e) {
         console.log(e);
         console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+        res.status(500).json("Errore");
+    }
+}
+
+const getDoctor = async (req, res) => {
+    const gateway = new Gateway();
+
+    if(req.params.token==null)
+        return res.status(401).json("Non autorizzato");
+
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        await gateway.connect(ccp, {
+            wallet,
+            identity: org1UserId,
+            discovery: {enabled: true, asLocalhost: true}
+        });
+
+        //Ritrovamento canale su cui è applicato il chaincode
+        const network = await gateway.getNetwork(channelName);
+
+        //Ritrovamento smartContract da chaincode
+        const contract = network.getContract(chaincodeName);
+
+        console.log("Ritrovo il CF");
+
+        let id=await jwt.verify(req.params.token, pk);
+
+        console.log("CF: "+CF);
+
+        console.log("Ricerca iniziata");
+
+        let q={
+            selector:
+                {
+                    id: id
+                }
+        }
+
+        //funzione di lettura paziente
+        let p = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
+        p=JSON.parse(prettyJSONString(p));
+
+        console.log("Ricerca finita");
+        console.log(p);
+
+        gateway.disconnect();
+
+        return res.status(200).json(p);
+
+    } catch (e) {
+        console.log(e);
+        console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+        res.status(500).json("Errore");
     }
 }
 
@@ -623,9 +625,17 @@ const addRequest=async(req,res)=>{
         let id= await jwt.verify(req.body.token,pk);
 
         console.log("Troviamo il paziente con il CF specificato");
-        let user=await contract.submitTransaction("GetPatient", req.body.CF);
+        let qU= {
+            selector:
+                {
+                    CF: req.body.CF
+                }
+        }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(qU));
         user=JSON.parse(prettyJSONString(user));
-        gateway.disconnect();
+        user=user[0].Record;
+
 
         if(user.doctors.includes(id))
             return res.status(402).json("Il paziente le ha già fornito l'autorizzazione");
@@ -635,6 +645,8 @@ const addRequest=async(req,res)=>{
         {
             console.log("Inizio aggiunta richiesta");
             user.requests.push(id);
+            await contract.submitTransaction("updatePatient", user.CF, JSON.stringify(user));
+            gateway.disconnect();
             return res.status(200).json("Richiesta aggiunta");
         }
 
@@ -676,8 +688,16 @@ const confirmRequest= async (req,res) => {
         let CF= await jwt.verify(req.body.token,pk);
 
         console.log("Troviamo il paziente col CF");
-        let user=await contract.evaluateTransaction("getPatient", CF);
+        let qU= {
+            selector:
+                {
+                    CF: CF
+                }
+        }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(qU));
         user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
 
         console.log("Aggiungiamo il medico della richiesta ai dottori autorizzati");
         user.doctors.push(req.body.id);
@@ -728,8 +748,16 @@ const deleteRequest= async (req,res) =>{
         let CF= await jwt.verify(req.body.token,pk);
 
         console.log("Troviamo il paziente col CF");
-        let user=await contract.evaluateTransaction("getPatient", CF);
+        let qU= {
+            selector:
+                {
+                    CF: CF
+                }
+        }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(qU));
         user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
 
         console.log("Rimuoviamo la richiesta che non viene accettata");
         user.requests=user.requests.filter(e=> e!=req.body.id);
@@ -748,6 +776,10 @@ const deleteRequest= async (req,res) =>{
 const getDoctors= async (req,res) => {
     const gateway = new Gateway();
     let v=[];
+
+    console.log("Inizio ricerca dottori");
+    console.log("Parametri:");
+    console.log(req.params);
 
     if(req.params.token==null)
         return res.status(401).json("Errore autenticazione");
@@ -777,9 +809,19 @@ const getDoctors= async (req,res) => {
         console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
         let CF= await jwt.verify(req.params.token,pk);
 
+        console.log("CF trovato: "+CF);
+        let q={
+            selector:
+                {
+                    CF: CF
+                }
+        }
         console.log("Troviamo il paziente col CF");
-        let user=await contract.evaluateTransaction("getPatient", CF);
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
+        console.log("Utente trovato: ")
+        console.log(user);
 
         console.log("Per ogni id nel vettore delle richieste, troviamo il relativo medico e lo aggiungiamo al vettore")
         for(e of user.doctors)
@@ -846,8 +888,16 @@ const deleteDoctor= async(req,res) =>{
         let CF= await jwt.verify(req.body.token,pk);
 
         console.log("Troviamo il paziente col CF");
-        let user=await contract.evaluateTransaction("getPatient", CF);
+        let qU= {
+            selector:
+                {
+                    CF: CF
+                }
+        }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(qU));
         user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
 
         console.log("Rimuoviamo l'autorizzazione dal dottore selezionato");
         user.doctors=user.doctors.filter(e=> e!=req.body.id);
@@ -939,8 +989,17 @@ const getRequests= async (req,res) =>{
         let CF= await jwt.verify(req.params.token,pk);
 
         console.log("Troviamo il paziente col CF");
-        let user=await contract.evaluateTransaction("getPatient", CF);
+
+        let qU= {
+            selector:
+                {
+                    CF: CF
+                }
+        }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(qU));
         user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
 
         console.log("Per ogni id nel vettore delle richieste, troviamo il relativo medico e lo aggiungiamo al vettore")
         for(e of user.requests)
@@ -1069,18 +1128,18 @@ const getCF=async (req,res)=>{
 
         let CF=await jwt.verify(req.params.token,p);
 
-        gateway.disconnect();
+        console.log("Ritrovamento cf riuscito");
+        console.log(CF);
 
         return res.status(200).json(CF);
     } catch (e) {
+        console.log(e);
         res.status(401).json("Accesso fallito");
     }
 }
 
 export const bcController = {
     addPatient,
-    deletePatient,
-    updatePatient,
     getPatient,
     getAll,
     query,
@@ -1097,6 +1156,7 @@ export const bcController = {
     getPatients,
     addRequest,
     getCF,
-    patientExist
+    patientExist,
+    getDoctor
 };
 

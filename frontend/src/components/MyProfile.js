@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 import {
     Typography,
     Paper,
@@ -9,10 +9,35 @@ import {
     ListItemText,
 } from '@mui/material'
 import {AccountCircle} from '@mui/icons-material'
+import Cookies from "universal-cookie";
+import axios from "axios";
 
 import Paziente from '../exPatient.json'
 
 export default function MyProfile() {
+
+    const [utente,setUtente]=useState({});
+    const cookies=new Cookies();
+
+    useEffect(async()=>{
+        if(cookies.get("token"))
+        {
+            if(cookies.get("type")==="medico")
+            {
+                let id=cookies.get("token");
+                await axios.get(`http://localhost:3001/api/bc/getDoctor/${id}`)
+                    .then(res=>{console.log(res); setUtente(res.data)}).catch(e=>console.log(e));
+            }
+            else
+            {
+                let CF=cookies.get("token");
+                await axios.get(`http://localhost:3001/api/bc/getPatient/${CF}`)
+                    .then(res=>{console.log(res); setUtente(res.data)}).catch(e=>console.log(e));
+            }
+        }
+    })
+
+    //TODO CONDITIONAL RENDERING
     return (
         <>
             <Typography variant="h4" mb={4}>

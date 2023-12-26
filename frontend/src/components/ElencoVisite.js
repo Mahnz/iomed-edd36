@@ -9,18 +9,18 @@ export default function ElencoVisite({setVisita,codiceUtente}) {
     const navigate = useNavigate()
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
-    const [codiceFiscale,setCodiceFiscale]=useState("");
 
     useEffect(() => {
         const fetchVisiteMediche = async () => {
             try {
+                let CF;
                 // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
                 if(cookies.get("token"))
                 {
-                    const CF= cookies.get('token');
+                    CF= cookies.get('token');
                     await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
-                        .then(res=>setCodiceFiscale(res.data)).catch(e=>console.log(e));
-                    await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${codiceFiscale}`)
+                        .then(res=>{console.log(res); CF=res.data}).catch(e=>console.log(e));
+                    await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${CF}`)
                         .then(res=> setVisite(res.data.visite)).catch(e=>console.log(e));
                 }
 

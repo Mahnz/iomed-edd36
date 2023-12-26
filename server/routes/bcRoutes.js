@@ -4,7 +4,8 @@ import {bcController} from '../controllers/bcController.mjs'
 const router = express.Router();
 
 router.post('/addPatient', bcController.addPatient);
-router.get('/getPatient', bcController.getPatient);
+router.get('/getPatient/:token', bcController.getPatient);
+router.get("/getDoctor/:token", bcController.getDoctor);
 
 router.get("/query", (req, res) => {
     console.log("Richiesta arrivata");

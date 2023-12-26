@@ -63,6 +63,10 @@ export default function UserIconPanel({
             path: '/',
             sameSite: 'Strict',  // Cookie limitato al proprio dominio
         });
+        cookies.remove("type", {
+            path: "/",
+            sameSite: "Strict"
+        });
         navigate("/homepage")
     }
 

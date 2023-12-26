@@ -51,7 +51,7 @@ export default function ElencoUtenti() {
                     const CF = cookies.get('token');
                     // BLOCKCHAIN
                     await axios.get(`http://localhost:3001/api/bc/getDoctorsByCF/${CF}`)
-                        .then(res => setUsers(res.data)).catch(e => console.log(e));
+                        .then(res => {console.log(res); setUsers(res.data)}).catch(e => console.log(e));
                 }
             }
         }
