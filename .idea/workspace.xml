@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/UserIconPanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/UserIconPanel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/connection-org1.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/connection-org1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/routes/bcRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/bcRoutes.js" afterDir="false" />
     </list>
@@ -161,7 +156,7 @@
       <workItem from="1703415896978" duration="1425000" />
       <workItem from="1703418968070" duration="1335000" />
       <workItem from="1703554359378" duration="832000" />
-      <workItem from="1703555377266" duration="2246000" />
+      <workItem from="1703555377266" duration="3577000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -187,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702908268395</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout">
+      <option name="closed" value="true" />
+      <created>1703557901341</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1703557901341</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,6 +211,7 @@
     <MESSAGE value="Small update" />
     <MESSAGE value="Login e Signup medico: IN CORSO" />
     <MESSAGE value="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO" />
-    <option name="LAST_COMMIT_MESSAGE" value="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO" />
+    <MESSAGE value="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout" />
   </component>
 </project>

@@ -71,40 +71,38 @@ const addPatient = async (req, res) => {
             if(result.length!=0)
                 return res.status(409).json("Email associata già ad un altro utente");
 
+            const p = new Patient(req.body.formData);
+            console.log(p);
+            let cid=await ipfsController.addUser(p.CF);
+            p.cid=cid;
+
+            console.log("inizio critto pass");
+            const s=await bcrypt.genSalt(10);
+            const pass=await bcrypt.hash(p.password,s);
+            p.password=pass;
+
+            console.log("Fine critto");
+
+            console.log(p);
+
+            console.log("Inizio transazione di aggiunta utente con chiave: "+p.CF);
+
+            const r=await contract.submitTransaction("createPatient", p.CF, JSON.stringify(p));
+            gateway.disconnect();
+            console.log(Buffer.from(r).toString());
+
+            if(Buffer.from(r).toString()=="true")
+            {
+                console.log("Aggiunta avvenuta");
+                let CF=await jwt.sign(p.CF, pk)
+                return res.status(200).json({CF: CF, firstName: p.firstName, lastName: p.lastName});
+            }
             else
             {
-                const p = new Patient(req.body.formData);
-                console.log(p);
-                let cid=await ipfsController.addUser(p.CF);
-                p.cid=cid;
-
-                console.log("inizio critto pass");
-                const s=await bcrypt.genSalt(10);
-                const pass=await bcrypt.hash(p.password,s);
-                p.password=pass;
-
-                console.log("Fine critto");
-
-                console.log(p);
-
-                console.log("Inizio transazione di aggiunta utente");
-
-                const r=await contract.submitTransaction("createPatient", p.CF, JSON.stringify(p));
-                gateway.disconnect();
-                console.log(Buffer.from(r).toString());
-
-                if(Buffer.from(r).toString()=="true")
-                {
-                    console.log("Aggiunta avvenuta");
-                    let CF=await jwt.sign(p.CF, pk)
-                    return res.status(200).json({CF: CF, firstName: p.firstName, lastName: p.lastName});
-                }
-                else
-                {
-                    console.log("Utente già esistente");
-                    return res.status(409).json("Utente già esistente");
-                }
+                console.log("Utente già esistente");
+                return res.status(409).json("Utente già esistente");
             }
+
         }
         else
         {
@@ -120,81 +118,80 @@ const addPatient = async (req, res) => {
 
             if(result.length!=0)
                 return res.status(409).json("Id già esistente, account creato in precedenza");
-            else
+
+            let a= {
+                selector: {
+                    email: req.body.formData.email
+                }
+            };
+
+            console.log('\n--> Evaluate Transaction: Verifica se esiste un paziente con la mail del medico');
+            let r=await contract.evaluateTransaction('QueryAssets', JSON.stringify(a));
+
+            r=JSON.parse(prettyJSONString(r));
+
+            if(r.length==0)
             {
-                let a= {
-                    selector: {
-                        email: req.body.formData.email
-                    }
-                };
+                let d=new Doctor(req.body.formData);
+                console.log(d);
+                let cid=await ipfsController.addUser(d.CF);
+                d.cid=cid;
 
-                console.log('\n--> Evaluate Transaction: Verifica se esiste un paziente con la mail del medico');
-                let r=await contract.evaluateTransaction('QueryAssets', JSON.stringify(a));
+                console.log("inizio critto pass");
+                let s=await bcrypt.genSalt(10);
+                let pass=await bcrypt.hash(d.password,s);
+                d.password=pass;
 
-                r=JSON.parse(prettyJSONString(r));
+                console.log("Fine critto");
 
-                if(r.length==0)
+                console.log(d);
+
+                console.log("Inizio transazione di aggiunta medico con CF: "+d.CF);
+
+                const i=await contract.submitTransaction("createPatient", d.CF, JSON.stringify(d));
+                gateway.disconnect();
+                console.log(Buffer.from(i).toString());
+
+                if(Buffer.from(i).toString()=="true")
                 {
-                    let d=new Doctor(req.body.formData);
-                    console.log(d);
-                    let cid=await ipfsController.addUser(d.CF);
-                    d.cid=cid;
-
-                    console.log("inizio critto pass");
-                    let s=await bcrypt.genSalt(10);
-                    let pass=await bcrypt.hash(d.password,s);
-                    d.password=pass;
-
-                    console.log("Fine critto");
-
-                    console.log(d);
-
-                    console.log("Inizio transazione di aggiunta medico");
-
-                    const i=await contract.submitTransaction("createPatient", d.CF, JSON.stringify(d));
-                    gateway.disconnect();
-                    console.log(Buffer.from(i).toString());
-
-                    if(Buffer.from(i).toString()=="true")
-                    {
-                        console.log("Aggiunta avvenuta");
-                        let id= await jwt.sign(d.id, pk);
-                        return res.status(200).json({id: id, firstName: d.firstName, lastName: d.lastName});
-                    }
-                    else
-                    {
-                        console.log("Utente già esistente");
-                        return res.status(409).json("Utente già esistente");
-                    }
+                    console.log("Aggiunta avvenuta");
+                    let id= await jwt.sign(d.id, pk);
+                    return res.status(200).json({id: id, firstName: d.firstName, lastName: d.lastName});
                 }
                 else
                 {
-                    if(r[0].Record.docType=="doctor")
-                        return res.status(409).json("Medico già registrato con questa mail");
-                    else
-                    {
-                        console.log("Inizio operazione di update paziente a medico");
-                        console.log(a);
-                        console.log("Verifica password");
-                        console.log(r[0].Record);
-                        const verify=await bcrypt.compare(req.body.formData.password, r[0].Record.password);
-                        if(verify)
-                        {
-                            let d=r[0].Record;
-                            console.log(d);
-                            d.id=req.body.formData.id;
-                            d.hospital=req.body.formData.hospital;
-                            d.telefonoUfficio=req.body.formData.telefonoUfficio;
-                            d.spec=req.body.formData.spec;
-                            console.log("Inizio transazione di modifica paziente in medico");
-                            await contract.submitTransaction("updatePatient", d.CF, JSON.stringify(d));
-                            let id=await jwt.sign(d.id, pk);
-                            res.status(200).json({id: id, firstName:d.firstName, lastName: d.lastName});
-                        }
-
-                    }
+                    console.log("Utente già esistente");
+                    return res.status(409).json("Utente già esistente");
                 }
             }
+            else
+            {
+                if(r[0].Record.docType=="doctor")
+                    return res.status(409).json("Medico già registrato con questa mail");
+                else
+                {
+                    console.log("Inizio operazione di update paziente a medico");
+                    console.log(a);
+                    console.log("Verifica password");
+                    console.log(r[0].Record);
+                    const verify=await bcrypt.compare(req.body.formData.password, r[0].Record.password);
+                    if(verify)
+                    {
+                        let d=r[0].Record;
+                        console.log(d);
+                        d.id=req.body.formData.id;
+                        d.hospital=req.body.formData.hospital;
+                        d.telefonoUfficio=req.body.formData.telefonoUfficio;
+                        d.spec=req.body.formData.spec;
+                        console.log("Inizio transazione di modifica paziente in medico");
+                        await contract.submitTransaction("updatePatient", d.CF, JSON.stringify(d));
+                        let id=await jwt.sign(d.id, pk);
+                        res.status(200).json({id: id, firstName:d.firstName, lastName: d.lastName});
+                    }
+
+                }
+            }
+
         }
     } catch (e) {
         console.log(e);
@@ -249,6 +246,7 @@ const getPatient = async (req, res) => {
         //funzione di lettura paziente
         let p = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         p=JSON.parse(prettyJSONString(p));
+        p=p[0].Record;
 
         console.log("Ricerca finita");
         console.log(p);
@@ -296,7 +294,7 @@ const getDoctor = async (req, res) => {
 
         let id=await jwt.verify(req.params.token, pk);
 
-        console.log("CF: "+CF);
+        console.log("Id: "+id);
 
         console.log("Ricerca iniziata");
 
@@ -310,6 +308,7 @@ const getDoctor = async (req, res) => {
         //funzione di lettura paziente
         let p = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         p=JSON.parse(prettyJSONString(p));
+        p=p[0].Record;
 
         console.log("Ricerca finita");
         console.log(p);
@@ -574,7 +573,7 @@ const verify=async (req,res) =>{
         console.log("Verifico esistenza cf");
 
         //funzione di lettura paziente
-        let aux = await contract.evaluateTransaction("patientExist", req.body);
+        let aux = await contract.evaluateTransaction("patientExists", req.body);
         console.log(aux);
 
         console.log("Ricerca finita");
