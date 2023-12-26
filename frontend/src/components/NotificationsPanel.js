@@ -58,7 +58,7 @@ export default function NotificationsPanel({
         >
             <List>
                 <ListItemButton disabled>
-                    <ListItemText primary='Notifiche' />
+                    <ListItemText primary='Notifiche'/>
                     <ListItemSecondaryAction>
                         <Tooltip title='Elimina tutte le notifiche'>
                             <IconButton

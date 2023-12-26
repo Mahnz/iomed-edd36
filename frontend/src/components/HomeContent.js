@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from "react-router-dom"
-import {Grid, Card, CardContent, Typography, CardActions, Button} from "@mui/material";
+import {Grid, Card, CardContent, Typography, CardActions, Button, Paper} from "@mui/material";
 import Cookies from "universal-cookie"
 
 export default function HomeContent({handleSelectTab}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const [loggedUser, setLoggedUser] = useState("Mario Rossi")
-    const [medico, setMedico] = useState(false)
+    const [medico, setMedico] = useState(true)
 
     useEffect(() => {
         // TODO - Da abilitare quando i cookie vengono settati correttamente
+        // BLOCKCHAIN
         // if (!cookies.get("token")) {
         //     console.log("Nessun utente loggato")
         //     navigate("/homepage")
@@ -30,12 +31,17 @@ export default function HomeContent({handleSelectTab}) {
                 Benvenuto, {loggedUser}
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
                     <Card sx={{
                         transition: 'box-shadow 0.2s',
                         '&:hover': {
                             boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
-                        }
+                        },
+                        height: '100%',
+                        p: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
                     }}>
                         <CardContent>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -46,7 +52,8 @@ export default function HomeContent({handleSelectTab}) {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" color="primary" onClick={() => handleSelectTab("P")}>
+                            <Button size="medium"  color="primary"
+                                    onClick={() => handleSelectTab("P")}>
                                 Vai al profilo
                             </Button>
                         </CardActions>
@@ -54,12 +61,17 @@ export default function HomeContent({handleSelectTab}) {
                 </Grid>
 
                 {!medico && (
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
                         <Card sx={{
                             transition: 'box-shadow 0.2s',
                             '&:hover': {
                                 boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
-                            }
+                            },
+                            height: '100%',
+                            p: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between'
                         }}>
                             <CardContent>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -70,7 +82,8 @@ export default function HomeContent({handleSelectTab}) {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" color="primary" onClick={() => handleSelectTab("V")}>
+                                <Button size="medium"  color="primary"
+                                        onClick={() => handleSelectTab("V")}>
                                     Vai alle visite
                                 </Button>
                             </CardActions>
@@ -79,12 +92,17 @@ export default function HomeContent({handleSelectTab}) {
                 )}
 
                 {medico && (
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
                         <Card sx={{
                             transition: 'box-shadow 0.2s',
                             '&:hover': {
                                 boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
-                            }
+                            },
+                            height: '100%',
+                            p: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between'
                         }}>
                             <CardContent>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -95,7 +113,8 @@ export default function HomeContent({handleSelectTab}) {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" color="primary" onClick={() => handleSelectTab("I")}>
+                                <Button size="medium"  color="primary"
+                                        onClick={() => handleSelectTab("I")}>
                                     Vai all'inserimento
                                 </Button>
                             </CardActions>
@@ -103,12 +122,17 @@ export default function HomeContent({handleSelectTab}) {
                     </Grid>
                 )}
 
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
                     <Card sx={{
                         transition: 'box-shadow 0.2s',
                         '&:hover': {
                             boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
-                        }
+                        },
+                        p: 1,
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
                     }}>
                         <CardContent>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -125,9 +149,9 @@ export default function HomeContent({handleSelectTab}) {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" variant="outlined" color="primary"
+                            <Button size="medium"  color="primary"
                                     onClick={() => handleSelectTab("E")}>
-                                Vai
+                                Vai all'elenco
                             </Button>
                         </CardActions>
                     </Card>

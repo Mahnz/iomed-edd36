@@ -6,7 +6,18 @@ import {
     TextField,
     Button,
     Grid,
-    Paper, styled, IconButton, Tooltip, Autocomplete, CircularProgress
+    Paper,
+    styled,
+    IconButton,
+    Tooltip,
+    Autocomplete,
+    CircularProgress,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Dialog,
+    Snackbar,
+    Alert as MuiAlert
 } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {Add, CloudUpload, RemoveCircleOutlined, Send} from "@mui/icons-material"
@@ -65,7 +76,6 @@ export default function InserimentoVisitaMedica() {
     })
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [isFirstRender, setIsFirstRender] = useState(true)
-    const [isFirstClick, setIsFirstClick] = useState(true)
     const [isCFVerified, setIsCFVerified] = useState(false)
 
     const handleCancel = () => {
@@ -346,10 +356,19 @@ export default function InserimentoVisitaMedica() {
     }, [formData.dataVisita])
 
 
-    const [showOverlay, setShowOverlay] = useState(false);
+    const [showOverlay, setShowOverlay] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false)
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackbar(false);
+    };
+
+    const handleOpenDialog = () => {
         if (isCFVerified) {
             if (!formData.codiceFiscale) {
                 setErrors((prevErrors) => ({
@@ -414,42 +433,73 @@ export default function InserimentoVisitaMedica() {
                     }
                 }))
             }
+        }
 
-            if (!errors.codiceFiscale.error && !errors.nomeVisita.error && !errors.reparto.error && isCFVerified) {
-                console.log(formData)
-                const formValues = new FormData()
+        if (!errors.codiceFiscale.error && !errors.nomeVisita.error && !errors.reparto.error) {
+            setOpenDialog(true)
+        }
+    }
 
-                // Aggiungi i dati del form
-                formValues.append('codiceFiscale', formData.codiceFiscale)
-                formValues.append('dataVisita', formData.dataVisita)
-                formValues.append('nomeVisita', formData.nomeVisita)
-                formValues.append('reparto', formData.reparto)
-                formValues.append('descrizione', formData.descrizione)
+    const handleCloseDialog = () => {
+        setOpenDialog(false)
+    }
 
-                // Aggiungi i file
-                formData.allegati.forEach((file, index) => {
-                    formValues.append('allegati', file.file)
-                })
-                console.log(formValues)
-                setShowOverlay(true)
+    const handleInsertVisita = async () => {
+        handleCloseDialog()
+        // BLOCKCHAIN
+        // TODO - Chiamata alla backend per andare a cancellare l'utente
+        console.log(formData)
+        const formValues = new FormData()
 
-                // BLOCKCHAIN
-                // TODO - Validare la transazione in blockchain
+        // Aggiungi i dati del form
+        formValues.append('codiceFiscale', formData.codiceFiscale)
+        formValues.append('dataVisita', formData.dataVisita)
+        formValues.append('nomeVisita', formData.nomeVisita)
+        formValues.append('reparto', formData.reparto)
+        formValues.append('descrizione', formData.descrizione)
 
-                try {
-                    const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
-                        'Content-Type': 'multipart/form-data',
-                    })
+        // Aggiungi i file
+        formData.allegati.forEach((file, index) => {
+            formValues.append('allegati', file.file)
+        })
+        console.log(formValues)
+        setShowOverlay(true)
 
-                    if (res.status === 200) {
-                        console.log(res.data);
-                    }
-                } catch (error) {
-                    console.error("Errore nella chiamata", error);
-                } finally {
-                    setShowOverlay(false);
-                }
+        // BLOCKCHAIN
+        // TODO - Validare la transazione in blockchain
+
+        try {
+            const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
+                'Content-Type': 'multipart/form-data',
+            })
+
+            if (res.status === 200) {
+                console.log(res.data);
             }
+        } catch (error) {
+            console.error("Errore nella chiamata", error);
+        } finally {
+            setShowOverlay(false);
+            setOpenSnackbar(true)
+            setFormData(initialFormData)
+            setErrors({
+                codiceFiscale: {
+                    error: false,
+                    message: ''
+                },
+                dataVisita: {
+                    error: false,
+                    message: ''
+                },
+                nomeVisita: {
+                    error: false,
+                    message: ''
+                },
+                reparto: {
+                    error: false,
+                    message: ''
+                }
+            })
         }
     }
 
@@ -672,7 +722,7 @@ export default function InserimentoVisitaMedica() {
                                 </Button>
                             </Grid>
                             <Grid item>
-                                <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}
+                                <Button type="submit" variant="contained" color="primary" onClick={handleOpenDialog}
                                         endIcon={<Send/>}>
                                     Aggiungi visita
                                 </Button>
@@ -681,6 +731,31 @@ export default function InserimentoVisitaMedica() {
                     </Grid>
                 </Paper>
             </Container>
+
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Conferma cancellazione</DialogTitle>
+                <DialogContent>
+                    Vuoi confermare l'inserimento della visita per l'utente ?
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        Annulla
+                    </Button>
+                    <Button onClick={handleInsertVisita} color="primary">
+                        Conferma
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
+                    Visita medica inserita correttamente!
+                </Alert>
+            </Snackbar>
         </>
     )
 }
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});

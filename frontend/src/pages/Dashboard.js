@@ -13,8 +13,7 @@ import {
     Healing,
     Person,
     Home,
-    PersonAddAlt1,
-    Brightness7, Brightness4, FormatListBulleted
+    PersonAddAlt1, FormatListBulleted
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
@@ -37,14 +36,12 @@ const drawerWidth = 240
 
 export default function Dashboard() {
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
-    const [medico, setMedico] = useState(false)
+    const [medico, setMedico] = useState(true)
     const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
     }
 
-    /* TODO - Verifica dinamica del cookie: se non è settato, l'utente viene rimandato alla pagina di login altrimenti,
-              continua la propria navigazione nella dashboard*/
     const [loggedUser, setLoggedUser] = useState("test")
     const cookies = new Cookies()
     const navigate = useNavigate()
