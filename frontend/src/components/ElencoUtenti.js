@@ -1,10 +1,4 @@
 // ElencoUtenti.js
-// Creare una tabella che vada a mappare l'array di medici autorizzati relativi ad un certo codice fiscale.
-// Ogni riga della tabella deve contenere:
-// - Nome e cognome del medico
-// - Specializzazione
-// - Ospedale di riferimento
-// - pulsante per rimuovere il paziente, e richiamare l'api '/api/bc/deleteDoctor'
 import React, {useEffect, useState} from 'react'
 import Cookies from "universal-cookie"
 import {
