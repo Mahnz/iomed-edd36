@@ -19,7 +19,7 @@ import {
     DialogTitle,
     DialogContent, DialogActions, Button
 } from "@mui/material"
-import {Cancel} from "@mui/icons-material";
+import {Cancel, Visibility, VisibilityOff} from "@mui/icons-material";
 import axios from "axios";
 import {tableData} from "../utils.js"
 
@@ -91,13 +91,24 @@ export default function ElencoUtenti() {
         }).then(res => alert(res.data)).catch(e => console.log(e));
     }
 
+    const [showInfo, setShowInfo] = useState(true)
+    const handleTogglePasswordVisibility = () => {
+        setShowInfo(!showInfo)
+    }
+
     return (
         <>
             <Typography variant="h4" mb={4}>
-                {medico ? "Elenco assistiti" : "Elenco dei medici autorizzati"}
+                {medico ? "Elenco assistiti   " : "Elenco dei medici autorizzati   "}
+                <Tooltip placement="right"
+                         title={showInfo ? "Nascondi i dati sensibili" : "Mostra i dati sensibili"}>
+                    <IconButton onClick={handleTogglePasswordVisibility}>
+                        {showInfo ? <Visibility fontSize="large"/> : <VisibilityOff fontSize="large"/>}
+                    </IconButton>
+                </Tooltip>
             </Typography>
-            <Paper sx={{width: '100%', overflow: 'hidden', borderRadius: 3}}>
-                <TableContainer sx={{maxHeight: 650}}>
+            <Paper sx={{width: '100%'}}>
+                <TableContainer className="List" sx={{height: '70vh', borderRadius: 3, overflow: 'auto'}}>
                     <Table aria-label="table" stickyHeader>
                         <TableHead>
                             <TableRow sx={{backgroundColor: '#1976d2', color: '#ffff'}}>

@@ -29,7 +29,6 @@ const theme = createTheme({
 export default function LoginFormPaziente() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [showPassword, setShowPassword] = useState(false)
     const [errors, setErrors] = useState({
         email: {
             error: false,
@@ -53,6 +52,7 @@ export default function LoginFormPaziente() {
         }
     })
 
+    const [showPassword, setShowPassword] = useState(false)
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword)
     }

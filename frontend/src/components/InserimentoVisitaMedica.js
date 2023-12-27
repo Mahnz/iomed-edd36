@@ -520,12 +520,7 @@ export default function InserimentoVisitaMedica() {
                         zIndex: 999, // Assicura che l'overlay sia sopra tutto il resto
                     }}
                 >
-                    <CircularProgress color="primary"/>
-                    <p
-                        style={{
-                            color: '#fff'
-                        }}
-                    >Caricamento in corso...</p>
+                    <CircularProgress color="success"/>
                 </div>
             )}
             <Typography variant="h4" mb={4}>

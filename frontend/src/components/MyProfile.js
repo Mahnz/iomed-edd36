@@ -11,11 +11,10 @@ import {
     ListItemText,
     ListItemButton,
     Divider,
-    IconButton, Box
+    IconButton
 } from '@mui/material'
 import {Close, Done} from '@mui/icons-material'
 import Paziente from '../exPatient.json'
-import '../style/dashboard.css'
 
 export default function MyProfile() {
     const cookies = new Cookies()

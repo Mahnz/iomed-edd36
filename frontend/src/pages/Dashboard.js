@@ -4,7 +4,7 @@ import {
     styled, CssBaseline, Box, Container, Toolbar,
     Drawer as MuiDrawer, AppBar as MuiAppBar,
     Typography, Divider, Tooltip, IconButton, Badge,
-    List, ListItemButton, ListItemIcon, ListItemText, ListSubheader
+    List, ListItemButton, ListItemIcon, ListItemText
 } from '@mui/material'
 
 import {
@@ -13,10 +13,10 @@ import {
     Healing,
     Person,
     Home,
-    PersonAddAlt1, FormatListBulleted
+    FormatListBulleted, GroupAdd
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faBell, faCircleUser} from "@fortawesome/free-solid-svg-icons"
+import {faBell, faCircleUser, faNotesMedical} from "@fortawesome/free-solid-svg-icons"
 
 import ElencoVisite from '../components/ElencoVisite.js'
 import HomeContent from "../components/HomeContent.js"
@@ -30,6 +30,7 @@ import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import VisitaMedica from "../components/VisitaMedica.js"
 import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
 import ElencoUtenti from "../components/ElencoUtenti.js";
+import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js";
 
 const drawerWidth = 240
 
@@ -81,6 +82,9 @@ export default function Dashboard() {
         } else if (selectedTab === "I" && medico) {
             document.title = 'MedPlatform - Nuova visita'
             navigate('/dashboard/inserimentoVisita')
+        } else if (selectedTab === "N" && medico) {
+            document.title = 'MedPlatform - Aggiungi assistito'
+            navigate('/dashboard/aggiungiAssistito')
         } else if (selectedTab === "E") {
             if (medico) {
                 document.title = 'MedPlatform - Elenco assistiti'
@@ -255,56 +259,75 @@ export default function Dashboard() {
                 <Divider/>
 
                 <List component="nav">
-                    <ListItemButton
-                        onClick={() => handleSelectTab("H")}
-                        className={selectedTab === 'H' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <Home/>
-                        </ListItemIcon>
-                        <ListItemText primary="Home"/>
-                    </ListItemButton>
+                    <Tooltip title="Vai alla home" placement="right">
+                        <ListItemButton
+                            onClick={() => handleSelectTab("H")}
+                            className={selectedTab === 'H' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Home/>
+                            </ListItemIcon>
+                            <ListItemText primary="Home"/>
+                        </ListItemButton>
+                    </Tooltip>
                     {!medico && (
-                        <ListItemButton
-                            onClick={() => handleSelectTab('V')}
-                            className={selectedTab === 'V' ? 'selected-tab' : ''}>
-                            <ListItemIcon>
-                                <Healing/>
-                            </ListItemIcon>
-                            <ListItemText primary="Visite mediche"/>
-                        </ListItemButton>
+                        <Tooltip title="Elenco visite mediche" placement="right">
+                            <ListItemButton
+                                onClick={() => handleSelectTab('V')}
+                                className={selectedTab === 'V' ? 'selected-tab' : ''}>
+                                <ListItemIcon>
+                                    <Healing/>
+                                </ListItemIcon>
+                                <ListItemText primary="Visite mediche"/>
+                            </ListItemButton>
+                        </Tooltip>
                     )}
-                    <ListItemButton
-                        onClick={() => handleSelectTab("E")}
-                        className={selectedTab === 'E' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <FormatListBulleted/>
-                        </ListItemIcon>
-                        <ListItemText primary={medico ? "Elenco assistiti" : "Medici autorizzati"}/>
-                    </ListItemButton>
-                    <ListItemButton
-                        onClick={() => handleSelectTab('P')}
-                        className={selectedTab === 'P' ? 'selected-tab' : ''}>
-                        <ListItemIcon>
-                            <Person/>
-                        </ListItemIcon>
-                        <ListItemText primary="Il mio profilo"/>
-                    </ListItemButton>
-                    {medico && (
+                    <Tooltip placement="right"
+                             title={medico ? "Elenco assistiti" : "Medici autorizzati"}>
                         <ListItemButton
-                            onClick={() => handleSelectTab('I')}
-                            className={selectedTab === 'I' ? 'selected-tab' : ''}>
+                            onClick={() => handleSelectTab("E")}
+                            className={selectedTab === 'E' ? 'selected-tab' : ''}>
                             <ListItemIcon>
-                                <PersonAddAlt1/>
+                                <FormatListBulleted/>
                             </ListItemIcon>
-                            <ListItemText primary="Inserimento visita"/>
+                            <ListItemText primary={medico ? "Elenco assistiti" : "Medici autorizzati"}/>
                         </ListItemButton>
+                    </Tooltip>
+                    <Tooltip title="Il mio profilo" placement="right">
+                        <ListItemButton
+                            onClick={() => handleSelectTab('P')}
+                            className={selectedTab === 'P' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Person/>
+                            </ListItemIcon>
+                            <ListItemText primary="Il mio profilo"/>
+                        </ListItemButton>
+                    </Tooltip>
+                    {medico && (
+                        <Tooltip title="Aggiungi visita" placement="right">
+                            <ListItemButton
+                                onClick={() => handleSelectTab('I')}
+                                className={selectedTab === 'I' ? 'selected-tab' : ''}>
+                                <ListItemIcon>
+                                    <FontAwesomeIcon icon={faNotesMedical} size="lg"/>
+                                    {/*<PersonAddAlt1/>*/}
+                                </ListItemIcon>
+                                <ListItemText primary="Aggiungi visita"/>
+                            </ListItemButton>
+                        </Tooltip>
+                    )}
+                    {medico && (
+                        <Tooltip title="Aggiungi assistito" placement="right">
+                            <ListItemButton
+                                onClick={() => handleSelectTab('N')}
+                                className={selectedTab === 'N' ? 'selected-tab' : ''}>
+                                <ListItemIcon>
+                                    <GroupAdd/>
+                                </ListItemIcon>
+                                <ListItemText primary="Aggiungi assistito"/>
+                            </ListItemButton>
+                        </Tooltip>
                     )}
                     <Divider sx={{my: 1}}/>
-
-                    {/* Qui è possibile aggiungere le voci di un menù secondario (idea: visite dell'ultimo anno, mese, settimana */}
-                    <ListSubheader component="div" inset>
-                        Saved reports
-                    </ListSubheader>
                 </List>
             </Drawer>
             <Box
@@ -328,6 +351,7 @@ export default function Dashboard() {
                         <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={selectedVisita}/>}/>
                         <Route path="/profilo" element={<MyProfile/>}/>
                         {medico && <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>}
+                        {medico && <Route path="/aggiungiAssistito" element={<RichiestaAutorizzazione/>}/>}
                         <Route path="/settings" element={<div>Impostazioni</div>}/>
                         <Route path="/mediciAutorizzati"
                                element={medico
