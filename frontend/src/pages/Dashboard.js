@@ -34,7 +34,6 @@ import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js";
 
 const drawerWidth = 240
 
-
 export default function Dashboard() {
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
     // TODO - Settare medico a null
@@ -347,9 +346,34 @@ export default function Dashboard() {
                     <Routes>
                         <Route index element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
-                        <Route path="/visite" element={<ElencoVisite setVisita={setSelectedVisita}/>}/>
-                        <Route path="/visite/visualizzaVisita" element={<VisitaMedica visita={selectedVisita}/>}/>
                         <Route path="/profilo" element={<MyProfile/>}/>
+
+                        <Route path="/visite"
+                               element={medico
+                                   ? <Navigate to='/dashboard/home' replace/>
+                                   : <ElencoVisite setVisita={setSelectedVisita}/>
+                               }
+                        />
+                        <Route path="/listaAssistiti/visite"
+                               element={medico
+                                   ? <ElencoVisite setVisita={setSelectedVisita}/>
+                                   : <Navigate to='/dashboard/home' replace/>
+                               }
+                        />
+
+                        <Route path="/visite/visualizzaVisita"
+                               element={medico
+                                   ? <Navigate to='/dashboard/home' replace/>
+                                   : <VisitaMedica visita={selectedVisita}/>
+                               }
+                        />
+                        <Route path="/listaAssistiti/visite/visualizzaVisita"
+                               element={medico
+                                   ? <VisitaMedica visita={selectedVisita}/>
+                                   : <Navigate to='/dashboard/home' replace/>
+                               }
+                        />
+
                         {medico && <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>}
                         {medico && <Route path="/aggiungiAssistito" element={<RichiestaAutorizzazione/>}/>}
                         <Route path="/settings" element={<div>Impostazioni</div>}/>

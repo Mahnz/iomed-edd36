@@ -15,8 +15,7 @@ import axios from "axios"
 import dayjs from 'dayjs'
 
 export default function VisitaMedica({visita}) {
-
-    // TODO - Da rimuovere quando la visita viene passata come parametro
+    // todo - Da rimuovere quando la visita viene passata come parametro
     const navigate = useNavigate();
     const [details, setDetails] = useState({});
     const [files, setFiles] = useState([]);

@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from "react-router-dom"
-import {Grid, Card, CardContent, Typography, CardActions, Button, Paper} from "@mui/material";
+import {Grid, Card, CardContent, Typography, CardActions, Button} from "@mui/material";
 import Cookies from "universal-cookie"
 
 export default function HomeContent({handleSelectTab}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const [loggedUser, setLoggedUser] = useState("Mario Rossi")
+    // todo - Settare medico a null
     const [medico, setMedico] = useState(true)
 
     useEffect(() => {
-        // TODO - Da abilitare quando i cookie vengono settati correttamente
+        // todo - Da abilitare quando i cookie vengono settati correttamente
         // BLOCKCHAIN
         // if (!cookies.get("token")) {
         //     console.log("Nessun utente loggato")
@@ -52,7 +53,7 @@ export default function HomeContent({handleSelectTab}) {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="medium"  color="primary"
+                            <Button size="medium" color="primary"
                                     onClick={() => handleSelectTab("P")}>
                                 Vai al profilo
                             </Button>
@@ -82,7 +83,7 @@ export default function HomeContent({handleSelectTab}) {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="medium"  color="primary"
+                                <Button size="medium" color="primary"
                                         onClick={() => handleSelectTab("V")}>
                                     Vai alle visite
                                 </Button>
@@ -113,7 +114,7 @@ export default function HomeContent({handleSelectTab}) {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="medium"  color="primary"
+                                <Button size="medium" color="primary"
                                         onClick={() => handleSelectTab("I")}>
                                     Vai all'inserimento
                                 </Button>
@@ -149,7 +150,7 @@ export default function HomeContent({handleSelectTab}) {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="medium"  color="primary"
+                            <Button size="medium" color="primary"
                                     onClick={() => handleSelectTab("E")}>
                                 Vai all'elenco
                             </Button>

@@ -50,8 +50,9 @@ export default function RichiestaAutorizzazione() {
 
                     // ! Verifica esistenza del codice fiscale in blockchain
                     // BLOCKCHAIN
-                    // TODO - Chiamata alla blockchain per leggere il paziente corrispondente al codice fiscale.
-                    //        I dati da ottenere sono: Nome, Cognome, Data di nascita, Codice fiscale
+                    // todo - Chiamata alla blockchain per leggere il paziente corrispondente al codice fiscale.
+                    //        I dati da ottenere sono: Nome, Cognome, Data di nascita, Codice fiscale.
+                    //        Fare in modo che se il codice fiscale non esiste, venga lanciato errore
                     // const response = await axios.post("http://localhost:3001/api/bc/verify", cf)
                     // if (response.status === 200) {
                     //     console.log("Il codice fiscale è presente sulla blockchain")
@@ -69,6 +70,7 @@ export default function RichiestaAutorizzazione() {
                     //     setBtnDisabled(true)
                     // }
 
+                    // BLOCKCHAIN - Settare in questo modo l'utente, con i dati ottenuti dalla blockchain
                     setUserFound({
                         firstName: 'Mario',
                         lastName: 'Rossi',
@@ -147,7 +149,8 @@ export default function RichiestaAutorizzazione() {
         setShowOverlay(true)
 
         // BLOCKCHAIN
-        // TODO - Chiamata alla blockchain per aggiungere il paziente alla lista degli assistiti
+        // todo - Chiamata alla blockchain per aggiungere il paziente alla lista degli assistiti.
+        //        Puoi prendere il CF da `userFound.codiceFiscale`
         // ........
         setShowOverlay(false)
     }
@@ -175,7 +178,7 @@ export default function RichiestaAutorizzazione() {
             <Typography variant="h4" mb={4}>
                 Richiesta autorizzazione di accesso ai dati
             </Typography>
-            <Paper sx={{padding: 2, marginTop: 2}}>
+            <Paper elevation={1} sx={{p: 2, mt: 2, borderRadius: 4}}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={9}>
                         <TextField type="text"
@@ -222,37 +225,14 @@ export default function RichiestaAutorizzazione() {
             </Paper>
 
             {userFound && (
-                // <Card sx={{width: '100%', marginTop: 3, borderRadius: 4, pl: 1, pt: 1}}>
-                //     <CardContent>
-                //         <Typography variant="h5" color="primary">
-                //             {userFound.firstName + " " + userFound.lastName}
-                //         </Typography>
-                //         <Typography variant="h6">
-                //             {userFound.birthDate}
-                //         </Typography>
-                //         <List>
-                //             <ListItemAvatar>
-                //                 <Avatar sx={{width: 100, height: 100}}>
-                //                     <Person sx={{width: 80, height: 80}}/>
-                //                 </Avatar>
-                //             </ListItemAvatar>
-                //             <ListItem>
-                //                 <ListItemText primary={`Data di Nascita: ${userFound.birthDate}`}/>
-                //             </ListItem>
-                //             <ListItem>
-                //                 <ListItemText primary={`Codice Fiscale: ${userFound.codiceFiscale}`}/>
-                //             </ListItem>
-                //         </List>
-                //     </CardContent>
-                // </Card>
                 <Card sx={{width: '50%', marginTop: 3, borderRadius: 4, p: 2}}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Avatar sx={{width: 100, height: 100, bgcolor: '#6797ef'}}>
                                 <Person sx={{width: 80, height: 80}}/>
                             </Avatar>
                         </Grid>
-                        <Grid item>
+                        <Grid item sx={{flexGrow: 1}}>
                             <Typography variant="h6">{`${userFound.firstName} ${userFound.lastName}`}</Typography>
                             <Typography variant="subtitle1">{userFound.birthDate}</Typography>
                             <Typography variant="subtitle1">{userFound.codiceFiscale}</Typography>

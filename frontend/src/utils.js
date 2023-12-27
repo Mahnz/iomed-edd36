@@ -163,10 +163,10 @@ const departments = [
 
 const tableData = [
     {
-        firstName: "Myranda",
-        lastName: "Mowett",
-        birthDate: "4/19/2002",
-        CF: "288-89-6481"
+        firstName: "Domenico",
+        lastName: "Mazzini",
+        birthDate: "23/02/2002",
+        CF: "MZZDNC02B23A662Z"
     }, {
         firstName: "Mae",
         lastName: "Kennsley",

@@ -122,7 +122,7 @@ export default function LoginFormMedico() {
             setIsFirstClick(false)
         } else {
             if (!errors.id.error && !errors.password.error) {
-                // TODO - Verifica del login dalla blockchain
+                // todo - Verifica del login dalla blockchain
                 const user = {
                     id: id,
                     password: password

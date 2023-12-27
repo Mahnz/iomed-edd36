@@ -19,14 +19,18 @@ import {
     DialogTitle,
     DialogContent, DialogActions, Button
 } from "@mui/material"
-import {Cancel, Visibility, VisibilityOff} from "@mui/icons-material";
+import {Cancel} from "@mui/icons-material";
 import axios from "axios";
 import {tableData} from "../utils.js"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import {useNavigate} from "react-router-dom";
 
 export default function ElencoUtenti() {
     const cookies = new Cookies()
-    // TODO - Settare medico a null
-    const [medico, setMedico] = useState(false)
+    const navigate = useNavigate()
+    // todo - Settare medico a null
+    const [medico, setMedico] = useState(true)
     const [users, setUsers] = useState([])
     const [id, setId] = useState('')
 
@@ -35,14 +39,14 @@ export default function ElencoUtenti() {
             if (cookies.get("token")) {
                 if (cookies.get("type") === "medico") {
                     setMedico(true)
-                    // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
+                    // todo - Da rimuovere quando il codice fiscale viene letto dal cookie
                     setId(cookies.get('token'))
                     // BLOCKCHAIN
                     await axios.get(`http://localhost:3001/api/bc/getPatientsById/${id}`)
                         .then(res => setUsers(res.data)).catch(e => console.log(e));
                 } else {
                     setMedico(false)
-                    // TODO - Da rimuovere quando il codice fiscale viene letto dal cookie
+                    // todo - Da rimuovere quando il codice fiscale viene letto dal cookie
                     const CF = cookies.get('token');
                     // BLOCKCHAIN
                     await axios.get(`http://localhost:3001/api/bc/getDoctorsByCF/${CF}`)
@@ -69,6 +73,9 @@ export default function ElencoUtenti() {
 
     const [openDialog, setOpenDialog] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
+    useEffect(() => {
+
+    }, []);
     const handleOpenDialog = (user) => {
         setUserToDelete(user);
         console.log(user)
@@ -83,29 +90,24 @@ export default function ElencoUtenti() {
     const handleDeleteUser = async () => {
         handleCloseDialog()
         // BLOCKCHAIN
-        // TODO - Chiamata alla backend per andare a cancellare l'utente
+        // todo - Chiamata alla backend per andare a cancellare l'utente
         let CF = cookies.get("token");
         await axios.delete(`http://localhost:3001/api/bc/deleteDoctor`, {
             token: CF,
             id: userToDelete.id
         }).then(res => alert(res.data)).catch(e => console.log(e));
+        // todo - Aggiornare la lista degli utenti dopo la cancellazione, così da eliminare la riga dalla tabella
     }
 
-    const [showInfo, setShowInfo] = useState(true)
-    const handleTogglePasswordVisibility = () => {
-        setShowInfo(!showInfo)
+    const handleViewUser = (user) => {
+        const codiceUtente = user.CF;
+        navigate('/dashboard/listaAssistiti/visite', {state: codiceUtente})
     }
 
     return (
         <>
             <Typography variant="h4" mb={4}>
-                {medico ? "Elenco assistiti   " : "Elenco dei medici autorizzati   "}
-                <Tooltip placement="right"
-                         title={showInfo ? "Nascondi i dati sensibili" : "Mostra i dati sensibili"}>
-                    <IconButton onClick={handleTogglePasswordVisibility}>
-                        {showInfo ? <Visibility fontSize="large"/> : <VisibilityOff fontSize="large"/>}
-                    </IconButton>
-                </Tooltip>
+                {medico ? "Elenco assistiti" : "Elenco dei medici autorizzati"}
             </Typography>
             <Paper sx={{width: '100%'}}>
                 <TableContainer className="List" sx={{height: '70vh', borderRadius: 3, overflow: 'auto'}}>
@@ -116,7 +118,7 @@ export default function ElencoUtenti() {
                                 <StyledTableCell sx={{width: '25%'}} align="left">Nome</StyledTableCell>
                                 <StyledTableCell sx={{width: '15%'}} align="center">Data di nascita</StyledTableCell>
                                 <StyledTableCell sx={{width: '30%'}} align="center">Codice fiscale</StyledTableCell>
-                                {!medico && <StyledTableCell sx={{width: '5%'}} align="center"> </StyledTableCell>}
+                                <StyledTableCell sx={{width: '5%'}} align="center"> </StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -129,16 +131,30 @@ export default function ElencoUtenti() {
                                         <StyledTableCell align="left">{row.firstName}</StyledTableCell>
                                         <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
                                         <StyledTableCell align="center">{row.CF}</StyledTableCell>
-                                        {!medico && (
-                                            <StyledTableCell align="center">
-                                                <Tooltip title="Rimuovi medico dalla lista" placement="right">
-                                                    <IconButton aria-label="delete"
-                                                                onClick={() => handleOpenDialog(row)}>
-                                                        <Cancel color="error"/>
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </StyledTableCell>
-                                        )}
+                                        {medico
+                                            ? (
+                                                <StyledTableCell align="center">
+                                                    <Tooltip title="Vai alle visite del paziente" placement="right">
+                                                        <IconButton onClick={() => handleViewUser(row)}>
+                                                            <FontAwesomeIcon icon={faArrowRightFromBracket}
+                                                                             style={{color: '#2e7d32'}}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </StyledTableCell>
+                                            )
+                                            : (
+                                                <StyledTableCell align="center">
+                                                    <Tooltip title="Rimuovi medico dalla lista"
+                                                             placement="right">
+                                                        <IconButton aria-label="delete"
+                                                                    onClick={() => handleOpenDialog(row)}>
+                                                            <Cancel color="error"/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </StyledTableCell>
+                                            )
+                                        }
                                     </StyledTableRow>
                                 ))}
                         </TableBody>

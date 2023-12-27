@@ -139,7 +139,7 @@ export default function SignUpFormMedico() {
         setStep(step - 1)
     }
 
-    // TODO - Metodo da eliminare, usato solo per test
+    // todo - Metodo da eliminare, usato solo per test
     const test = () => {
         setStep(step + 1)
     }
@@ -225,7 +225,6 @@ export default function SignUpFormMedico() {
             !Object.values(errDatiProfessionali).some((error) => error) &&
             !Object.values(errContatti).some((error) => error) &&
             !Object.values(errFine).some((error) => error)) {
-            // TODO - Gestire l'invio dei dati in blockchain
             console.log('Dati inviati:', formData)
             console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})

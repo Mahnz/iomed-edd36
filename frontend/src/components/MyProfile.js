@@ -19,7 +19,7 @@ import Paziente from '../exPatient.json'
 export default function MyProfile() {
     const cookies = new Cookies()
     const navigate = useNavigate()
-    // TODO - Settare medico a null
+    // todo - Settare medico a null
     const [medico, setMedico] = useState(false)
     const [utente, setUtente] = useState({
         requests: [
@@ -298,7 +298,7 @@ export default function MyProfile() {
                         </Grid>
                     )
                     : (
-                        // TODO - Elenco delle amicizie, da mostrare solo se paziente, map su utente.requests
+                        // todo - Elenco delle amicizie, da mostrare solo se paziente, map su utente.requests
                         //        (ogni elemento possiede id, firstName e lastName)
                         <Grid item xs={12} md={5}>
                             <Paper sx={{pt: 2, pr: 2, pl: 2, height: 425}}>
@@ -317,7 +317,7 @@ export default function MyProfile() {
                                             utente.requests.map((medico, index) => {
                                                 return (
                                                     <>
-                                                        <ListItem disablePadding>
+                                                        <ListItem disablePadding key={index}>
                                                             <ListItemButton>
                                                                 <ListItemText
                                                                     primary={`${medico.firstName} ${medico.lastName}`}

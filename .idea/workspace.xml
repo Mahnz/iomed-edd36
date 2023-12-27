@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/bcRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/bcRoutes.js" afterDir="false" />
     </list>
+    <list id="f579d316-be54-4a6f-a5d6-f62d41ebc6e2" name="Changes by domenico" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,10 +45,9 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -59,7 +57,7 @@
     &quot;npm.BACKEND.executor&quot;: &quot;Run&quot;,
     &quot;npm.FRONTEND.executor&quot;: &quot;Run&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CodeWithMe&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/Domenico/Desktop/packageOLD.json&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -82,11 +80,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components\HomePage_comp" />
+      <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components\SignUpSteps" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server" />
-      <recent name="C:\Users\Domenico\Desktop\software-edd36\src\pages" />
-      <recent name="C:\Users\Domenico\Desktop\software-edd36\server\routes" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components\SignUpSteps" />
@@ -96,7 +94,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.BACKEND">
+  <component name="RunManager" selected="npm.FRONTEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -115,6 +113,13 @@
       <item itemvalue="npm.BACKEND" />
       <item itemvalue="npm.FRONTEND" />
     </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-c44b541a36ca-JavaScript-WS-233.13135.92" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -153,10 +158,13 @@
       <workItem from="1702727246066" duration="40933000" />
       <workItem from="1702801497898" duration="26567000" />
       <workItem from="1702890672019" duration="31101000" />
-      <workItem from="1703415896978" duration="1425000" />
-      <workItem from="1703418968070" duration="1335000" />
-      <workItem from="1703554359378" duration="832000" />
-      <workItem from="1703555377266" duration="3577000" />
+      <workItem from="1703181781917" duration="15000" />
+      <workItem from="1703181804190" duration="6047000" />
+      <workItem from="1703267052098" duration="3421000" />
+      <workItem from="1703503469875" duration="1580000" />
+      <workItem from="1703509554828" duration="306000" />
+      <workItem from="1703674375590" duration="7803000" />
+      <workItem from="1703688518365" duration="6263000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -182,15 +190,63 @@
       <option name="project" value="LOCAL" />
       <updated>1702908268395</updated>
     </task>
-    <task id="LOCAL-00004" summary="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout">
+    <task id="LOCAL-00004" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
       <option name="closed" value="true" />
-      <created>1703557901341</created>
+      <created>1703190020612</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1703557901341</updated>
+      <updated>1703190020612</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703267877848</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703267877848</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703356465948</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1703356465948</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703357578793</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1703357578793</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix su ElencoUtenti.js">
+      <option name="closed" value="true" />
+      <created>1703441770100</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1703441770100</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Modifiche:&#10; - sistemate le informazioni personali dell'utente&#10; - aggiunta scheda per le richieste in attesa&#10; &#10; MyProfile: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703679895019</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1703679895019</updated>
+    </task>
+    <task id="LOCAL-00010" summary="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO">
+      <option name="closed" value="true" />
+      <created>1703694822302</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1703694822302</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,7 +267,9 @@
     <MESSAGE value="Small update" />
     <MESSAGE value="Login e Signup medico: IN CORSO" />
     <MESSAGE value="Signup medico:&#10; - validazione: COMPLETATA&#10; - submit: IN CORSO" />
-    <MESSAGE value="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout" />
+    <MESSAGE value="Fix su ElencoUtenti.js" />
+    <MESSAGE value="Modifiche:&#10; - sistemate le informazioni personali dell'utente&#10; - aggiunta scheda per le richieste in attesa&#10; &#10; MyProfile: IN CORSO" />
+    <MESSAGE value="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO" />
+    <option name="LAST_COMMIT_MESSAGE" value="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO" />
   </component>
 </project>

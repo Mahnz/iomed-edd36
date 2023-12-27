@@ -208,7 +208,7 @@ export default function SignUpFormPaziente() {
         if (!Object.values(errInfoPersonali).some((error) => error) &&
             !Object.values(errContatti).some((error) => error) &&
             !Object.values(errFine).some((error) => error)) {
-            // TODO - Gestire l'invio dei dati in blockchain
+            // todo - Gestire l'invio dei dati in blockchain
             console.log('Dati inviati:', formData)
             console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
