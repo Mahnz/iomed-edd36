@@ -26,6 +26,9 @@ export default function ElencoVisite({setVisita}) {
                     } else if (cookies.get("type") === "paziente") {
                         setMedico(false)
                         let CF = cookies.get('token')
+
+                        // FIX: Trasformare la prima chiamata nella forma: const response = await...
+                        //      Così, solo se la prima chiamata va a buon fine, si esegue la seconda su IPFS
                         await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
                             .then(res => {
                                 console.log(res);

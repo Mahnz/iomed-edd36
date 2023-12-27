@@ -1,5 +1,7 @@
 // Dashboard.js
 import React, {useState, useEffect} from 'react'
+import Cookies from 'universal-cookie'
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import {
     styled, CssBaseline, Box, Container, Toolbar,
     Drawer as MuiDrawer, AppBar as MuiAppBar,
@@ -24,41 +26,40 @@ import MyProfile from "../components/MyProfile.js"
 import NotificationsPanel from "../components/NotificationsPanel.js"
 import UserIconPanel from "../components/UserIconPanel.js"
 
-import Cookies from 'universal-cookie'
-import "../style/dashboard.css"
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
 import VisitaMedica from "../components/VisitaMedica.js"
 import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
 import ElencoUtenti from "../components/ElencoUtenti.js";
 import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js";
+import "../style/dashboard.css"
 
 const drawerWidth = 240
 
 export default function Dashboard() {
+    const cookies = new Cookies()
+    const navigate = useNavigate()
+
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
-    // TODO - Settare medico a null
-    const [medico, setMedico] = useState(true)
+    const [loggedUser, setLoggedUser] = useState(null)
+    const [medico, setMedico] = useState(null)
+
     const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
     }
 
-    const [loggedUser, setLoggedUser] = useState("test")
-    const cookies = new Cookies()
-    const navigate = useNavigate()
     useEffect(() => {
-        // if (!cookies.get("token")) {
-        //     console.log("Login non effettuato. Reindirizzamento...")
-        //     navigate("/homepage")
-        // } else {
-        //     if (cookies.get("type") === "medico") {
-        //         setMedico(true)
-        //         setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
-        //     } else {
-        //         setMedico(false)
-        //         setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
-        //     }
-        // }
+        if (!cookies.get("token")) {
+            console.log("Login non effettuato. Reindirizzamento...")
+            navigate("/homepage")
+        } else {
+            if (cookies.get("type") === "medico") {
+                setMedico(true)
+                setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
+            } else {
+                setMedico(false)
+                setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
+            }
+        }
     }, [])
 
     // ? GESTIONE DELLE TAB

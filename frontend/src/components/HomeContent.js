@@ -8,22 +8,22 @@ export default function HomeContent({handleSelectTab}) {
     const navigate = useNavigate()
     const [loggedUser, setLoggedUser] = useState("Mario Rossi")
     // todo - Settare medico a null
-    const [medico, setMedico] = useState(true)
+    const [medico, setMedico] = useState(null)
 
     useEffect(() => {
         // todo - Da abilitare quando i cookie vengono settati correttamente
         // BLOCKCHAIN
-        // if (!cookies.get("token")) {
-        //     console.log("Nessun utente loggato")
-        //     navigate("/homepage")
-        // } else {
-        //     if (cookies.get("type") === "medico") {
-        //         setMedico(true)
-        //     } else if (cookies.get("type") === "paziente") {
-        //         setMedico(false)
-        //     }
-        //     setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
-        // }
+        if (!cookies.get("token")) {
+            console.log("Nessun utente loggato")
+            navigate("/homepage")
+        } else {
+            if (cookies.get("type") === "medico") {
+                setMedico(true)
+            } else if (cookies.get("type") === "paziente") {
+                setMedico(false)
+            }
+            setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
+        }
     }, [])
 
     return (
@@ -137,13 +137,13 @@ export default function HomeContent({handleSelectTab}) {
                     }}>
                         <CardContent>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                {medico
+                                {!medico
                                     ? <b>Medici autorizzati</b>
                                     : <b>Elenco assistiti</b>
                                 }
                             </Typography>
                             <Typography color="text.secondary">
-                                {medico
+                                {!medico
                                     ? "Visualizza, aggiungi o rimuovi i medici autorizzati ad accedere alle tue informazioni."
                                     : "Visualizza un elenco di tutti i pazienti assistiti e ricerca mediante il codice fiscale."
                                 }
