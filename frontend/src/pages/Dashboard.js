@@ -36,6 +36,7 @@ const drawerWidth = 240
 
 export default function Dashboard() {
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
+    // TODO - Settare medico a null
     const [medico, setMedico] = useState(true)
     const [openDrawer, setOpenDrawer] = useState(false)
     const toggleDrawer = () => {
@@ -58,7 +59,6 @@ export default function Dashboard() {
         //         setLoggedUser(cookies.get("firstName") + " " + cookies.get("lastName"))
         //     }
         // }
-        // init(token).then(() => console.log("Inizializzazione effettuata"))
     }, [])
 
     // ? GESTIONE DELLE TAB

@@ -2,3 +2,28 @@
     border-left: 4px solid #2196f3; /* Colore a tua scelta */
     background-color: rgba(33, 150, 243, 0.1); /* Colore a tua scelta */
 }
+
+html {
+    --scrollbarBG: hsl(0, 0%, 100%);
+    --thumbBG: #90a4ae;
+}
+
+.List::-webkit-scrollbar {
+    width: 11px;
+}
+
+.List {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+
+.List::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+    border-radius: 6px;
+}
+
+.List::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+}

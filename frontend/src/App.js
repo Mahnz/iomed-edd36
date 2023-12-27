@@ -19,10 +19,10 @@ const theme = createTheme({
             'Poppins',
             'sans-serif',
         ].join(','),
-    },
+    }
 })
-export default function App() {
 
+export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <Routes>

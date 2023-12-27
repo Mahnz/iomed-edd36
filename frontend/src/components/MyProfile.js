@@ -11,18 +11,141 @@ import {
     ListItemText,
     ListItemButton,
     Divider,
-    IconButton
+    IconButton, Box
 } from '@mui/material'
 import {Close, Done} from '@mui/icons-material'
-
 import Paziente from '../exPatient.json'
+import '../style/dashboard.css'
 
 export default function MyProfile() {
     const cookies = new Cookies()
     const navigate = useNavigate()
     // TODO - Settare medico a null
     const [medico, setMedico] = useState(false)
-    const [utente, setUtente] = useState({requests: []})
+    const [utente, setUtente] = useState({
+        requests: [
+            {
+                id: 1,
+                firstName: "Mario",
+                lastName: "Rossi"
+            },
+            {
+                id: 2,
+                firstName: "Luigi",
+                lastName: "Verdi"
+            },
+            {
+                id: 3,
+                firstName: "Giovanni",
+                lastName: "Bianchi"
+            },
+            {
+                id: 4,
+                firstName: "Giuseppe",
+                lastName: "Neri"
+            },
+            {
+                id: 5,
+                firstName: "Giacomo",
+                lastName: "Gialli"
+            },
+            {
+                id: 6,
+                firstName: "Gianluca",
+                lastName: "Blu"
+            },
+            {
+                id: 7,
+                firstName: "Gianmarco",
+                lastName: "Verdi"
+            },
+            {
+                id: 8,
+                firstName: "Gianluigi",
+                lastName: "Bianchi"
+            },
+            {
+                id: 9,
+                firstName: "Giancarlo",
+                lastName: "Neri"
+            },
+            {
+                id: 10,
+                firstName: "Gianfranco",
+                lastName: "Gialli"
+            },
+            {
+                id: 11,
+                firstName: "Gianpiero",
+                lastName: "Blu"
+            },
+            {
+                id: 12,
+                firstName: "Gianluigi",
+                lastName: "Verdi"
+            },
+            {
+                id: 13,
+                firstName: "Gianmarco",
+                lastName: "Bianchi"
+            },
+            {
+                id: 14,
+                firstName: "Gianluigi",
+                lastName: "Neri"
+            },
+            {
+                id: 15,
+                firstName: "Giancarlo",
+                lastName: "Gialli"
+            },
+            {
+                id: 16,
+                firstName: "Gianfranco",
+                lastName: "Blu"
+            },
+            {
+                id: 17,
+                firstName: "Gianpiero",
+                lastName: "Verdi"
+            },
+            {
+                id: 18,
+                firstName: "Gianluigi",
+                lastName: "Bianchi"
+            },
+            {
+                id: 19,
+                firstName: "Gianmarco",
+                lastName: "Neri"
+            },
+            {
+                id: 20,
+                firstName: "Gianluigi",
+                lastName: "Gialli"
+            },
+            {
+                id: 21,
+                firstName: "Giancarlo",
+                lastName: "Blu"
+            },
+            {
+                id: 22,
+                firstName: "Gianfranco",
+                lastName: "Verdi"
+            },
+            {
+                id: 23,
+                firstName: "Gianpiero",
+                lastName: "Bianchi"
+            },
+            {
+                id: 24,
+                firstName: "Gianluigi",
+                lastName: "Neri"
+            },
+        ]
+    })
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -55,6 +178,7 @@ export default function MyProfile() {
 
     const handleConfirm = async (id) => {
         let CF = cookies.get("token");
+        console.log("Medico: " + id)
         await axios.post(`http://localhost:3001/api/bc/confirmRequest`, {
             token: CF,
             id: id
@@ -98,187 +222,91 @@ export default function MyProfile() {
 
             {/* ? Stampa dei dati personali dell'utente */}
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <Paper sx={{p: 2}}>
-                        <Typography variant="h5" ml={2}>
+                <Grid item xs={12} md={7}>
+                    <Paper sx={{pt: 2, pr: 2, pl: 2}}>
+                        <Typography variant="h5" ml={2} color="primary">
                             Informazioni Personali
                         </Typography>
                         <List>
                             <ListItem>
                                 <ListItemText
-                                    primary="Nome"
-                                    secondary={Paziente.firstName}
+                                    primary={Paziente.firstName}
+                                    secondary="Nome"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary="Cognome"
-                                    secondary={Paziente.lastName}
+                                    primary={Paziente.lastName}
+                                    secondary="Cognome"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary="Sesso"
-                                    secondary={Paziente.sex === "M" ? "Maschio" : "Femmina"}
+                                    primary={Paziente.sex === "M" ? "Maschio" : "Femmina"}
+                                    secondary="Sesso"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary="Data di nascita"
-                                    secondary={Paziente.birthDate}
+                                    primary={Paziente.birthDate}
+                                    secondary="Data di nascita"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary="Luogo di nascita"
-                                    secondary={Paziente.birthPlace}
-                                />
-                            </ListItem>
-                        </List>
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Paper sx={{p: 2}}>
-                        <Typography variant="h5" ml={2}>
-                            Informazioni di Contatto
-                        </Typography>
-                        <List>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Provincia"
-                                    secondary={Paziente.province}
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Città"
-                                    secondary={Paziente.city}
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText
-                                    primary="CAP"
-                                    secondary={Paziente.cap}
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Indirizzo"
-                                    secondary={Paziente.address}
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Telefono"
-                                    // TODO - Cambiare "phoneNumber" con "telefono"
-                                    secondary={Paziente.phoneNumber}
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText
-                                    primary="CF"
-                                    secondary={Paziente.CF}
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Email"
-                                    secondary={Paziente.email}
+                                    primary={Paziente.birthPlace}
+                                    secondary="Luogo di nascita"
                                 />
                             </ListItem>
                         </List>
                     </Paper>
                 </Grid>
 
-                {medico && (
-                    <Grid item xs={12} md={6}>
-                        <Paper sx={{p: 2}}>
-                            <Typography variant="h5" ml={2}>
-                                Informazioni professionali
-                            </Typography>
-                            <List>
-                                <ListItem>
-                                    <ListItemText
-                                        primary="ID"
-                                        secondary={utente.id}
-                                    />
-                                </ListItem>
-                                <ListItem>
-                                    <ListItemText
-                                        primary="Ospedale di riferimento"
-                                        secondary={utente.hospital}
-                                    />
-                                </ListItem>
-                                <ListItem>
-                                    <ListItemText
-                                        primary="Specializzazione"
-                                        secondary={utente.spec}
-                                    />
-                                </ListItem>
-                                <ListItem>
-                                    <ListItemText
-                                        primary="Telefono ufficio"
-                                        secondary={utente.telefonoUfficio}
-                                    />
-                                </ListItem>
-                            </List>
-                        </Paper>
-                    </Grid>
-                )}
-
-                {!medico
-                    && (
-                        <Grid item xs={12} md={6}>
-                            <Paper sx={{p: 2}}>
-                                <Typography variant="h5" ml={2}>
-                                    Informazioni Personali
+                {medico
+                    ? (
+                        <Grid item xs={12} md={5}>
+                            <Paper sx={{pt: 2, pr: 2, pl: 2}}>
+                                <Typography variant="h5" ml={2} color="primary">
+                                    Informazioni professionali
                                 </Typography>
                                 <List>
                                     <ListItem>
                                         <ListItemText
-                                            primary="Nome"
-                                            secondary={Paziente.firstName}
+                                            primary={utente.id}
+                                            secondary="ID"
                                         />
                                     </ListItem>
                                     <ListItem>
                                         <ListItemText
-                                            primary="Cognome"
-                                            secondary={Paziente.lastName}
+                                            primary={utente.hospital}
+                                            secondary="Ospedale di riferimento"
                                         />
                                     </ListItem>
                                     <ListItem>
                                         <ListItemText
-                                            primary="Sesso"
-                                            secondary={Paziente.sex === "M" ? "Maschio" : "Femmina"}
+                                            primary={utente.spec}
+                                            secondary="Specializzazione"
                                         />
                                     </ListItem>
                                     <ListItem>
                                         <ListItemText
-                                            primary="Data di nascita"
-                                            secondary={Paziente.birthDate}
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary="Luogo di nascita"
-                                            secondary={Paziente.birthPlace}
+                                            primary={utente.telefonoUfficio}
+                                            secondary="Telefono ufficio"
                                         />
                                     </ListItem>
                                 </List>
                             </Paper>
                         </Grid>
                     )
-                }
-
-                {/* TODO - Elenco delle amicizie, da mostrare solo se paziente, map su utente.requests  (ogni elemento possiede id,firstName e lastName) */}
-                {!medico
-                    && (
-                        <Grid item xs={12} md={6}>
-                            <Paper sx={{p: 2}}>
-                                <Typography variant="h5" ml={2}>
+                    : (
+                        // TODO - Elenco delle amicizie, da mostrare solo se paziente, map su utente.requests
+                        //        (ogni elemento possiede id, firstName e lastName)
+                        <Grid item xs={12} md={5}>
+                            <Paper sx={{pt: 2, pr: 2, pl: 2, height: 425}}>
+                                <Typography variant="h5" color="primary" sx={{ml: 2, mb: 1}}>
                                     Autorizzazioni in attesa
                                 </Typography>
-                                <List>
+                                <List className="List" sx={{maxHeight: '85%', overflow: 'auto'}}>
                                     {utente.requests.length === 0 ? (
                                             <ListItem disablePadding>
                                                 <ListItemButton>
@@ -288,74 +316,86 @@ export default function MyProfile() {
                                         )
                                         : (
                                             utente.requests.map((medico, index) => {
-                                                <React.Fragment key={index}>
-                                                    <ListItem disablePadding
-                                                              secondaryAction={
-                                                                  <>
-                                                                      <IconButton edge="end">
-                                                                          <Done color="success" fontSize="medium"/>
-                                                                      </IconButton>
-                                                                      <IconButton edge="end">
-                                                                          <Close color="error" fontSize="medium"/>
-                                                                      </IconButton>
-                                                                  </>
-                                                              }>
-                                                        <ListItemButton>
-                                                            <ListItemText
-                                                                primary="Rossi Mario"
-                                                                secondary="6215634214e1wsd4q2"
-                                                            />
-                                                        </ListItemButton>
-                                                    </ListItem>
-                                                    {/*<Divider/>*/}
-                                                </React.Fragment>
+                                                return (
+                                                    <>
+                                                        <ListItem disablePadding>
+                                                            <ListItemButton>
+                                                                <ListItemText
+                                                                    primary={`${medico.firstName} ${medico.lastName}`}
+                                                                    secondary={medico.id}
+                                                                />
+                                                                <IconButton
+                                                                    onClick={() => handleConfirm(medico.id)}>
+                                                                    <Done color="success" fontSize="medium"/>
+                                                                </IconButton>
+                                                                <IconButton
+                                                                    onClick={() => handleCancel(medico.id)}>
+                                                                    <Close color="error" fontSize="medium"/>
+                                                                </IconButton>
+                                                            </ListItemButton>
+                                                        </ListItem>
+                                                        {index !== utente.requests.length - 1 && <Divider/>}
+                                                    </>
+                                                )
                                             }))
                                     }
                                 </List>
-                                {/*<List>*/}
-                                {/*    <ListItem disablePadding*/}
-                                {/*              secondaryAction={*/}
-                                {/*                  <>*/}
-                                {/*                      <IconButton edge="end">*/}
-                                {/*                          <Done color="success" fontSize="medium"/>*/}
-                                {/*                      </IconButton>*/}
-                                {/*                      <IconButton edge="end">*/}
-                                {/*                          <Close color="error" fontSize="medium"/>*/}
-                                {/*                      </IconButton>*/}
-                                {/*                  </>*/}
-                                {/*              }>*/}
-                                {/*        <ListItemButton>*/}
-                                {/*            <ListItemText*/}
-                                {/*                primary="Rossi Mario"*/}
-                                {/*                secondary="6215634214e1wsd4q2"*/}
-                                {/*            />*/}
-                                {/*        </ListItemButton>*/}
-                                {/*    </ListItem>*/}
-                                {/*    <Divider/>*/}
-                                {/*    <ListItem disablePadding*/}
-                                {/*              secondaryAction={*/}
-                                {/*                  <>*/}
-                                {/*                      <IconButton edge="end"*/}
-                                {/*                                  onClick={() => handleConfirm(medico.id)}>*/}
-                                {/*                          <Done color="success" fontSize="medium"/>*/}
-                                {/*                      </IconButton>*/}
-                                {/*                      <IconButton edge="end"*/}
-                                {/*                                  onClick={axios.post(() => handleCancel(medico.id)}>*/}
-                                {/*                          <Close color="error" fontSize="medium"/>*/}
-                                {/*                      </IconButton>*/}
-                                {/*                  </>*/}
-                                {/*              }>*/}
-                                {/*        <ListItemButton>*/}
-                                {/*            <ListItemText*/}
-                                {/*                primary="Verdi Giovanni"*/}
-                                {/*                secondary="y1238721eijswscweqd"*/}
-                                {/*            />*/}
-                                {/*        </ListItemButton>*/}
-                                {/*    </ListItem>*/}
-                                {/*</List>*/}
                             </Paper>
                         </Grid>
-                    )}
+                    )
+                }
+
+                <Grid item xs={12} md={7}>
+                    <Paper sx={{pt: 2, pr: 2, pl: 2}}>
+                        <Typography variant="h5" ml={2} color="primary">
+                            Informazioni di Contatto
+                        </Typography>
+                        <List>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.province}
+                                    secondary="Provincia di residenza"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.city}
+                                    secondary="Città di residenza"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.cap}
+                                    secondary="CAP"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.address}
+                                    secondary="Indirizzo di residenza"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.telefono}
+                                    secondary="Telefono personale"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.CF}
+                                    secondary="Codice Fiscale"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={Paziente.email}
+                                    secondary="Email"
+                                />
+                            </ListItem>
+                        </List>
+                    </Paper>
+                </Grid>
             </Grid>
         </>
     )

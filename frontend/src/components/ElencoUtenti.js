@@ -25,6 +25,7 @@ import {tableData} from "../utils.js"
 
 export default function ElencoUtenti() {
     const cookies = new Cookies()
+    // TODO - Settare medico a null
     const [medico, setMedico] = useState(false)
     const [users, setUsers] = useState([])
     const [id, setId] = useState('')

@@ -50,16 +50,16 @@ export default function UserIconPanel({
     const navigate = useNavigate()
     const cookies = new Cookies()
 
-    const logout= () => {
+    const logout = () => {
         cookies.remove('token', {
             path: '/',
             sameSite: 'Strict',  // Cookie limitato al proprio dominio
         });
-        cookies.remove('firstName',{
+        cookies.remove('firstName', {
             path: '/',
             sameSite: 'Strict',  // Cookie limitato al proprio dominio
         });
-        cookies.remove('lastName',{
+        cookies.remove('lastName', {
             path: '/',
             sameSite: 'Strict',  // Cookie limitato al proprio dominio
         });
@@ -86,8 +86,9 @@ export default function UserIconPanel({
             MenuListProps={{
                 'aria-labelledby': 'notification-button',
             }}
+            sx={{p: 0, m: 0}}
         >
-            <List>
+            <List sx={{p: 0, m: 0}}>
                 <ListItemButton alignItems="flex-start" onClick={getHandler("P")}>
                     <ListItemText primary="Il mio profilo"/>
                 </ListItemButton>

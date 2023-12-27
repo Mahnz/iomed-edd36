@@ -528,209 +528,207 @@ export default function InserimentoVisitaMedica() {
                     >Caricamento in corso...</p>
                 </div>
             )}
-            <Container sx={{mt: 4}}>
-                <Typography variant="h4" color="primary" gutterBottom>
-                    <b>Inserimento Visita Medica</b>
-                </Typography>
-                <Paper elevation={3} sx={{padding: 3, borderRadius: 4}}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={9}>
-                            <TextField type="text"
-                                       name="codiceFiscale"
-                                       label="Codice Fiscale del Paziente"
-                                       value={formData.codiceFiscale}
-                                       onChange={handleChange}
-                                       fullWidth
-                                       variant="outlined"
-                                       required
-                                       InputProps={{
-                                           minLength: 16,
-                                           maxLength: 16
-                                       }}
-                                       inputProps={{
-                                           minLength: 16,
-                                           maxLength: 16
-                                       }}
-                                       error={errors.codiceFiscale.error}
-                                       helperText={errors.codiceFiscale.error && errors.codiceFiscale.message}
-                            />
+            <Typography variant="h4" mb={4}>
+                Inserimento visita medica
+            </Typography>
+            <Paper elevation={1} sx={{padding: 3, borderRadius: 4}}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={9}>
+                        <TextField type="text"
+                                   name="codiceFiscale"
+                                   label="Codice Fiscale del Paziente"
+                                   value={formData.codiceFiscale}
+                                   onChange={handleChange}
+                                   fullWidth
+                                   variant="outlined"
+                                   required
+                                   InputProps={{
+                                       minLength: 16,
+                                       maxLength: 16
+                                   }}
+                                   inputProps={{
+                                       minLength: 16,
+                                       maxLength: 16
+                                   }}
+                                   error={errors.codiceFiscale.error}
+                                   helperText={errors.codiceFiscale.error && errors.codiceFiscale.message}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                        <Button
+                            variant="contained"
+                            color={btnDisabled ? 'error' : "success"}
+                            disabled={btnDisabled}
+                            onClick={checkCF}
+                            sx={{
+                                '&:disabled': {
+                                    backgroundColor: '#6f7174',
+                                    borderColor: '#6f7174',
+                                    color: '#fff',
+                                    boxShadow: 'none',
+                                }
+                            }}
+                            style={{height: "100%"}}
+                            fullWidth
+                        >
+                            Verifica
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2} sx={{mt: 5}}>
+                    <Grid item xs={12}>
+                        <Typography variant="h6"><b>Dettagli</b></Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField type="text"
+                                   label="Nome della visita"
+                                   name="nomeVisita"
+                                   value={formData.nomeVisita}
+                                   onChange={handleChange}
+                                   fullWidth
+                                   variant="outlined"
+                                   required
+                                   error={errors.nomeVisita.error}
+                                   helperText={errors.nomeVisita.error && errors.nomeVisita.message}
+                                   disabled={!isCFVerified}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Autocomplete
+                            name="reparto"
+                            options={departments}
+                            isOptionEqualToValue={(option, value) => option.value === value.value}
+                            // isOptionEqualToValue={(option, value) => {
+                            //     if (value === "") {
+                            //         return false
+                            //     } else if (value === option) {
+                            //         return true
+                            //     }
+                            // }}
+                            onChange={(event, value) => handleChangeReparto(value)}
+                            value={formData.reparto}
+                            autoHighlight
+                            disabled={!isCFVerified}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    name="reparto"
+                                    label="Reparto di Competenza"
+                                    autoComplete="off"
+                                    required
+                                    fullWidth
+                                    error={errors.reparto.error}
+                                    helperText={errors.reparto.error && errors.reparto.message}
+                                    disabled={!isCFVerified}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField type="text"
+                                   name="descrizione"
+                                   label="Descrizione/Note aggiuntive"
+                                   variant="outlined"
+                                   multiline
+                                   rows={4}
+                                   fullWidth
+                                   value={formData.descrizione}
+                                   onChange={handleChange}
+                                   disabled={!isCFVerified}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField type="date"
+                                   name="dataVisita"
+                                   variant="outlined"
+                                   autoComplete="off"
+                                   value={formData.dataVisita}
+                                   onChange={handleChange}
+                                   inputProps={{min: "1890-01-01", max: maxDate.toISOString().split('T')[0]}}
+                                   fullWidth
+                                   required
+                                   error={errors.dataVisita.error}
+                                   helperText={errors.dataVisita.error && errors.dataVisita.message}
+                                   disabled={!isCFVerified}
+                        />
+                    </Grid>
+                </Grid>
+
+                <Grid container spacing={2} sx={{mt: 5}}>
+                    <Grid item xs={8} sm={8}>
+                        <Typography variant="h6"><b>Allegati</b></Typography>
+                    </Grid>
+                    <Grid item xs={4} sm={4}>
+                        <Button
+                            variant="contained"
+                            color="success"
+                            onClick={handleAddAllegato}
+                            endIcon={<Add/>}
+                            disabled={!isCFVerified}
+                        >
+                            Aggiungi Allegato
+                        </Button>
+                    </Grid>
+                    {formData.allegati.map((allegato, index) => (
+                        <React.Fragment key={index}>
+                            <Grid item xs={2}>
+                                <Tooltip title="Carica file da allegare" placement="left">
+                                    <Button component="label" variant="contained" startIcon={<CloudUpload/>}
+                                            style={{height: '100%'}}>
+                                        Carica file
+                                        <VisuallyHiddenInput
+                                            name="allegato"
+                                            type="file"
+                                            onChange={(e) => handleAllegatoChange(index, e.target.files[0])}
+                                            accept="image/png, image/jpeg, image/jpg, application/pdf"
+                                        />
+                                    </Button>
+                                </Tooltip>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField type="text"
+                                           label={`Allegato ${index + 1}`}
+                                           fullWidth
+                                           size="medium"
+                                           value={allegato.file ? allegato.file.name : ""}
+                                           onChange={(e) => handleAllegatoChange(index, e.target.value)}
+                                           InputProps={{
+                                               readOnly: true
+                                           }}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Tooltip title="Rimuovi file" placement="right">
+                                    <IconButton
+                                        variant="contained"
+                                        color="error"
+                                        onClick={() => handleRemoveAllegato(index)}
+                                        style={{height: '100%'}}
+                                        aria-label="Rimuovi file"
+                                    >
+                                        <RemoveCircleOutlined/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                        </React.Fragment>
+                    ))}
+
+
+                    <Grid container spacing={2} justifyContent="center" sx={{mt: 3}}>
+                        <Grid item>
+                            <Button variant="outlined" color="primary" onClick={handleCancel}>
+                                Annulla
+                            </Button>
                         </Grid>
-                        <Grid item xs={12} sm={3}>
-                            <Button
-                                variant="contained"
-                                color={btnDisabled ? 'error' : "success"}
-                                disabled={btnDisabled}
-                                onClick={checkCF}
-                                sx={{
-                                    '&:disabled': {
-                                        backgroundColor: '#6f7174',
-                                        borderColor: '#6f7174',
-                                        color: '#fff',
-                                        boxShadow: 'none',
-                                    }
-                                }}
-                                style={{height: "100%"}}
-                                fullWidth
-                            >
-                                Verifica
+                        <Grid item>
+                            <Button type="submit" variant="contained" color="primary" onClick={handleOpenDialog}
+                                    endIcon={<Send/>}>
+                                Aggiungi visita
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={2} sx={{mt: 5}}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6"><b>Dettagli</b></Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField type="text"
-                                       label="Nome della visita"
-                                       name="nomeVisita"
-                                       value={formData.nomeVisita}
-                                       onChange={handleChange}
-                                       fullWidth
-                                       variant="outlined"
-                                       required
-                                       error={errors.nomeVisita.error}
-                                       helperText={errors.nomeVisita.error && errors.nomeVisita.message}
-                                       disabled={!isCFVerified}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Autocomplete
-                                name="reparto"
-                                options={departments}
-                                isOptionEqualToValue={(option, value) => option.value === value.value}
-                                // isOptionEqualToValue={(option, value) => {
-                                //     if (value === "") {
-                                //         return false
-                                //     } else if (value === option) {
-                                //         return true
-                                //     }
-                                // }}
-                                onChange={(event, value) => handleChangeReparto(value)}
-                                value={formData.reparto}
-                                autoHighlight
-                                disabled={!isCFVerified}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        name="reparto"
-                                        label="Reparto di Competenza"
-                                        autoComplete="off"
-                                        required
-                                        fullWidth
-                                        error={errors.reparto.error}
-                                        helperText={errors.reparto.error && errors.reparto.message}
-                                        disabled={!isCFVerified}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField type="text"
-                                       name="descrizione"
-                                       label="Descrizione/Note aggiuntive"
-                                       variant="outlined"
-                                       multiline
-                                       rows={4}
-                                       fullWidth
-                                       value={formData.descrizione}
-                                       onChange={handleChange}
-                                       disabled={!isCFVerified}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField type="date"
-                                       name="dataVisita"
-                                       variant="outlined"
-                                       autoComplete="off"
-                                       value={formData.dataVisita}
-                                       onChange={handleChange}
-                                       inputProps={{min: "1890-01-01", max: maxDate.toISOString().split('T')[0]}}
-                                       fullWidth
-                                       required
-                                       error={errors.dataVisita.error}
-                                       helperText={errors.dataVisita.error && errors.dataVisita.message}
-                                       disabled={!isCFVerified}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={2} sx={{mt: 5}}>
-                        <Grid item xs={8} sm={8}>
-                            <Typography variant="h6"><b>Allegati</b></Typography>
-                        </Grid>
-                        <Grid item xs={4} sm={4}>
-                            <Button
-                                variant="contained"
-                                color="success"
-                                onClick={handleAddAllegato}
-                                endIcon={<Add/>}
-                                disabled={!isCFVerified}
-                            >
-                                Aggiungi Allegato
-                            </Button>
-                        </Grid>
-                        {formData.allegati.map((allegato, index) => (
-                            <React.Fragment key={index}>
-                                <Grid item xs={2}>
-                                    <Tooltip title="Carica file da allegare" placement="left">
-                                        <Button component="label" variant="contained" startIcon={<CloudUpload/>}
-                                                style={{height: '100%'}}>
-                                            Carica file
-                                            <VisuallyHiddenInput
-                                                name="allegato"
-                                                type="file"
-                                                onChange={(e) => handleAllegatoChange(index, e.target.files[0])}
-                                                accept="image/png, image/jpeg, image/jpg, application/pdf"
-                                            />
-                                        </Button>
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField type="text"
-                                               label={`Allegato ${index + 1}`}
-                                               fullWidth
-                                               size="medium"
-                                               value={allegato.file ? allegato.file.name : ""}
-                                               onChange={(e) => handleAllegatoChange(index, e.target.value)}
-                                               InputProps={{
-                                                   readOnly: true
-                                               }}
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Tooltip title="Rimuovi file" placement="right">
-                                        <IconButton
-                                            variant="contained"
-                                            color="error"
-                                            onClick={() => handleRemoveAllegato(index)}
-                                            style={{height: '100%'}}
-                                            aria-label="Rimuovi file"
-                                        >
-                                            <RemoveCircleOutlined/>
-                                        </IconButton>
-                                    </Tooltip>
-                                </Grid>
-                            </React.Fragment>
-                        ))}
-
-
-                        <Grid container spacing={2} justifyContent="center" sx={{mt: 3}}>
-                            <Grid item>
-                                <Button variant="outlined" color="primary" onClick={handleCancel}>
-                                    Annulla
-                                </Button>
-                            </Grid>
-                            <Grid item>
-                                <Button type="submit" variant="contained" color="primary" onClick={handleOpenDialog}
-                                        endIcon={<Send/>}>
-                                    Aggiungi visita
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </Container>
+                </Grid>
+            </Paper>
 
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Conferma cancellazione</DialogTitle>

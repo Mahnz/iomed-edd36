@@ -248,6 +248,30 @@ const getPatient = async (req, res) => {
         p=JSON.parse(prettyJSONString(p));
         p=p[0].Record;
 
+        let v=[];
+
+        for(e of p.requests)
+        {
+            let query={
+                selector:
+                    {
+                        id: e
+                    }
+            };
+
+            let doc=await contract.evaluateTransaction("QueryAssets", JSON.stringify(query));
+            doc=JSON.parse(prettyJSONString(doc));
+            doc=doc[0].Record;
+
+            v.push({
+                id: doc.id,
+                firstName: doc.firstName,
+                lastName: doc.lastName
+            })
+        }
+
+        p.requests=v;
+
         console.log("Ricerca finita");
         console.log(p);
 
