@@ -17,9 +17,9 @@ import {
     Tooltip,
     Dialog,
     DialogTitle,
-    DialogContent, DialogActions, Button
+    DialogContent, DialogActions, Button, TextField, Snackbar, Alert
 } from "@mui/material"
-import {Cancel} from "@mui/icons-material";
+import {Cancel, Close} from "@mui/icons-material";
 import axios from "axios";
 import {tableData} from "../utils.js"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -30,7 +30,7 @@ export default function ElencoUtenti() {
     const cookies = new Cookies()
     const navigate = useNavigate()
     // todo - Settare medico a null
-    const [medico, setMedico] = useState(true)
+    const [medico, setMedico] = useState(null)
     const [users, setUsers] = useState([])
     const [id, setId] = useState('')
 
@@ -60,8 +60,8 @@ export default function ElencoUtenti() {
         fetchUsers()
     }, [])
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage)
@@ -97,32 +97,75 @@ export default function ElencoUtenti() {
             id: userToDelete.id
         }).then(res => alert(res.data)).catch(e => console.log(e));
         // todo - Aggiornare la lista degli utenti dopo la cancellazione, così da eliminare la riga dalla tabella
+
+        setOpenSnackbar(true)
     }
 
+    const [searchTerm, setSearchTerm] = useState('');
     const handleViewUser = (user) => {
         const codiceUtente = user.CF;
         navigate('/dashboard/listaAssistiti/visite', {state: codiceUtente})
     }
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredUsers = tableData.filter((user) => {
+        if (medico) {
+            const fullName = `${user.lastName} ${user.firstName} ${user.id}`;
+            return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+        } else {
+            const fullName = `${user.lastName} ${user.firstName} ${user.CF}`;
+            return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+        }
+    });
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    };
 
     return (
         <>
             <Typography variant="h4" mb={4}>
                 {medico ? "Elenco assistiti" : "Elenco dei medici autorizzati"}
             </Typography>
+            <TextField type="text"
+                       name="searchField"
+                       label="Ricerca utente"
+                       variant="outlined"
+                       value={searchTerm}
+                       onChange={handleSearchChange}
+                       fullWidth
+                       sx={{mb: 2, backgroundColor: 'white'}}
+                       InputProps={{
+                           endAdornment: searchTerm && (
+                               <IconButton edge="end" onClick={() => setSearchTerm('')}>
+                                   <Close/>
+                               </IconButton>
+                           ),
+                       }}
+            />
             <Paper sx={{width: '100%'}}>
-                <TableContainer className="List" sx={{height: '70vh', borderRadius: 3, overflow: 'auto'}}>
+                <TableContainer className="List" sx={{height: '63vh', borderRadius: 3, overflow: 'auto'}}>
                     <Table aria-label="table" stickyHeader>
                         <TableHead>
                             <TableRow sx={{backgroundColor: '#1976d2', color: '#ffff'}}>
                                 <StyledTableCell sx={{width: '25%'}} align="left">Cognome</StyledTableCell>
                                 <StyledTableCell sx={{width: '25%'}} align="left">Nome</StyledTableCell>
                                 <StyledTableCell sx={{width: '15%'}} align="center">Data di nascita</StyledTableCell>
-                                <StyledTableCell sx={{width: '30%'}} align="center">Codice fiscale</StyledTableCell>
+                                <StyledTableCell sx={{width: '30%'}} align="center">
+                                    {medico ? "Codice fiscale" : "Identificativo"}
+                                </StyledTableCell>
                                 <StyledTableCell sx={{width: '5%'}} align="center"> </StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {tableData
+                            {filteredUsers
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => (
                                     <StyledTableRow hover role="checkbox" key={index} tabIndex={-1}
@@ -131,6 +174,9 @@ export default function ElencoUtenti() {
                                         <StyledTableCell align="left">{row.firstName}</StyledTableCell>
                                         <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
                                         <StyledTableCell align="center">{row.CF}</StyledTableCell>
+                                        {/* todo - STAMPARE ID DEL MEDICO, NON CF */}
+                                        {/*   {medico ? row.CF : row.id}*/}
+                                        {/*</StyledTableCell>*/}
                                         {medico
                                             ? (
                                                 <StyledTableCell align="center">
@@ -185,6 +231,13 @@ export default function ElencoUtenti() {
                         </Button>
                     </DialogActions>
                 </Dialog>
+            )}
+            {!medico && (
+                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                    <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
+                        Autorizzazione rimossa con successo!
+                    </Alert>
+                </Snackbar>
             )}
         </>
     )

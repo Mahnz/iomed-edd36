@@ -59,10 +59,14 @@ export default function ElencoVisite({setVisita}) {
             </Typography>
             <Grid container spacing={5}>
                 {visite.length === 0
-                    ? (<Typography>
-                        Non sono presenti visite mediche
-                    </Typography>)
-                    : (
+                    ? (
+                        <Grid item xs={12}
+                              sx={{display: 'flex', justifyContent: 'center', height: '100vh', mt: 6}}>
+                            <Typography variant="h5">
+                                <em>Non sono presenti visite mediche</em>
+                            </Typography>
+                        </Grid>
+                    ) : (
                         visite.map((visit, index) => (
                             <Grid item xs={12} md={8} lg={6} key={index}>
                                 <Paper

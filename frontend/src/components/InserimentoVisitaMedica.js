@@ -356,17 +356,15 @@ export default function InserimentoVisitaMedica() {
 
 
     const [showOverlay, setShowOverlay] = useState(false)
-    const [openDialog, setOpenDialog] = useState(false)
     const [openSnackbar, setOpenSnackbar] = useState(false);
-
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpenSnackbar(false);
     };
 
+    const [openDialog, setOpenDialog] = useState(false)
     const handleOpenDialog = () => {
         if (isCFVerified) {
             if (!formData.codiceFiscale) {
