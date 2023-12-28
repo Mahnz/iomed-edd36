@@ -253,7 +253,7 @@ export default function LoginFormPaziente() {
                         noWrap
                         sx={{flexGrow: 1}}
                     >
-                        MedPlatform
+                        IOMed
                     </Typography>
                 </Toolbar>
             </AppBar>

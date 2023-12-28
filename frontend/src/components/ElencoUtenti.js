@@ -17,7 +17,7 @@ import {
     Tooltip,
     Dialog,
     DialogTitle,
-    DialogContent, DialogActions, Button, TextField, Snackbar, Alert
+    DialogContent, DialogActions, Button, TextField, Snackbar, Alert, useTheme
 } from "@mui/material"
 import {Cancel, Close} from "@mui/icons-material";
 import axios from "axios";
@@ -29,7 +29,7 @@ import {useNavigate} from "react-router-dom";
 export default function ElencoUtenti() {
     const cookies = new Cookies()
     const navigate = useNavigate()
-    // todo - Settare medico a null
+    const theme = useTheme()
     const [medico, setMedico] = useState(null)
     const [users, setUsers] = useState([])
     const [id, setId] = useState('')
@@ -73,9 +73,6 @@ export default function ElencoUtenti() {
 
     const [openDialog, setOpenDialog] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-    useEffect(() => {
-
-    }, []);
     const handleOpenDialog = (user) => {
         setUserToDelete(user);
         console.log(user)
@@ -141,7 +138,8 @@ export default function ElencoUtenti() {
                        value={searchTerm}
                        onChange={handleSearchChange}
                        fullWidth
-                       sx={{mb: 2, backgroundColor: 'white'}}
+                       autoComplete="off"
+                       sx={{mb: 2, backgroundColor: theme.palette.background.default}}
                        InputProps={{
                            endAdornment: searchTerm && (
                                <IconButton edge="end" onClick={() => setSearchTerm('')}>
@@ -183,7 +181,7 @@ export default function ElencoUtenti() {
                                                     <Tooltip title="Vai alle visite del paziente" placement="right">
                                                         <IconButton onClick={() => handleViewUser(row)}>
                                                             <FontAwesomeIcon icon={faArrowRightFromBracket}
-                                                                             style={{color: '#2e7d32'}}
+                                                                             style={{color: theme.palette.success.main}}
                                                             />
                                                         </IconButton>
                                                     </Tooltip>
@@ -193,9 +191,8 @@ export default function ElencoUtenti() {
                                                 <StyledTableCell align="center">
                                                     <Tooltip title="Rimuovi medico dalla lista"
                                                              placement="right">
-                                                        <IconButton aria-label="delete"
-                                                                    onClick={() => handleOpenDialog(row)}>
-                                                            <Cancel color="error"/>
+                                                        <IconButton onClick={() => handleOpenDialog(row)}>
+                                                            <Cancel sx={{color: theme.palette.error.main}}/>
                                                         </IconButton>
                                                     </Tooltip>
                                                 </StyledTableCell>

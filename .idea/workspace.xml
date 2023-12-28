@@ -4,8 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Impostazioni: IN CORSO&#10;&#10;Modifiche:&#10; - aggiunta la pagina delle impostazioni&#10; - dark mode funzionante, salva la preferenza nel cookie&#10; - sezione delle notifiche funzionante, salva la preferenza nel cookie&#10; - iniziata l'eliminazione dell'account">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
     </list>
     <list id="f579d316-be54-4a6f-a5d6-f62d41ebc6e2" name="Changes by domenico" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +34,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Mahnz&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="1bef936b-189b-415d-a1b0-0e8f4891ed4c" />
+        <option name="url" value="https://github.com/Mahnz/software-edd36.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -94,7 +119,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.FRONTEND">
+  <component name="RunManager" selected="npm.BACKEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -164,7 +189,8 @@
       <workItem from="1703503469875" duration="1580000" />
       <workItem from="1703509554828" duration="306000" />
       <workItem from="1703674375590" duration="7803000" />
-      <workItem from="1703688518365" duration="6263000" />
+      <workItem from="1703688518365" duration="32890000" />
+      <workItem from="1703758734988" duration="3465000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -246,7 +272,55 @@
       <option name="project" value="LOCAL" />
       <updated>1703694822302</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="RichiestaAutorizzazione: COMPLETATO&#10;&#10;Modifiche:&#10; - possibile ora aggiungere un paziente alla lista dei propri assistiti&#10; - aggiunta la route per visualizzare la pagina, gestendo anche il conditional rendering &#10; - cambiate le icone del Drawer e aggiunto il Tooltip">
+      <option name="closed" value="true" />
+      <created>1703701568082</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1703701568082</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Modifiche:&#10; - aggiunto pulsante in ElencoUtenti.js per visualizzare le visite di un utente&#10; - chiamata alla API di IPFS funzionante">
+      <option name="closed" value="true" />
+      <created>1703708634404</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1703708634404</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Small changes">
+      <option name="closed" value="true" />
+      <created>1703714136635</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1703714136635</updated>
+    </task>
+    <task id="LOCAL-00014" summary="ElencoUtenti.js:&#10; - aggiunta barra di ricerca&#10; - eliminato il medico, viene mostrato lo Snackbar di successo">
+      <option name="closed" value="true" />
+      <created>1703717695431</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1703717695431</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Impostazioni: IN CORSO&#10;&#10;Modifiche:&#10; - aggiunta la pagina delle impostazioni&#10; - dark mode funzionante, salva la preferenza nel cookie&#10; - sezione delle notifiche funzionante, salva la preferenza nel cookie&#10; - iniziata l'eliminazione dell'account">
+      <option name="closed" value="true" />
+      <created>1703724995006</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1703724995006</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Impostazioni: IN CORSO&#10;&#10;Modifiche:&#10; - aggiunta la pagina delle impostazioni&#10; - dark mode funzionante, salva la preferenza nel cookie&#10; - sezione delle notifiche funzionante, salva la preferenza nel cookie&#10; - iniziata l'eliminazione dell'account">
+      <option name="closed" value="true" />
+      <created>1703725000834</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1703725000834</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,6 +344,11 @@
     <MESSAGE value="Fix su ElencoUtenti.js" />
     <MESSAGE value="Modifiche:&#10; - sistemate le informazioni personali dell'utente&#10; - aggiunta scheda per le richieste in attesa&#10; &#10; MyProfile: IN CORSO" />
     <MESSAGE value="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO" />
-    <option name="LAST_COMMIT_MESSAGE" value="MyProfile: COMPLETATO&#10;&#10;Modifiche:&#10; - sistemata la visualizzazione delle informazioni&#10; - info suddivise in sezioni&#10; - aggiunta sezione per le autorizzazioni in attesa, da accettare/rifiutare&#10; - sistemata larghezza in &quot;InserimentoVisitaMedica.js&quot;&#10;&#10;Richiesta autorizzazione: IN CORSO" />
+    <MESSAGE value="RichiestaAutorizzazione: COMPLETATO&#10;&#10;Modifiche:&#10; - possibile ora aggiungere un paziente alla lista dei propri assistiti&#10; - aggiunta la route per visualizzare la pagina, gestendo anche il conditional rendering &#10; - cambiate le icone del Drawer e aggiunto il Tooltip" />
+    <MESSAGE value="Modifiche:&#10; - aggiunto pulsante in ElencoUtenti.js per visualizzare le visite di un utente&#10; - chiamata alla API di IPFS funzionante" />
+    <MESSAGE value="Small changes" />
+    <MESSAGE value="ElencoUtenti.js:&#10; - aggiunta barra di ricerca&#10; - eliminato il medico, viene mostrato lo Snackbar di successo" />
+    <MESSAGE value="Impostazioni: IN CORSO&#10;&#10;Modifiche:&#10; - aggiunta la pagina delle impostazioni&#10; - dark mode funzionante, salva la preferenza nel cookie&#10; - sezione delle notifiche funzionante, salva la preferenza nel cookie&#10; - iniziata l'eliminazione dell'account" />
+    <option name="LAST_COMMIT_MESSAGE" value="Impostazioni: IN CORSO&#10;&#10;Modifiche:&#10; - aggiunta la pagina delle impostazioni&#10; - dark mode funzionante, salva la preferenza nel cookie&#10; - sezione delle notifiche funzionante, salva la preferenza nel cookie&#10; - iniziata l'eliminazione dell'account" />
   </component>
 </project>

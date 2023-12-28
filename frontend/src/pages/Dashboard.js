@@ -6,9 +6,8 @@ import {
     styled, CssBaseline, Box, Container, Toolbar,
     Drawer as MuiDrawer, AppBar as MuiAppBar,
     Typography, Divider, Tooltip, IconButton, Badge,
-    List, ListItemButton, ListItemIcon, ListItemText
+    List, ListItemButton, ListItemIcon, ListItemText, Link, useTheme
 } from '@mui/material'
-
 import {
     Menu as MenuIcon,
     Settings as SettingsIcon,
@@ -29,16 +28,15 @@ import UserIconPanel from "../components/UserIconPanel.js"
 
 import VisitaMedica from "../components/VisitaMedica.js"
 import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
-import ElencoUtenti from "../components/ElencoUtenti.js";
-import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js";
+import ElencoUtenti from "../components/ElencoUtenti.js"
+import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js"
 import "../style/dashboard.css"
-import Impostazioni from "../components/Impostazioni.js";
-
-const drawerWidth = 240
+import Impostazioni from "../components/Impostazioni.js"
 
 export default function Dashboard({mode, toggleMode}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
+    const theme = useTheme()
 
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
     const [loggedUser, setLoggedUser] = useState(null)
@@ -72,31 +70,31 @@ export default function Dashboard({mode, toggleMode}) {
     }
     useEffect(() => {
         if (selectedTab === "H") {
-            document.title = 'MedPlatform - Home'
+            document.title = 'IOMed - Home'
             navigate('/dashboard/home')
         } else if (selectedTab === "V" && !medico) {
-            document.title = 'MedPlatform - Ultime visite'
+            document.title = 'IOMed - Ultime visite'
             navigate('/dashboard/visite')
             setSelectedVisita("")
         } else if (selectedTab === "P") {
-            document.title = 'MedPlatform - Il mio profilo'
+            document.title = 'IOMed - Il mio profilo'
             navigate('/dashboard/profilo')
         } else if (selectedTab === "I" && medico) {
-            document.title = 'MedPlatform - Nuova visita'
+            document.title = 'IOMed - Nuova visita'
             navigate('/dashboard/inserimentoVisita')
         } else if (selectedTab === "N" && medico) {
-            document.title = 'MedPlatform - Aggiungi assistito'
+            document.title = 'IOMed - Aggiungi assistito'
             navigate('/dashboard/aggiungiAssistito')
         } else if (selectedTab === "E") {
             if (medico) {
-                document.title = 'MedPlatform - Elenco assistiti'
+                document.title = 'IOMed - Elenco assistiti'
                 navigate('/dashboard/listaAssistiti')
             } else {
-                document.title = 'MedPlatform - Elenco medici'
+                document.title = 'IOMed - Elenco medici'
                 navigate('/dashboard/mediciAutorizzati')
             }
         } else if (selectedTab === "S") {
-            document.title = 'MedPlatform - Impostazioni'
+            document.title = 'IOMed - Impostazioni'
             navigate('/dashboard/impostazioni')
         }
     }, [selectedTab])
@@ -166,9 +164,9 @@ export default function Dashboard({mode, toggleMode}) {
                         variant="h5"
                         color="inherit"
                         noWrap
-                        sx={{flexGrow: 1}}
+                        sx={{flexGrow: 1, color: theme.palette.common.white}}
                     >
-                        MedPlatform
+                        IOMed
                     </Typography>
 
                     {/* PANNELLO A DISCESA SULL'ICONA DELLE NOTIFICHE */}
@@ -274,16 +272,7 @@ export default function Dashboard({mode, toggleMode}) {
                             <ListItemText primary={medico ? "Elenco assistiti" : "Medici autorizzati"}/>
                         </ListItemButton>
                     </Tooltip>
-                    <Tooltip title="Il mio profilo" placement="right">
-                        <ListItemButton
-                            onClick={() => handleSelectTab('P')}
-                            className={selectedTab === 'P' ? 'selected-tab' : ''}>
-                            <ListItemIcon>
-                                <Person/>
-                            </ListItemIcon>
-                            <ListItemText primary="Il mio profilo"/>
-                        </ListItemButton>
-                    </Tooltip>
+
                     {medico && (
                         <Tooltip title="Aggiungi visita" placement="right">
                             <ListItemButton
@@ -309,6 +298,17 @@ export default function Dashboard({mode, toggleMode}) {
                             </ListItemButton>
                         </Tooltip>
                     )}
+
+                    <Tooltip title="Il mio profilo" placement="right">
+                        <ListItemButton
+                            onClick={() => handleSelectTab('P')}
+                            className={selectedTab === 'P' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <Person/>
+                            </ListItemIcon>
+                            <ListItemText primary="Il mio profilo"/>
+                        </ListItemButton>
+                    </Tooltip>
                     <Divider sx={{my: 1}}/>
                     <Tooltip title="Impostazioni" placement="right">
                         <ListItemButton
@@ -389,7 +389,7 @@ export default function Dashboard({mode, toggleMode}) {
         </Box>
     )
 }
-
+const drawerWidth = 240
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
 (({theme, open}) => ({
         zIndex: theme.zIndex.drawer + 1,

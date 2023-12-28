@@ -45,13 +45,13 @@ export default function Header(props) {
                         padding: '20px',
                         backgroundColor: 'white'
                     }}>
-                        <Link href="#" underline="none">
+                        <Link href="/homepage" underline="none">
                             <Typography variant="h5"
                                         sx={{
                                             color: 'blue',
                                             cursor: 'pointer'
                                         }}>
-                                MEDPlatform
+                                IOMed
                             </Typography>
                         </Link>
                     </Toolbar>

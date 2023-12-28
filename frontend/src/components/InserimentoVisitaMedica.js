@@ -16,7 +16,7 @@ import {
     DialogActions,
     Dialog,
     Snackbar,
-    Alert as MuiAlert
+    Alert as MuiAlert, useTheme
 } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {Add, CloudUpload, RemoveCircleOutlined, Send} from "@mui/icons-material"
@@ -38,6 +38,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function InserimentoVisitaMedica() {
+    const theme = useTheme()
     const cookies = new Cookies()
     const navigate = useNavigate()
     const today = new Date()
@@ -160,6 +161,8 @@ export default function InserimentoVisitaMedica() {
                     dataVisita: '',
                     allegati: []
                 }))
+
+                // todo - ABILITARE LA VERIFICA IN BLOCKCHAIN SULL'ESISTENZA DEL CF
                 // const response = await axios.post("http://localhost:3001/api/bc/verify", cf)
                 // if (response.status === 200) {
                 //     console.log("Il codice fiscale è presente sulla blockchain")
@@ -542,6 +545,7 @@ export default function InserimentoVisitaMedica() {
                                        minLength: 16,
                                        maxLength: 16
                                    }}
+                                   sx={{backgroundColor: theme.palette.background.paper}}
                                    error={errors.codiceFiscale.error}
                                    helperText={errors.codiceFiscale.error && errors.codiceFiscale.message}
                         />
@@ -583,6 +587,7 @@ export default function InserimentoVisitaMedica() {
                                    error={errors.nomeVisita.error}
                                    helperText={errors.nomeVisita.error && errors.nomeVisita.message}
                                    disabled={!isCFVerified}
+                                   sx={{backgroundColor: theme.palette.background.paper}}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -612,6 +617,7 @@ export default function InserimentoVisitaMedica() {
                                     error={errors.reparto.error}
                                     helperText={errors.reparto.error && errors.reparto.message}
                                     disabled={!isCFVerified}
+                                    sx={{backgroundColor: theme.palette.background.paper}}
                                 />
                             )}
                         />
@@ -627,6 +633,7 @@ export default function InserimentoVisitaMedica() {
                                    value={formData.descrizione}
                                    onChange={handleChange}
                                    disabled={!isCFVerified}
+                                   sx={{backgroundColor: theme.palette.background.paper}}
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -642,6 +649,7 @@ export default function InserimentoVisitaMedica() {
                                    error={errors.dataVisita.error}
                                    helperText={errors.dataVisita.error && errors.dataVisita.message}
                                    disabled={!isCFVerified}
+                                   sx={{backgroundColor: theme.palette.background.paper}}
                         />
                     </Grid>
                 </Grid>
@@ -687,6 +695,7 @@ export default function InserimentoVisitaMedica() {
                                            InputProps={{
                                                readOnly: true
                                            }}
+                                           sx={{backgroundColor: theme.palette.background.paper}}
                                 />
                             </Grid>
                             <Grid item xs={4}>

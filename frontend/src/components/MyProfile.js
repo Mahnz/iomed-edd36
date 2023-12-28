@@ -19,8 +19,7 @@ import Paziente from '../exPatient.json'
 export default function MyProfile() {
     const cookies = new Cookies()
     const navigate = useNavigate()
-    // todo - Settare medico a null
-    const [medico, setMedico] = useState(false)
+    const [medico, setMedico] = useState(null)
     const [utente, setUtente] = useState({
         requests: [
             {

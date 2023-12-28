@@ -11,8 +11,8 @@ export default function ElencoVisite({setVisita}) {
     const location = useLocation();
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
-    // todo - Settare medico a null
-    const [medico, setMedico] = useState(true)
+    const [medico, setMedico] = useState(null)
+
 
     useEffect(() => {
         const fetchVisiteMediche = async () => {

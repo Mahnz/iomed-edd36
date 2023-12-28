@@ -279,7 +279,7 @@ export default function SignUpFormMedico() {
                         noWrap
                         sx={{flexGrow: 1}}
                     >
-                        MedPlatform
+                        IOMed
                     </Typography>
                 </Toolbar>
             </AppBar>

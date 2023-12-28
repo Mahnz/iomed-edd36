@@ -240,7 +240,7 @@ export default function LoginFormMedico() {
                         noWrap
                         sx={{flexGrow: 1}}
                     >
-                        MedPlatform
+                        IOMed
                     </Typography>
                 </Toolbar>
             </AppBar>

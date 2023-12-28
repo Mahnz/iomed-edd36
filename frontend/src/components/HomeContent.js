@@ -7,7 +7,6 @@ export default function HomeContent({handleSelectTab}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const [loggedUser, setLoggedUser] = useState("Mario Rossi")
-    // todo - Settare medico a null
     const [medico, setMedico] = useState(null)
 
     useEffect(() => {
