@@ -11,6 +11,7 @@ import {
 
 import {
     Menu as MenuIcon,
+    Settings as SettingsIcon,
     ChevronLeft,
     Healing,
     Person,
@@ -31,10 +32,11 @@ import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
 import ElencoUtenti from "../components/ElencoUtenti.js";
 import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js";
 import "../style/dashboard.css"
+import Impostazioni from "../components/Impostazioni.js";
 
 const drawerWidth = 240
 
-export default function Dashboard() {
+export default function Dashboard({mode, toggleMode}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
 
@@ -95,7 +97,7 @@ export default function Dashboard() {
             }
         } else if (selectedTab === "S") {
             document.title = 'MedPlatform - Impostazioni'
-            navigate('/dashboard/settings')
+            navigate('/dashboard/impostazioni')
         }
     }, [selectedTab])
 
@@ -221,26 +223,6 @@ export default function Dashboard() {
                         setSelectedTab={setSelectedTab}
                         setLoggedUser={setLoggedUser}
                     />
-
-                    {/* PULSANTE PER SWITCHARE TRA LIGHT E DARK MODE */}
-                    {/*<Tooltip*/}
-                    {/*    title={{*/}
-                    {/*        theme.palette.mode === 'dark'*/}
-                    {/*            ? "Passa alla modalità scura"*/}
-                    {/*            : "Passa alla modalità chiara"*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*    < IconButton*/}
-                    {/*        id="mode-button"*/}
-                    {/*        color="inherit"*/}
-                    {/*        // onClick={toggleDarkMode}*/}
-                    {/*        sx={{ml: 1}}*/}
-                    {/*    >*/}
-                    {/*        <Badge color="secondary">*/}
-                    {/*            {theme.palette.mode === 'dark' ? <Brightness7/> : <Brightness4/>}*/}
-                    {/*        </Badge>*/}
-                    {/*    </IconButton>*/}
-                    {/*</Tooltip>*/}
                 </Toolbar>
             </AppBar>
 
@@ -328,6 +310,16 @@ export default function Dashboard() {
                         </Tooltip>
                     )}
                     <Divider sx={{my: 1}}/>
+                    <Tooltip title="Impostazioni" placement="right">
+                        <ListItemButton
+                            onClick={() => handleSelectTab('S')}
+                            className={selectedTab === 'S' ? 'selected-tab' : ''}>
+                            <ListItemIcon>
+                                <SettingsIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Impostazioni"/>
+                        </ListItemButton>
+                    </Tooltip>
                 </List>
             </Drawer>
             <Box
@@ -377,7 +369,7 @@ export default function Dashboard() {
 
                         {medico && <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>}
                         {medico && <Route path="/aggiungiAssistito" element={<RichiestaAutorizzazione/>}/>}
-                        <Route path="/settings" element={<div>Impostazioni</div>}/>
+                        <Route path="/impostazioni" element={<Impostazioni mode={mode} toggleMode={toggleMode}/>}/>
                         <Route path="/mediciAutorizzati"
                                element={medico
                                    ? <Navigate to='/dashboard/home' replace/>

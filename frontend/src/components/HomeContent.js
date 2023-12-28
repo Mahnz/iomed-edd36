@@ -157,6 +157,34 @@ export default function HomeContent({handleSelectTab}) {
                         </CardActions>
                     </Card>
                 </Grid>
+                <Grid item xs={12} sm={6} md={4} sx={{height: 220}}>
+                    <Card sx={{
+                        transition: 'box-shadow 0.2s',
+                        '&:hover': {
+                            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
+                        },
+                        p: 1,
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    }}>
+                        <CardContent>
+                            <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                <b>Impostazioni</b>
+                            </Typography>
+                            <Typography color="text.secondary">
+                                Modifica le impostazioni come notifiche, preferenze, password e altro.
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="medium" color="primary"
+                                    onClick={() => handleSelectTab("S")}>
+                                Vai alle impostazioni
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid>
             </Grid>
         </>
     )
