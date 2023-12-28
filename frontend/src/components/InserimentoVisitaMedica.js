@@ -455,6 +455,7 @@ export default function InserimentoVisitaMedica() {
         formValues.append('nomeVisita', formData.nomeVisita)
         formValues.append('reparto', formData.reparto)
         formValues.append('descrizione', formData.descrizione)
+        formValues.append("medico", formData.medico);
 
         // Aggiungi i file
         formData.allegati.forEach((file, index) => {

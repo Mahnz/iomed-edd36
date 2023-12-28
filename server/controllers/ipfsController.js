@@ -2,6 +2,9 @@ import {create} from 'ipfs-http-client'
 import all from 'it-all'
 import {bcController} from "./bcController.mjs";
 import {concat as uint8ArrayConcat} from "uint8arrays";
+import {createRequire} from "module";
+const require = createRequire(import.meta.url);
+const jwt=require("jsonwebtoken");
 
 const address = 'http://127.0.0.1:5002'
 const connect = async (req, res) => {
@@ -35,11 +38,15 @@ const addVisita = async (req, res) => {
     const userDirectory = `/patients/${codiceFiscale}`
 
     //TODO - Aggiunta convalida bc
-    //const pk=bcController.enrolling();
+    const pk=await bcController.enrolling();
+    console.log(req.body.medico);
+    console.log(pk);
+    const id=await jwt.verify(req.body.medico,pk);
+
 
     try {
         const visitaDetails = {
-            medico: req.body.medico,
+            medico: id,
             dataVisita: req.body.dataVisita,
             nomeVisita: req.body.nomeVisita,
             reparto: req.body.reparto,
