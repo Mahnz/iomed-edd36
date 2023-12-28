@@ -11,8 +11,8 @@ export default function ElencoVisite({setVisita}) {
     const location = useLocation();
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
-    const [medico, setMedico] = useState(null)
-
+    // todo - Settare medico a null
+    const [medico, setMedico] = useState(true)
 
     useEffect(() => {
         const fetchVisiteMediche = async () => {
@@ -27,15 +27,11 @@ export default function ElencoVisite({setVisita}) {
                         setMedico(false)
                         let CF = cookies.get('token')
 
-                        // FIX: Trasformare la prima chiamata nella forma: const response = await...
-                        //      Così, solo se la prima chiamata va a buon fine, si esegue la seconda su IPFS
-                        await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
-                            .then(res => {
-                                console.log(res);
-                                CF = res.data
-                            }).catch(e => console.log(e));
-                        await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${CF}`)
-                            .then(res => setVisite(res.data.visite)).catch(e => console.log(e));
+                        const response = await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
+                        if (response.status === 200) {
+                            await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${CF}`)
+                                .then(res => setVisite(res.data.visite)).catch(e => console.log(e));
+                        }
                     }
                 }
             } catch (error) {

@@ -17,7 +17,9 @@ router.post("/deleteDoctor", bcController.deleteDoctor);
 router.post("/addRequest", bcController.addRequest);
 router.get("/getCF/:token",bcController.getCF);
 router.post("/patientExist", bcController.patientExist);
-router.post("/verifyCF",bcController.verify)
+router.post("/verifyCF",bcController.verify);
+router.post("/changePass", bcController.changePass);
+router.post("/deleteUser", bcController.deleteUser)
 
 
 router.get("/testpv", bcController.testpv);

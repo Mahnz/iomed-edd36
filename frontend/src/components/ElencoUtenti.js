@@ -41,14 +41,14 @@ export default function ElencoUtenti() {
                     setMedico(true)
                     // todo - Da rimuovere quando il codice fiscale viene letto dal cookie
                     setId(cookies.get('token'))
-                    // BLOCKCHAIN
+                    // BLOCKCHAIN fatto
                     await axios.get(`http://localhost:3001/api/bc/getPatientsById/${id}`)
                         .then(res => setUsers(res.data)).catch(e => console.log(e));
                 } else {
                     setMedico(false)
                     // todo - Da rimuovere quando il codice fiscale viene letto dal cookie
                     const CF = cookies.get('token');
-                    // BLOCKCHAIN
+                    // BLOCKCHAIN fatto
                     await axios.get(`http://localhost:3001/api/bc/getDoctorsByCF/${CF}`)
                         .then(res => {
                             console.log(res);
@@ -86,10 +86,10 @@ export default function ElencoUtenti() {
 
     const handleDeleteUser = async () => {
         handleCloseDialog()
-        // BLOCKCHAIN
+        // BLOCKCHAIN fatto
         // todo - Chiamata alla backend per andare a cancellare l'utente
         let CF = cookies.get("token");
-        await axios.delete(`http://localhost:3001/api/bc/deleteDoctor`, {
+        await axios.post(`http://localhost:3001/api/bc/deleteDoctor`, {
             token: CF,
             id: userToDelete.id
         }).then(res => alert(res.data)).catch(e => console.log(e));
