@@ -12,21 +12,14 @@ import {
     Toolbar,
     Typography,
     Link,
-    Paper, InputAdornment, IconButton, Grid, createTheme, ThemeProvider
+    Paper, InputAdornment, IconButton, Grid, useTheme, Tooltip
 } from "@mui/material";
-import {Person, Visibility, VisibilityOff} from "@mui/icons-material";
+import {Home, Person, Visibility, VisibilityOff} from "@mui/icons-material";
 import Cookies from 'universal-cookie'
 import axios from 'axios'
 
-const theme = createTheme({
-    palette: {
-        background: {
-            default: '#f5f5f5', // Imposta il colore dello sfondo come carta
-        },
-    },
-});
-
 export default function LoginFormPaziente() {
+    const theme = useTheme()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errors, setErrors] = useState({
@@ -172,7 +165,7 @@ export default function LoginFormPaziente() {
                     })
                     .catch(error => {
                         console.error(error);
-                        alert("Errore "+e.status+" "+e.response);
+                        alert("Errore " + e.status + " " + e.response);
                     });
             }
         }
@@ -237,9 +230,12 @@ export default function LoginFormPaziente() {
         }
     }, [password])
 
+    const goHome = () => {
+        navigate("/homepage")
+    }
 
     return (
-        <ThemeProvider theme={theme}>
+        <div style={{backgroundColor: theme.palette.background.default}}>
             <AppBar
                 position="absolute"
                 color="primary"
@@ -249,12 +245,21 @@ export default function LoginFormPaziente() {
                     <Typography
                         component="h1"
                         variant="h5"
-                        color="inherit"
                         noWrap
-                        sx={{flexGrow: 1}}
+                        sx={{flexGrow: 1, color: theme.palette.common.white}}
                     >
-                        IOMed
+                        <b>IOMed</b> | Login paziente
                     </Typography>
+                    <Tooltip placement="bottom-end" title="Torna alla homepage">
+                        <IconButton
+                            size="large"
+                            onClick={goHome}
+                            color="inherit"
+                            edge="end"
+                        >
+                            <Home/>
+                        </IconButton>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
             <Container component="main" maxWidth="xs">
@@ -265,14 +270,12 @@ export default function LoginFormPaziente() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: '100vh',
+                        height: '100vh'
                     }}
                 >
                     <Paper
                         variant="outlined"
                         sx={{
-                            backgroundColor: (theme) =>
-                                theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.grey[900],
                             borderRadius: 4,
                             my: {xs: 3, md: 6},
                             p: {xs: 4, md: 3},
@@ -287,7 +290,6 @@ export default function LoginFormPaziente() {
                         <Typography component="h1" variant="h5">
                             Login paziente
                         </Typography>
-                        {/*<Box component="form" onSubmit={handleSubmit}>*/}
                         <Grid container sx={{mt: 2}}>
                             <Grid item xs={12}>
                                 <TextField type="text"
@@ -300,6 +302,7 @@ export default function LoginFormPaziente() {
                                            fullWidth
                                            error={errors.email.error}
                                            helperText={errors.email.error && errors.email.message}
+                                           sx={{backgroundColor: theme.palette.background.paper}}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -321,6 +324,7 @@ export default function LoginFormPaziente() {
                                                    </InputAdornment>
                                                )
                                            }}
+                                           sx={{backgroundColor: theme.palette.background.paper}}
                                 />
                             </Grid>
                         </Grid>
@@ -339,6 +343,6 @@ export default function LoginFormPaziente() {
                     </Paper>
                 </Box>
             </Container>
-        </ThemeProvider>
+        </div>
     )
 }

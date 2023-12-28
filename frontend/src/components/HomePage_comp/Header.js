@@ -10,9 +10,6 @@ import PropTypes from 'prop-types'
 
 function ElevationScroll(props) {
     const {children, window} = props
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
     const trigger = useScrollTrigger({
         disableHysteresis: true,
         threshold: 0,
@@ -20,17 +17,8 @@ function ElevationScroll(props) {
     })
 
     return React.cloneElement(children, {
-        elevation: trigger ? 4 : 0,
+        elevation: trigger ? 2 : 0,
     })
-}
-
-ElevationScroll.propTypes = {
-    children: PropTypes.element.isRequired,
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
 }
 
 export default function Header(props) {
@@ -39,19 +27,15 @@ export default function Header(props) {
             <ElevationScroll {...props}>
                 <AppBar>
                     <Toolbar sx={{
-                        height: '10vh',
+                        height: '8vh',
                         display: 'flex',
                         justifyContent: 'space-between',
                         padding: '20px',
                         backgroundColor: 'white'
                     }}>
                         <Link href="/homepage" underline="none">
-                            <Typography variant="h5"
-                                        sx={{
-                                            color: 'blue',
-                                            cursor: 'pointer'
-                                        }}>
-                                IOMed
+                            <Typography variant="h5" color="primary" sx={{cursor: 'pointer'}}>
+                                <b>IOMed</b>
                             </Typography>
                         </Link>
                     </Toolbar>

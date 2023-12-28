@@ -10,15 +10,17 @@ import {
     Paper,
     AppBar,
     Toolbar,
-    Typography,
+    Typography, Tooltip, IconButton, Link, useTheme,
 } from "@mui/material"
 import axios from "axios"
 import Cookies from "universal-cookie";
 import {useNavigate} from "react-router-dom";
+import {Home} from "@mui/icons-material";
 
 export default function SignUpFormMedico() {
-    const cookies=new Cookies();
-    const navigate=useNavigate();
+    const theme = useTheme()
+    const cookies = new Cookies();
+    const navigate = useNavigate();
     const initialForm = {
         firstName: '',
         lastName: '',
@@ -228,7 +230,7 @@ export default function SignUpFormMedico() {
             console.log('Dati inviati:', formData)
             console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
-                .then(res =>{
+                .then(res => {
                     console.log("Registrazione medico effettuata")
                     console.log(res.data)
                     cookies.set('token', res.data.id, {
@@ -257,11 +259,15 @@ export default function SignUpFormMedico() {
                 .catch(e => console.log(e))
         } else {
             console.log('Dati non inviati');
-            alert("Errore "+e.status+" "+e.response);
+            alert("Errore " + e.status + " " + e.response);
         }
 
         // ? Reset allo stato iniziale del form
         //setFormData(initialForm)
+    }
+
+    const goHome = () => {
+        navigate("/homepage")
     }
 
     return (
@@ -275,12 +281,21 @@ export default function SignUpFormMedico() {
                     <Typography
                         component="h1"
                         variant="h5"
-                        color="inherit"
                         noWrap
-                        sx={{flexGrow: 1}}
+                        sx={{flexGrow: 1, color: theme.palette.common.white}}
                     >
-                        IOMed
+                        <b>IOMed</b> | Registrazione medico
                     </Typography>
+                    <Tooltip placement="bottom-end" title="Torna alla homepage">
+                        <IconButton
+                            size="large"
+                            onClick={goHome}
+                            color="inherit"
+                            edge="end"
+                        >
+                            <Home/>
+                        </IconButton>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
             <Container component="main" maxWidth="xs">
@@ -290,12 +305,13 @@ export default function SignUpFormMedico() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: '100vh',
+                        height: '98vh',
                     }}
                 >
                     <Paper variant="outlined"
                            sx={{
                                p: 4,
+                               pb: 2,
                                borderRadius: 4,
                                display: 'flex',
                                flexDirection: 'column',
@@ -336,6 +352,9 @@ export default function SignUpFormMedico() {
                                 test={test}
                             />
                         </Box>
+                        <Typography variant="body2" sx={{mt: 2}}>
+                            Hai già un account? <Link href="/loginMedico">Login</Link>
+                        </Typography>
                     </Paper>
                 </Box>
             </Container>

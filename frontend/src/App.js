@@ -42,6 +42,9 @@ export default function App() {
         },
         palette: {
             mode: mode,
+            background: {
+                default: mode === "light" ? '#f5f5f5' : '#212121'
+            },
         }
     })
     return (

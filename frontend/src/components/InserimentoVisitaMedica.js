@@ -51,11 +51,9 @@ export default function InserimentoVisitaMedica() {
         reparto: null,
         descrizione: '',
         allegati: [],
-        // todo - Inserire l'id del medico
         medico: cookies.get("token")
     }
-    const [formData, setFormData] = useState(initialFormData)
-    const [errors, setErrors] = useState({
+    const initialErrors = {
         codiceFiscale: {
             error: false,
             message: ''
@@ -71,8 +69,10 @@ export default function InserimentoVisitaMedica() {
         reparto: {
             error: false,
             message: ''
-        },
-    })
+        }
+    }
+    const [formData, setFormData] = useState(initialFormData)
+    const [errors, setErrors] = useState(initialErrors)
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [isFirstRender, setIsFirstRender] = useState(true)
     const [isCFVerified, setIsCFVerified] = useState(false)
@@ -478,25 +478,9 @@ export default function InserimentoVisitaMedica() {
         } finally {
             setShowOverlay(false);
             setOpenSnackbar(true)
+            setIsCFVerified(false)
             setFormData(initialFormData)
-            setErrors({
-                codiceFiscale: {
-                    error: false,
-                    message: ''
-                },
-                dataVisita: {
-                    error: false,
-                    message: ''
-                },
-                nomeVisita: {
-                    error: false,
-                    message: ''
-                },
-                reparto: {
-                    error: false,
-                    message: ''
-                }
-            })
+            setErrors(initialErrors)
         }
     }
 

@@ -42,11 +42,6 @@ export default function Steps({
                                 TEST
                             </Button>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2">
-                                Hai già un account? <Link href="/login" variant="body2">Login</Link>
-                            </Typography>
-                        </Grid>
                     </Grid>
                 </>
             )}
@@ -82,11 +77,6 @@ export default function Steps({
                             <Button variant="contained" color="error" fullWidth onClick={test}>
                                 TEST
                             </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2">
-                                Hai già un account? <Link href="/login" variant="body2">Login</Link>
-                            </Typography>
                         </Grid>
                     </Grid>
                 </>

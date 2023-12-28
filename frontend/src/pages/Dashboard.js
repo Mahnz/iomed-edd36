@@ -164,7 +164,7 @@ export default function Dashboard({mode, toggleMode}) {
                         noWrap
                         sx={{flexGrow: 1, color: theme.palette.common.white}}
                     >
-                        IOMed
+                        <b>IOMed</b>
                     </Typography>
 
                     {/* PANNELLO A DISCESA SULL'ICONA DELLE NOTIFICHE */}

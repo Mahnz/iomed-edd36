@@ -287,7 +287,7 @@ export default function MyProfile() {
                                     </ListItem>
                                     <ListItem>
                                         <ListItemText
-                                            primary={utente.telefonoUfficio}
+                                            primary={utente.telefonoUfficio ? utente.telefonoUfficio : "-"}
                                             secondary="Telefono ufficio"
                                         />
                                     </ListItem>

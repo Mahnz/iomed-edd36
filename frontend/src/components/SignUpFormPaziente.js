@@ -10,21 +10,15 @@ import {
     Paper,
     AppBar,
     Toolbar,
-    Typography, createTheme, ThemeProvider,
+    Typography, createTheme, useTheme, Tooltip, IconButton, Link,
 } from "@mui/material"
 import axios from "axios";
 import Cookies from "universal-cookie";
 import {useNavigate} from "react-router-dom";
-
-const theme = createTheme({
-    palette: {
-        background: {
-            default: '#f5f5f5', // Imposta il colore dello sfondo come carta
-        },
-    },
-})
+import {Home} from "@mui/icons-material";
 
 export default function SignUpFormPaziente() {
+    const theme = useTheme()
     const cookies = new Cookies();
     const navigate = useNavigate();
     const initialForm = {
@@ -248,9 +242,12 @@ export default function SignUpFormPaziente() {
         //setFormData(initialForm)
     }
 
+    const goHome = () => {
+        navigate("/homepage")
+    }
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <AppBar
                 position="absolute"
                 color="primary"
@@ -262,10 +259,20 @@ export default function SignUpFormPaziente() {
                         variant="h5"
                         color="inherit"
                         noWrap
-                        sx={{flexGrow: 1}}
+                        sx={{flexGrow: 1, color: theme.palette.common.white}}
                     >
-                        IOMed
+                        <b>IOMed</b> | Registrazione paziente
                     </Typography>
+                    <Tooltip placement="bottom-end" title="Torna alla homepage">
+                        <IconButton
+                            size="large"
+                            onClick={goHome}
+                            color="inherit"
+                            edge="end"
+                        >
+                            <Home/>
+                        </IconButton>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
             <Container component="main" maxWidth="xs">
@@ -275,12 +282,13 @@ export default function SignUpFormPaziente() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: '100vh',
+                        height: '98vh',
                     }}
                 >
                     <Paper variant="outlined"
                            sx={{
                                p: 4,
+                               pb: 2,
                                borderRadius: 4,
                                display: 'flex',
                                flexDirection: 'column',
@@ -317,9 +325,12 @@ export default function SignUpFormPaziente() {
                                 test={test}
                             />
                         </Box>
+                        <Typography variant="body2" sx={{mt: 2}}>
+                            Hai già un account? <Link href="/loginPaziente">Login</Link>
+                        </Typography>
                     </Paper>
                 </Box>
             </Container>
-        </ThemeProvider>
+        </>
     )
 }

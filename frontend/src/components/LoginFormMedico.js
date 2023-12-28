@@ -12,21 +12,14 @@ import {
     CssBaseline,
     Avatar,
     Box,
-    Link, Paper, Toolbar, AppBar, ThemeProvider, createTheme,
+    Link, Paper, Toolbar, AppBar, Tooltip, useTheme
 } from '@mui/material'
-import {Vaccines, Visibility, VisibilityOff} from '@mui/icons-material'
+import {Home, Vaccines, Visibility, VisibilityOff} from '@mui/icons-material'
 import Cookies from 'universal-cookie'
 import axios from 'axios'
 
-const theme = createTheme({
-    palette: {
-        background: {
-            default: '#f5f5f5', // Imposta il colore dello sfondo come carta
-        },
-    },
-});
-
 export default function LoginFormMedico() {
+    const theme = useTheme()
     const [id, setId] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -157,12 +150,11 @@ export default function LoginFormMedico() {
                     })
                     .catch(error => {
                         console.error(error)
-                        alert("Errore "+e.status+" "+e.response);
+                        alert("Errore " + e.status + " " + e.response);
                     });
             }
         }
     }
-
 
     // CHECK DINAMICO SULL'INSERIMENTO DELL'ID
     useEffect(() => {
@@ -225,8 +217,12 @@ export default function LoginFormMedico() {
         }
     }, [password])
 
+    const goHome = () => {
+        navigate("/homepage")
+    }
+
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <AppBar
                 position="absolute"
                 color="primary"
@@ -238,10 +234,20 @@ export default function LoginFormMedico() {
                         variant="h5"
                         color="inherit"
                         noWrap
-                        sx={{flexGrow: 1}}
+                        sx={{flexGrow: 1, color: theme.palette.common.white}}
                     >
-                        IOMed
+                        <b>IOMed</b> | Login paziente
                     </Typography>
+                    <Tooltip placement="bottom-end" title="Torna alla homepage">
+                        <IconButton
+                            size="large"
+                            onClick={goHome}
+                            color="inherit"
+                            edge="end"
+                        >
+                            <Home/>
+                        </IconButton>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
             <Container component="main" maxWidth="xs">
@@ -255,18 +261,16 @@ export default function LoginFormMedico() {
                         height: '100vh',
                     }}
                 >
-                    <Paper
-                        variant="outlined"
-                        sx={{
-                            backgroundColor: (theme) =>
-                                theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.grey[900],
-                            borderRadius: 4,
-                            my: {xs: 3, md: 6},
-                            p: {xs: 4, md: 3},
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
+                    <Paper variant="outlined"
+                           sx={{
+                               backgroundColor: theme.palette.background.default,
+                               borderRadius: 4,
+                               my: {xs: 3, md: 6},
+                               p: {xs: 4, md: 3},
+                               display: 'flex',
+                               flexDirection: 'column',
+                               alignItems: 'center',
+                           }}
                     >
                         <Avatar sx={{m: 1, bgcolor: 'primary.main', width: 55, height: 55}}>
                             <Vaccines fontSize="large"/>
@@ -337,6 +341,6 @@ export default function LoginFormMedico() {
                     </Paper>
                 </Box>
             </Container>
-        </ThemeProvider>
+        </>
     )
 }
