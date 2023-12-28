@@ -13,6 +13,7 @@ import {
     Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Tooltip,
 } from '@mui/material'
 import {Brightness4, Brightness7} from "@mui/icons-material"
+import axios from "axios";
 
 
 export default function Impostazioni({mode, toggleMode}) {
@@ -46,17 +47,17 @@ export default function Impostazioni({mode, toggleMode}) {
         if (cookies.get('notifications')) {
             setNotification(cookies.get('notifications'))
         }
-    }, []);
+    }, [])
 
 
     const handleDarkModeChange = () => {
         toggleMode()
     }
 
+    const [changePasswordDialog, setChangePasswordDialog] = useState(false)
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
-    const [changePasswordDialog, setChangePasswordDialog] = useState(false)
-    const handleChangePassword = async() => {
+    const handleChangePassword = async () => {
         // BLOCKCHAIN fatto
         // todo - Chiamata alla blockchain per cambiare la password
         await axios.post("http://localhost:3001/api/bc/changePass", {
@@ -64,8 +65,13 @@ export default function Impostazioni({mode, toggleMode}) {
             token: cookies.get("token"),
             currentPassword: currentPassword,
             newPassword: newPassword
-        }).then(res=> alert(res.data)).catch(e=> alert(e.response));
+        }).then(res => alert(res.data)).catch(e => alert(e.response))
         setChangePasswordDialog(false)
+    }
+    const handleCloseDialogChangePassword = () => {
+        setChangePasswordDialog(false)
+        setCurrentPassword('')
+        setNewPassword('')
     }
 
 
@@ -76,12 +82,26 @@ export default function Impostazioni({mode, toggleMode}) {
         confirmPassword: ''
     })
     const handleChangeDelete = (e) => {
-        setDeleteData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }))
+        const {name, value} = e.target
+        if (name === "deleteEmail") {
+            setDeleteData({
+                ...deleteData,
+                email: value
+            })
+        } else if (name === "deletePassword") {
+            setDeleteData({
+                ...deleteData,
+                password: value
+            })
+        } else if (name === "deleteConfirmPassword") {
+            setDeleteData({
+                ...deleteData,
+                confirmPassword: value
+            })
+        }
+
     }
-    const handleDeleteAccount = async() => {
+    const handleDeleteAccount = async () => {
         // BLOCKCHAIN fatto
         // todo - Chiamata alla blockchain per eliminare definitivamente l'account dell'utente
         await axios.post("http://localhost:3001/api/bc/deleteUser", {
@@ -89,9 +109,17 @@ export default function Impostazioni({mode, toggleMode}) {
             password: deleteData.password,
             type: cookies.get("type"),
             token: cookies.get("token")
-        }).then(res=> alert(res.data)).catch(e=> alert(e.response));
+        }).then(res => alert(res.data)).catch(e => alert(e.response))
         setDeleteAccountDialog(false)
         // navigate('/homepage')
+    }
+    const handleCloseDialogDeleteAccount = () => {
+        setDeleteAccountDialog(false)
+        setDeleteData({
+            email: '',
+            password: '',
+            confirmPassword: ''
+        })
     }
 
     return (
@@ -150,7 +178,7 @@ export default function Impostazioni({mode, toggleMode}) {
                         </List>
                         {!btnDisabled && (
                             <Button variant="contained" onClick={handleSaveNotifications}>
-                                Salva Modifiche
+                                Salva modifiche
                             </Button>
                         )}
 
@@ -197,7 +225,7 @@ export default function Impostazioni({mode, toggleMode}) {
             </Grid>
 
             {/* Dialog per il cambio password */}
-            <Dialog open={changePasswordDialog} onClose={() => setChangePasswordDialog(false)}>
+            <Dialog open={changePasswordDialog} onClose={() => handleCloseDialogChangePassword()}>
                 <DialogTitle>Cambia password</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -220,7 +248,7 @@ export default function Impostazioni({mode, toggleMode}) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setChangePasswordDialog(false)} color="primary" autoFocus>
+                    <Button onClick={() => handleCloseDialogChangePassword()} color="primary" autoFocus>
                         Annulla
                     </Button>
                     <Button onClick={handleChangePassword} color="primary" variant="contained">
@@ -230,7 +258,7 @@ export default function Impostazioni({mode, toggleMode}) {
             </Dialog>
 
             {/* Dialog per l'eliminazione dell'account */}
-            <Dialog open={deleteAccountDialog} onClose={() => setDeleteAccountDialog(false)}>
+            <Dialog open={deleteAccountDialog} onClose={() => handleCloseDialogDeleteAccount()}>
                 <DialogTitle sx={{color: '#e60c0c'}}>Eliminazione account</DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
@@ -238,7 +266,7 @@ export default function Impostazioni({mode, toggleMode}) {
                         eliminato
                         l'account, sarà necessario registrarsi nuovamente per accedere ai tuoi dati medici.
                     </Typography>
-                    <TextField type="text"
+                    <TextField type="email"
                                name="deleteEmail"
                                margin="dense"
                                label="Inserire email"
@@ -248,7 +276,7 @@ export default function Impostazioni({mode, toggleMode}) {
                                required
                     />
                     <TextField type="password"
-                               name="deleteEmail"
+                               name="deletePassword"
                                margin="dense"
                                label="Inserire password"
                                fullWidth
@@ -257,6 +285,7 @@ export default function Impostazioni({mode, toggleMode}) {
                                required
                     />
                     <TextField type="password"
+                               name="deleteConfirmPassword"
                                margin="dense"
                                label="Conferma password"
                                fullWidth
@@ -266,7 +295,7 @@ export default function Impostazioni({mode, toggleMode}) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setDeleteAccountDialog(false)} color="error" variant="contained"
+                    <Button onClick={() => handleCloseDialogDeleteAccount()} color="error" variant="contained"
                             autoFocus>
                         Annulla
                     </Button>

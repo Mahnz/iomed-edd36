@@ -169,9 +169,8 @@ export default function MyProfile() {
                 // navigate('/homepage')
             }
         }
-
         fetchUserData()
-    })
+    }, [])
 
 
     const handleConfirm = async (id) => {
