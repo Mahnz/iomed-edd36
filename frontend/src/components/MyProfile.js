@@ -227,31 +227,31 @@ export default function MyProfile() {
                         <List>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.firstName}
+                                    primary={utente.firstName}
                                     secondary="Nome"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.lastName}
+                                    primary={utente.lastName}
                                     secondary="Cognome"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.sex === "M" ? "Maschio" : "Femmina"}
+                                    primary={utente.sex === "M" ? "Maschio" : "Femmina"}
                                     secondary="Sesso"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.birthDate}
+                                    primary={utente.birthDate}
                                     secondary="Data di nascita"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.birthPlace}
+                                    primary={utente.birthPlace}
                                     secondary="Luogo di nascita"
                                 />
                             </ListItem>
@@ -350,43 +350,43 @@ export default function MyProfile() {
                         <List>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.province}
+                                    primary={utente.province}
                                     secondary="Provincia di residenza"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.city}
+                                    primary={utente.city}
                                     secondary="Città di residenza"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.cap}
+                                    primary={utente.cap}
                                     secondary="CAP"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.address}
+                                    primary={utente.address}
                                     secondary="Indirizzo di residenza"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.telefono}
+                                    primary={utente.telefono}
                                     secondary="Telefono personale"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.CF}
+                                    primary={utente.CF}
                                     secondary="Codice Fiscale"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={Paziente.email}
+                                    primary={utente.email}
                                     secondary="Email"
                                 />
                             </ListItem>

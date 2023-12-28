@@ -250,7 +250,7 @@ const getPatient = async (req, res) => {
 
         let v=[];
 
-        for(e of p.requests)
+        for(let e of p.requests)
         {
             let query={
                 selector:
@@ -571,6 +571,7 @@ const enrolling=async () => {
 
 const verify=async (req,res) =>{
     const gateway = new Gateway();
+    console.log(req.body.CF);
 
     try {
         const ccp = buildCCPOrg1();
@@ -594,19 +595,23 @@ const verify=async (req,res) =>{
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        console.log("Verifico esistenza cf");
+        
+        
+  
+        console.log("Verifico esistenza cf "+req.body.CF);
 
-        let q={
-            selector:
-                {
-                    CF: req.body
+        let q = {
+                selector: {
+                    CF: req.body.CF
                 }
-        };
+            };
 
-        //funzione di lettura paziente
-        let aux = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
+            
+        let aux = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
+        
         aux=JSON.parse(prettyJSONString(aux));
         console.log("Ricerca finita");
+        console.log(aux);
 
         gateway.disconnect();
 
