@@ -32,14 +32,13 @@ export default function ElencoUtenti() {
     const theme = useTheme()
     const [medico, setMedico] = useState(null)
     const [users, setUsers] = useState([])
-    const [id, setId] = useState('')
 
     useEffect(() => {
         const fetchUsers = async () => {
             if (cookies.get("token")) {
                 if (cookies.get("type") === "medico") {
                     setMedico(true)
-                    setId(cookies.get('token'))
+                    const id=cookies.get("token");
                     // BLOCKCHAIN fatto
                     await axios.get(`http://localhost:3001/api/bc/getPatientsById/${id}`)
                         .then(res => setUsers(res.data)).catch(e => console.log(e));
@@ -107,7 +106,7 @@ export default function ElencoUtenti() {
         setSearchTerm(e.target.value);
     };
 
-    const filteredUsers = tableData.filter((user) => {
+    const filteredUsers = users.filter((user) => {
         if (medico) {
             const fullName = `${user.lastName} ${user.firstName} ${user.id}`;
             return fullName.toLowerCase().includes(searchTerm.toLowerCase());
@@ -170,7 +169,7 @@ export default function ElencoUtenti() {
                                         <StyledTableCell align="left">{row.lastName}</StyledTableCell>
                                         <StyledTableCell align="left">{row.firstName}</StyledTableCell>
                                         <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
-                                        <StyledTableCell align="center">{row.CF}</StyledTableCell>
+                                        <StyledTableCell align="center">{medico ? row.CF : row.id}</StyledTableCell>
                                         {/* todo - STAMPARE ID DEL MEDICO, NON CF */}
                                         {/*   {medico ? row.CF : row.id}*/}
                                         {/*</StyledTableCell>*/}

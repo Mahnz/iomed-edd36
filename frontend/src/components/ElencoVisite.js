@@ -20,7 +20,7 @@ export default function ElencoVisite({setVisita,codiceUtente}) {
                     CF= cookies.get('token');
                     const response= await axios.get(`http://localhost:3001/api/bc/getCF/${CF}`)
                     if(response.status===200)
-                    await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${CF}`)
+                    await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${response.data}`)
                         .then(res=> setVisite(res.data.visite)).catch(e=>console.log(e));
                 }
 

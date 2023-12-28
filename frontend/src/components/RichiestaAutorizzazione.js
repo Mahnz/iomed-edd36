@@ -8,6 +8,7 @@ import {
 import {AddCircle, Person} from "@mui/icons-material";
 import CodiceFiscale from "codice-fiscale-js";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 export default function RichiestaAutorizzazione() {
     const cookies=new Cookies();
@@ -55,13 +56,19 @@ export default function RichiestaAutorizzazione() {
                     // todo - Chiamata alla blockchain per leggere il paziente corrispondente al codice fiscale.
                     //        I dati da ottenere sono: Nome, Cognome, Data di nascita, Codice fiscale.
                     //        Fare in modo che se il codice fiscale non esiste, venga lanciato errore
-                    const response = await axios.post("http://localhost:3001/api/bc/verifyCF", codiceFiscale)
+                    const response = await axios.post("http://localhost:3001/api/bc/verifyCF", {CF: codiceFiscale})
                     if (response.status === 200) {
                          console.log("Il codice fiscale è presente sulla blockchain")
                          setError({
                              state: false,
                             message: ""
                          })
+                        setUserFound({
+                            firstName: response.data.firstName,
+                            lastName: response.data.lastName,
+                            birthDate: response.data.birthDate,
+                            codiceFiscale: response.data.CF,
+                        })
                          setBtnDisabled(false)
                      } else {
                          console.log("Il codice fiscale non è presente sulla blockchain")
@@ -73,12 +80,7 @@ export default function RichiestaAutorizzazione() {
                      }
 
                     // BLOCKCHAIN fatto - Settare in questo modo l'utente, con i dati ottenuti dalla blockchain
-                    setUserFound({
-                        firstName: response.data.firstName,
-                        lastName: response.data.lastName,
-                        birthDate: response.data.birthDate,
-                        codiceFiscale: response.data.CF,
-                    })
+
                 } else {
                     setError({
                         state: true,
@@ -93,6 +95,7 @@ export default function RichiestaAutorizzazione() {
                     state: true,
                     message: "Codice fiscale non valido"
                 })
+                console.log(e);
                 setBtnDisabled(true)
                 setUserFound(null)
             }

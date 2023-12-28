@@ -6,14 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomeContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Impostazioni.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Impostazioni.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/bcController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/bcController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/bcRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/bcRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,6 +156,7 @@
       <workItem from="1703418968070" duration="1335000" />
       <workItem from="1703554359378" duration="832000" />
       <workItem from="1703555377266" duration="3577000" />
+      <workItem from="1703782453786" duration="245000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -196,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703557901341</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout">
+      <option name="closed" value="true" />
+      <created>1703768213560</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703768213561</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

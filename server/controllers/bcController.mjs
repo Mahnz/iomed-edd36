@@ -863,7 +863,7 @@ const getDoctors= async (req,res) => {
         console.log(user);
 
         console.log("Per ogni id nel vettore delle richieste, troviamo il relativo medico e lo aggiungiamo al vettore")
-        for(e of user.doctors)
+        for(let e of user.doctors)
         {
             let q={
                 selector: {
@@ -887,6 +887,7 @@ const getDoctors= async (req,res) => {
         gateway.disconnect();
 
         console.log("Restituiamo il vettore di tutti i medici associati al paziente")
+        console.log(v);
         return res.status(200).json(v);
 
     } catch (e) {
@@ -1115,7 +1116,7 @@ const getPatients= async (req,res) => {
         let users=await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         users=JSON.parse(prettyJSONString(users));
 
-        for(e of users)
+        for(const e of users)
         {
             v.push(e.Record);
         }
@@ -1123,6 +1124,7 @@ const getPatients= async (req,res) => {
         gateway.disconnect();
 
         console.log("Restituiamo il vettore di tutti i pazienti associati al medico")
+        console.log(v);
         return res.status(200).json(v);
 
     } catch (e) {
