@@ -443,7 +443,7 @@ export default function InserimentoVisitaMedica() {
 
     const handleInsertVisita = async () => {
         handleCloseDialog()
-        // BLOCKCHAIN
+        // BLOCKCHAIN fatto
         // todo - Chiamata alla backend per andare a cancellare l'utente
         console.log(formData)
         const formValues = new FormData()
@@ -462,7 +462,7 @@ export default function InserimentoVisitaMedica() {
         console.log(formValues)
         setShowOverlay(true)
 
-        // BLOCKCHAIN
+        // BLOCKCHAIN fatto
         // todo - Validare la transazione in blockchain
 
         try {

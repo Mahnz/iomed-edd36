@@ -56,9 +56,15 @@ export default function Impostazioni({mode, toggleMode}) {
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [changePasswordDialog, setChangePasswordDialog] = useState(false)
-    const handleChangePassword = () => {
-        // BLOCKCHAIN
+    const handleChangePassword = async() => {
+        // BLOCKCHAIN fatto
         // todo - Chiamata alla blockchain per cambiare la password
+        await axios.post("http://localhost:3001/api/bc/changePass", {
+            type: cookies.get("type"),
+            token: cookies.get("token"),
+            currentPassword: currentPassword,
+            newPassword: newPassword
+        }).then(res=> alert(res.data)).catch(e=> alert(e.response));
         setChangePasswordDialog(false)
     }
 
@@ -75,9 +81,15 @@ export default function Impostazioni({mode, toggleMode}) {
             [e.target.name]: e.target.value
         }))
     }
-    const handleDeleteAccount = () => {
-        // BLOCKCHAIN
+    const handleDeleteAccount = async() => {
+        // BLOCKCHAIN fatto
         // todo - Chiamata alla blockchain per eliminare definitivamente l'account dell'utente
+        await axios.post("http://localhost:3001/api/bc/deleteUser", {
+            email: deleteData.email,
+            password: deleteData.password,
+            type: cookies.get("type"),
+            token: cookies.get("token")
+        }).then(res=> alert(res.data)).catch(e=> alert(e.response));
         setDeleteAccountDialog(false)
         // navigate('/homepage')
     }

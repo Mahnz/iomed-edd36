@@ -7,8 +7,10 @@ import {
 } from '@mui/material'
 import {AddCircle, Person} from "@mui/icons-material";
 import CodiceFiscale from "codice-fiscale-js";
+import Cookies from "universal-cookie";
 
 export default function RichiestaAutorizzazione() {
+    const cookies=new Cookies();
     const [codiceFiscale, setCodiceFiscale] = useState('')
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [userFound, setUserFound] = useState(null)
@@ -49,33 +51,33 @@ export default function RichiestaAutorizzazione() {
                     })
 
                     // ! Verifica esistenza del codice fiscale in blockchain
-                    // BLOCKCHAIN
+                    // BLOCKCHAIN fatto
                     // todo - Chiamata alla blockchain per leggere il paziente corrispondente al codice fiscale.
                     //        I dati da ottenere sono: Nome, Cognome, Data di nascita, Codice fiscale.
                     //        Fare in modo che se il codice fiscale non esiste, venga lanciato errore
-                    // const response = await axios.post("http://localhost:3001/api/bc/verify", cf)
-                    // if (response.status === 200) {
-                    //     console.log("Il codice fiscale è presente sulla blockchain")
-                    //     setError({
-                    //         state: false,
-                    //         message: ""
-                    //     })
-                    //     setBtnDisabled(false)
-                    // } else {
-                    //     console.log("Il codice fiscale non è presente sulla blockchain")
-                    //     setError({
-                    //         state: true,
-                    //         message: "Il paziente non è registrato alla piattaforma"
-                    //     })
-                    //     setBtnDisabled(true)
-                    // }
+                    const response = await axios.post("http://localhost:3001/api/bc/verifyCF", codiceFiscale)
+                    if (response.status === 200) {
+                         console.log("Il codice fiscale è presente sulla blockchain")
+                         setError({
+                             state: false,
+                            message: ""
+                         })
+                         setBtnDisabled(false)
+                     } else {
+                         console.log("Il codice fiscale non è presente sulla blockchain")
+                         setError({
+                            state: true,
+                             message: "Il paziente non è registrato alla piattaforma"
+                         })
+                        setBtnDisabled(true)
+                     }
 
-                    // BLOCKCHAIN - Settare in questo modo l'utente, con i dati ottenuti dalla blockchain
+                    // BLOCKCHAIN fatto - Settare in questo modo l'utente, con i dati ottenuti dalla blockchain
                     setUserFound({
-                        firstName: 'Mario',
-                        lastName: 'Rossi',
-                        birthDate: '01/01/1990',
-                        codiceFiscale: 'RSSMRA90M01H501Z',
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                        birthDate: response.data.birthDate,
+                        codiceFiscale: response.data.CF,
                     })
                 } else {
                     setError({
@@ -144,14 +146,18 @@ export default function RichiestaAutorizzazione() {
         setOpenSnackbar(false);
     };
 
-    const addPaziente = () => {
+    const addPaziente = async() => {
         console.log('Aggiungi paziente')
         setShowOverlay(true)
 
-        // BLOCKCHAIN
+        // BLOCKCHAIN fatto
         // todo - Chiamata alla blockchain per aggiungere il paziente alla lista degli assistiti.
         //        Puoi prendere il CF da `userFound.codiceFiscale`
         // ........
+        await axios.post("http://localhost:3001/api/bc/addRequest", {
+            token: cookies.get("token"),
+            CF: userFound.codiceFiscale
+        }).then(res=> alert(res.data)).catch(e=> alert(e.response));
         setShowOverlay(false)
     }
 

@@ -11,8 +11,8 @@ export default function HomeContent({handleSelectTab}) {
     const [medico, setMedico] = useState(null)
 
     useEffect(() => {
+        //BLOCKCHAIN fatto
         // todo - Da abilitare quando i cookie vengono settati correttamente
-        // BLOCKCHAIN
         if (!cookies.get("token")) {
             console.log("Nessun utente loggato")
             navigate("/homepage")

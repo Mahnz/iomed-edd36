@@ -596,16 +596,27 @@ const verify=async (req,res) =>{
 
         console.log("Verifico esistenza cf");
 
-        //funzione di lettura paziente
-        let aux = await contract.evaluateTransaction("patientExists", req.body);
-        console.log(aux);
+        let q={
+            selector:
+                {
+                    CF: req.body
+                }
+        };
 
+        //funzione di lettura paziente
+        let aux = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
+        aux=JSON.parse(prettyJSONString(aux));
         console.log("Ricerca finita");
 
         gateway.disconnect();
 
-        if(aux)
-            return res.status(200).json("CF trovato");
+        if(aux.length!=0)
+            return res.status(200).json({
+                firstName: aux[0].Record.firstName,
+                lastName: aux[0].Record.lastName,
+                birthDate: aux[0].Record.birthDate,
+                CF: aux[0].Record.CF
+            });
         else
             return res.status(404).json("Non trovato")
 
@@ -668,7 +679,7 @@ const addRequest=async(req,res)=>{
         {
             console.log("Inizio aggiunta richiesta");
             user.requests.push(id);
-            await contract.submitTransaction("updatePatient", user.CF, JSON.stringify(user));
+            await contract.submitTransaction("updatePatient", req.body.CF, JSON.stringify(user));
             gateway.disconnect();
             return res.status(200).json("Richiesta aggiunta");
         }
@@ -1115,6 +1126,75 @@ const getPatients= async (req,res) => {
     }
 }
 
+const changePass= async(req,res) => {
+    const gateway = new Gateway();
+
+    if(req.body.token==null)
+        return res.status(401).json("Errore autenticazione");
+
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        await gateway.connect(ccp, {
+            wallet,
+            identity: org1UserId,
+            discovery: {enabled: true, asLocalhost: true}
+        });
+
+        //Ritrovamento canale su cui è applicato il chaincode
+        const network = await gateway.getNetwork(channelName);
+
+        //Ritrovamento smartContract da chaincode
+        const contract = network.getContract(chaincodeName);
+
+        let token=await jwt.verify(req.body.token, pk);
+        let q;
+
+        if(req.body.type==="paziente")
+            q={
+                selector:{
+                    CF: token
+                }
+            }
+
+        else
+            q={
+                selector:{
+                    id: token
+                }
+            }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
+        user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
+
+        let verify=await bcrypt.compare(req.body.currentPassword, user.password);
+        if(!verify)
+            return res.status(404).json("Password attuale errata");
+
+        const s=await bcrypt.genSalt(10);
+        const pass=await bcrypt.hash(req.body.newPassword,s);
+        user.password=pass;
+
+        await contract.submitTransaction("updatePatient", user.CF, JSON.stringify(user));
+
+        gateway.disconnect();
+
+        return res.status(200).json("Modifca password avvenuta")
+
+    } catch (e) {
+        console.log(e);
+        res.status(404).json("Errore");
+    }
+}
+
 
 
 const testpv = async (req, res) => {
@@ -1161,6 +1241,71 @@ const getCF=async (req,res)=>{
     }
 }
 
+const deleteUser=async(req,res)=>{
+    const gateway = new Gateway();
+
+    if(req.body.token==null)
+        return res.status(401).json("Errore autenticazione");
+
+    try {
+        const ccp = buildCCPOrg1();
+        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+
+        const wallet = await buildWallet(Wallets, walletPath);
+
+        await enrollAdmin(caClient, wallet, mspOrg1);
+
+        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+
+        await gateway.connect(ccp, {
+            wallet,
+            identity: org1UserId,
+            discovery: {enabled: true, asLocalhost: true}
+        });
+
+        //Ritrovamento canale su cui è applicato il chaincode
+        const network = await gateway.getNetwork(channelName);
+
+        //Ritrovamento smartContract da chaincode
+        const contract = network.getContract(chaincodeName);
+
+        let token=await jwt.verify(req.body.token, pk);
+        let q;
+
+        if(req.body.type==="paziente")
+            q={
+                selector:{
+                    CF: token
+                }
+            }
+
+        else
+            q={
+                selector:{
+                    id: token
+                }
+            }
+
+        let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
+        user=JSON.parse(prettyJSONString(user));
+        user=user[0].Record;
+
+        let verify=await bcrypt.compare(req.body.password, user.password);
+        if(!verify || req.body.email !== user.email)
+            return res.status(404).json("Dati errati");
+
+        await contract.submitTransaction("deletePatient", user.CF);
+
+        gateway.disconnect();
+
+        return res.status(200).json("Utente cancellato");
+
+    } catch (e) {
+        console.log(e);
+        res.status(404).json("Errore");
+    }
+}
+
 export const bcController = {
     addPatient,
     getPatient,
@@ -1180,6 +1325,8 @@ export const bcController = {
     addRequest,
     getCF,
     patientExist,
-    getDoctor
+    getDoctor,
+    changePass,
+    deleteUser
 };
 
