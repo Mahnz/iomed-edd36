@@ -51,9 +51,8 @@ export default function InserimentoVisitaMedica() {
         reparto: null,
         descrizione: '',
         allegati: [],
-        // todo - Inserire il codice fiscale del medico
-        // medico: cookies.get("id"),
-        medico: "medico"
+        // todo - Inserire l'id del medico
+        medico: cookies.get("token")
     }
     const [formData, setFormData] = useState(initialFormData)
     const [errors, setErrors] = useState({
@@ -447,7 +446,6 @@ export default function InserimentoVisitaMedica() {
     const handleInsertVisita = async () => {
         handleCloseDialog()
         // BLOCKCHAIN fatto
-        // todo - Chiamata alla backend per andare a cancellare l'utente
         console.log(formData)
         const formValues = new FormData()
 
@@ -465,9 +463,7 @@ export default function InserimentoVisitaMedica() {
         console.log(formValues)
         setShowOverlay(true)
 
-        // BLOCKCHAIN fatto
-        // todo - Validare la transazione in blockchain
-
+        // BLOCKCHAIN fatto - Validazione la transazione in blockchain
         try {
             const res = await axios.post('http://localhost:3001/api/ipfs/addVisita', formValues, {
                 'Content-Type': 'multipart/form-data',

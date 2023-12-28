@@ -1,8 +1,3 @@
-.selected-tab {
-    border-left: 4px solid #2196f3; /* Colore a tua scelta */
-    background-color: rgba(33, 150, 243, 0.1); /* Colore a tua scelta */
-}
-
 html {
     --scrollbarBG: hsl(0, 0%, 100%);
     --thumbBG: #90a4ae;

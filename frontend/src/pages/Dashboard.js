@@ -6,32 +6,30 @@ import {
     styled, CssBaseline, Box, Container, Toolbar,
     Drawer as MuiDrawer, AppBar as MuiAppBar,
     Typography, Divider, Tooltip, IconButton, Badge,
-    List, ListItemButton, ListItemIcon, ListItemText, Link, useTheme
+    List, ListItemButton, ListItemIcon, ListItemText, useTheme
 } from '@mui/material'
 import {
     Menu as MenuIcon,
     Settings as SettingsIcon,
-    ChevronLeft,
-    Healing,
-    Person,
-    Home,
-    FormatListBulleted, GroupAdd
+    ChevronLeft, Healing, Person,
+    Home, FormatListBulleted, GroupAdd
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser, faNotesMedical} from "@fortawesome/free-solid-svg-icons"
 
+// IMPORT DEI VARI COMPONENTI
 import ElencoVisite from '../components/ElencoVisite.js'
 import HomeContent from "../components/HomeContent.js"
 import MyProfile from "../components/MyProfile.js"
 import NotificationsPanel from "../components/NotificationsPanel.js"
 import UserIconPanel from "../components/UserIconPanel.js"
-
 import VisitaMedica from "../components/VisitaMedica.js"
 import InserimentoVisitaMedica from "../components/InserimentoVisitaMedica.js"
 import ElencoUtenti from "../components/ElencoUtenti.js"
 import RichiestaAutorizzazione from "../components/RichiestaAutorizzazione.js"
-import "../style/dashboard.css"
 import Impostazioni from "../components/Impostazioni.js"
+
+import "../style/dashboard.css"
 
 export default function Dashboard({mode, toggleMode}) {
     const cookies = new Cookies()
@@ -63,7 +61,7 @@ export default function Dashboard({mode, toggleMode}) {
     }, [])
 
     // ? GESTIONE DELLE TAB
-    const [selectedTab, setSelectedTab] = useState("")
+    const [selectedTab, setSelectedTab] = useState("H")
     const [selectedVisita, setSelectedVisita] = useState("")
     const handleSelectTab = (value) => {
         setSelectedTab(value)
@@ -242,7 +240,10 @@ export default function Dashboard({mode, toggleMode}) {
                     <Tooltip title="Vai alla home" placement="right">
                         <ListItemButton
                             onClick={() => handleSelectTab("H")}
-                            className={selectedTab === 'H' ? 'selected-tab' : ''}>
+                            sx={selectedTab === 'H' ? {
+                                borderLeft: '4px solid #2196f3',
+                                backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                            } : {}}>
                             <ListItemIcon>
                                 <Home/>
                             </ListItemIcon>
@@ -253,7 +254,10 @@ export default function Dashboard({mode, toggleMode}) {
                         <Tooltip title="Elenco visite mediche" placement="right">
                             <ListItemButton
                                 onClick={() => handleSelectTab('V')}
-                                className={selectedTab === 'V' ? 'selected-tab' : ''}>
+                                sx={selectedTab === 'V' ? {
+                                    borderLeft: '4px solid #2196f3',
+                                    backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                                } : {}}>
                                 <ListItemIcon>
                                     <Healing/>
                                 </ListItemIcon>
@@ -265,7 +269,10 @@ export default function Dashboard({mode, toggleMode}) {
                              title={medico ? "Elenco assistiti" : "Medici autorizzati"}>
                         <ListItemButton
                             onClick={() => handleSelectTab("E")}
-                            className={selectedTab === 'E' ? 'selected-tab' : ''}>
+                            sx={selectedTab === 'E' ? {
+                                borderLeft: '4px solid #2196f3',
+                                backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                            } : {}}>
                             <ListItemIcon>
                                 <FormatListBulleted/>
                             </ListItemIcon>
@@ -277,10 +284,12 @@ export default function Dashboard({mode, toggleMode}) {
                         <Tooltip title="Aggiungi visita" placement="right">
                             <ListItemButton
                                 onClick={() => handleSelectTab('I')}
-                                className={selectedTab === 'I' ? 'selected-tab' : ''}>
+                                sx={selectedTab === 'I' ? {
+                                    borderLeft: '4px solid #2196f3',
+                                    backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                                } : {}}>
                                 <ListItemIcon>
                                     <FontAwesomeIcon icon={faNotesMedical} size="lg"/>
-                                    {/*<PersonAddAlt1/>*/}
                                 </ListItemIcon>
                                 <ListItemText primary="Aggiungi visita"/>
                             </ListItemButton>
@@ -290,7 +299,10 @@ export default function Dashboard({mode, toggleMode}) {
                         <Tooltip title="Aggiungi assistito" placement="right">
                             <ListItemButton
                                 onClick={() => handleSelectTab('N')}
-                                className={selectedTab === 'N' ? 'selected-tab' : ''}>
+                                sx={selectedTab === 'N' ? {
+                                    borderLeft: '4px solid #2196f3',
+                                    backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                                } : {}}>
                                 <ListItemIcon>
                                     <GroupAdd/>
                                 </ListItemIcon>
@@ -302,7 +314,10 @@ export default function Dashboard({mode, toggleMode}) {
                     <Tooltip title="Il mio profilo" placement="right">
                         <ListItemButton
                             onClick={() => handleSelectTab('P')}
-                            className={selectedTab === 'P' ? 'selected-tab' : ''}>
+                            sx={selectedTab === 'P' ? {
+                                borderLeft: '4px solid #2196f3',
+                                backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                            } : {}}>
                             <ListItemIcon>
                                 <Person/>
                             </ListItemIcon>
@@ -313,7 +328,10 @@ export default function Dashboard({mode, toggleMode}) {
                     <Tooltip title="Impostazioni" placement="right">
                         <ListItemButton
                             onClick={() => handleSelectTab('S')}
-                            className={selectedTab === 'S' ? 'selected-tab' : ''}>
+                            sx={selectedTab === 'S' ? {
+                                borderLeft: '4px solid #2196f3',
+                                backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                            } : {}}>
                             <ListItemIcon>
                                 <SettingsIcon/>
                             </ListItemIcon>
@@ -337,7 +355,6 @@ export default function Dashboard({mode, toggleMode}) {
                 <Toolbar/>
                 <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                     <Routes>
-                        <Route index element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/home" element={<HomeContent handleSelectTab={handleSelectTab}/>}/>
                         <Route path="/profilo" element={<MyProfile/>}/>
 
@@ -369,7 +386,6 @@ export default function Dashboard({mode, toggleMode}) {
 
                         {medico && <Route path="/inserimentoVisita" element={<InserimentoVisitaMedica/>}/>}
                         {medico && <Route path="/aggiungiAssistito" element={<RichiestaAutorizzazione/>}/>}
-                        <Route path="/impostazioni" element={<Impostazioni mode={mode} toggleMode={toggleMode}/>}/>
                         <Route path="/mediciAutorizzati"
                                element={medico
                                    ? <Navigate to='/dashboard/home' replace/>
@@ -382,6 +398,8 @@ export default function Dashboard({mode, toggleMode}) {
                                    : <ElencoUtenti/>
                                }
                         />
+
+                        <Route path="/impostazioni" element={<Impostazioni mode={mode} toggleMode={toggleMode}/>}/>
                         <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
                     </Routes>
                 </Container>
@@ -389,6 +407,7 @@ export default function Dashboard({mode, toggleMode}) {
         </Box>
     )
 }
+
 const drawerWidth = 240
 const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open',})
 (({theme, open}) => ({

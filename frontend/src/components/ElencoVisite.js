@@ -11,8 +11,7 @@ export default function ElencoVisite({setVisita}) {
     const location = useLocation();
     const cookies = new Cookies()
     const [visite, setVisite] = useState([])
-    // todo - Settare medico a null
-    const [medico, setMedico] = useState(true)
+    const [medico, setMedico] = useState(null)
 
     useEffect(() => {
         const fetchVisiteMediche = async () => {
@@ -20,7 +19,6 @@ export default function ElencoVisite({setVisita}) {
                 if (cookies.get("token")) {
                     if (cookies.get("type") === "medico") {
                         setMedico(true)
-                        console.log("Codice fiscale (2): " + location.state);
                         await axios.get(`http://localhost:3001/api/ipfs/getAllVisiteByCF/${location.state}`)
                             .then(res => setVisite(res.data.visite)).catch(e => console.log(e));
                     } else if (cookies.get("type") === "paziente") {
@@ -38,14 +36,17 @@ export default function ElencoVisite({setVisita}) {
                 console.error("Errore durante il recupero delle visite mediche:", error)
             }
         }
-
         fetchVisiteMediche()
     }, []) // Avviato solo al primo rendering della pagina
 
     const handleOpen = (visit) => {
         setVisita(visit)
         console.log(visit)
-        navigate('/dashboard/visite/visualizzaVisita')
+        if (medico) {
+            navigate('/dashboard/listaAssistiti/visite/visualizzaVisita')
+        } else {
+            navigate('/dashboard/visite/visualizzaVisita')
+        }
     }
 
     return (
@@ -71,7 +72,7 @@ export default function ElencoVisite({setVisita}) {
                                         borderRadius: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        height: 220,
+                                        height: 200,
                                         transition: 'box-shadow 0.2s',
                                         '&:hover': {
                                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
@@ -87,9 +88,6 @@ export default function ElencoVisite({setVisita}) {
                                             </Typography>
                                             <Typography color="text.secondary" gutterBottom>
                                                 <b>Medico:</b> {visit.medico}
-                                            </Typography>
-                                            <Typography color="text.secondary" sx={{flex: 1}}>
-                                                <b>Ultimo aggiornamento:</b> 13:50, 11/12/2021
                                             </Typography>
                                         </div>
                                         <Container sx={{textAlign: 'center', pb: 1}}>

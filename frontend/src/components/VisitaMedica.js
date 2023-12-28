@@ -13,19 +13,31 @@ import {ArrowBack, CloudDownload} from '@mui/icons-material'
 import {Link, useNavigate} from 'react-router-dom'
 import axios from "axios"
 import dayjs from 'dayjs'
+import Cookies from "universal-cookie";
 
 export default function VisitaMedica({visita}) {
-    // todo - Da rimuovere quando la visita viene passata come parametro
     const navigate = useNavigate();
+    const cookies = new Cookies()
+    const [medico, setMedico] = useState(null)
     const [details, setDetails] = useState({});
     const [files, setFiles] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (visita === "") {
-            navigate(-1);
+        if (!cookies.get("token")) {
+            navigate("/homepage")
+        } else {
+            if (!visita) {
+                navigate(-1);
+            } else {
+                if (cookies.get("type") === "medico") {
+                    setMedico(true)
+                } else if (cookies.get("type") === "paziente") {
+                    setMedico(false)
+                }
+            }
         }
-    }, [visita]);
+    }, []);
 
     useEffect(() => {
         const readVisitaMedica = async () => {
@@ -41,7 +53,6 @@ export default function VisitaMedica({visita}) {
                 console.error("Errore durante la lettura della visita:", error)
             }
         }
-
         readVisitaMedica()
     }, [])
 
@@ -71,6 +82,14 @@ export default function VisitaMedica({visita}) {
             setLoading(false);
         } finally {
             setLoading(false);
+        }
+    }
+
+    const handleBack = () => {
+        if (medico) {
+            navigate('/dashboard/listaAssistiti/visite', {state: visita.codiceFiscale})
+        } else {
+            navigate('/dashboard/visite')
         }
     }
 
@@ -173,7 +192,7 @@ export default function VisitaMedica({visita}) {
                         </Grid>
                         <Grid item xs={12}>
                             <Container sx={{textAlign: 'center', pt: 2}}>
-                                <Button variant="contained" color="primary" component={Link} to="/dashboard/visite"
+                                <Button variant="contained" color="primary" onClick={() => handleBack()}
                                         startIcon={<ArrowBack/>}>
                                     Torna all'elenco
                                 </Button>

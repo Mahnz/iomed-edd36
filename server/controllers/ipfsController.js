@@ -34,13 +34,12 @@ const addVisita = async (req, res) => {
     const codiceFiscale = req.body.codiceFiscale
     const userDirectory = `/patients/${codiceFiscale}`
 
-    //TODO Aggiunta convalida bc
+    //TODO - Aggiunta convalida bc
     //const pk=bcController.enrolling();
 
     try {
         const visitaDetails = {
-            // medico: req.body.medico,
-            medico: "111AWE5A8E4D5E6P",
+            medico: req.body.medico,
             dataVisita: req.body.dataVisita,
             nomeVisita: req.body.nomeVisita,
             reparto: req.body.reparto,

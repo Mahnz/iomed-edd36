@@ -39,7 +39,6 @@ export default function ElencoUtenti() {
             if (cookies.get("token")) {
                 if (cookies.get("type") === "medico") {
                     setMedico(true)
-                    // todo - Da rimuovere quando il codice fiscale viene letto dal cookie
                     setId(cookies.get('token'))
                     // BLOCKCHAIN fatto
                     await axios.get(`http://localhost:3001/api/bc/getPatientsById/${id}`)
