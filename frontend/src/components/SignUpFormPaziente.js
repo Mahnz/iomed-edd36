@@ -238,7 +238,7 @@ export default function SignUpFormPaziente() {
                     navigate("/dashboard/home");
                 })
                 .catch(e => {
-                    console.log(e)
+                    console.log(e);
                     alert("Errore: " + e.status + " " + e.response.data);
                 })
         } else {

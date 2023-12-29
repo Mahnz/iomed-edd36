@@ -92,9 +92,13 @@ export default function ElencoUtenti() {
         await axios.post(`http://localhost:3001/api/bc/deleteDoctor`, {
             token: CF,
             id: userToDelete.id
-        }).then(res => alert(res.data)).catch(e => console.log(e))
-        // todo - Aggiornare la lista degli utenti dopo la cancellazione, così da eliminare la riga dalla tabella
-
+        }).then(res => {
+            // todo - Aggiornare la lista degli utenti dopo la cancellazione, così da eliminare la riga dalla tabella
+            let temp = users.filter(e => e.id !== userToDelete.id);
+            setUsers(temp);
+            alert(res.data);
+        }).catch(e => alert("Errore: " + e.status + " - " + e.response.data))
+        setShowOverlay(false)
         setOpenSnackbar(true)
     }
 

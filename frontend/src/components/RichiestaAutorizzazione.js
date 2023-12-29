@@ -156,7 +156,10 @@ export default function RichiestaAutorizzazione() {
         await axios.post("http://localhost:3001/api/bc/addRequest", {
             token: cookies.get("token"),
             CF: userFound.codiceFiscale
-        }).then(res=> alert(res.data)).catch(e=> alert(e.response));
+        }).then(res => {
+            setUserFound(null)
+            alert(res.data)
+        }).catch(e => alert("Errore: " + e.status + " - " + e.response.data));
         setShowOverlay(false)
         setOpenSnackbar(true);
     }
