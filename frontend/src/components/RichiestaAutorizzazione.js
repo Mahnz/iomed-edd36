@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 
 export default function RichiestaAutorizzazione() {
-    const cookies=new Cookies();
+    const cookies = new Cookies();
     const [codiceFiscale, setCodiceFiscale] = useState('')
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [userFound, setUserFound] = useState(null)
@@ -58,26 +58,26 @@ export default function RichiestaAutorizzazione() {
                     //        Fare in modo che se il codice fiscale non esiste, venga lanciato errore
                     const response = await axios.post("http://localhost:3001/api/bc/verifyCF", {CF: codiceFiscale})
                     if (response.status === 200) {
-                         console.log("Il codice fiscale è presente sulla blockchain")
-                         setError({
-                             state: false,
+                        console.log("Il codice fiscale è presente sulla blockchain")
+                        setError({
+                            state: false,
                             message: ""
-                         })
+                        })
                         setUserFound({
                             firstName: response.data.firstName,
                             lastName: response.data.lastName,
                             birthDate: response.data.birthDate,
                             codiceFiscale: response.data.CF,
                         })
-                         setBtnDisabled(false)
-                     } else {
-                         console.log("Il codice fiscale non è presente sulla blockchain")
-                         setError({
+                        setBtnDisabled(false)
+                    } else {
+                        console.log("Il codice fiscale non è presente sulla blockchain")
+                        setError({
                             state: true,
-                             message: "Il paziente non è registrato alla piattaforma"
-                         })
+                            message: "Il paziente non è registrato alla piattaforma"
+                        })
                         setBtnDisabled(true)
-                     }
+                    }
 
                     // BLOCKCHAIN fatto - Settare in questo modo l'utente, con i dati ottenuti dalla blockchain
 
@@ -101,7 +101,6 @@ export default function RichiestaAutorizzazione() {
             }
         }
     }
-
 
     const [isFirstRender, setIsFirstRender] = useState(true)
     useEffect(() => {
@@ -149,19 +148,17 @@ export default function RichiestaAutorizzazione() {
         setOpenSnackbar(false);
     };
 
-    const addPaziente = async() => {
+    const addPaziente = async () => {
         console.log('Aggiungi paziente')
-        setShowOverlay(true)
-
         // BLOCKCHAIN fatto
         // todo - Chiamata alla blockchain per aggiungere il paziente alla lista degli assistiti.
-        //        Puoi prendere il CF da `userFound.codiceFiscale`
-        // ........
+        setShowOverlay(true)
         await axios.post("http://localhost:3001/api/bc/addRequest", {
             token: cookies.get("token"),
             CF: userFound.codiceFiscale
         }).then(res=> alert(res.data)).catch(e=> alert(e.response));
         setShowOverlay(false)
+        setOpenSnackbar(true);
     }
 
     return (
@@ -178,7 +175,7 @@ export default function RichiestaAutorizzazione() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        zIndex: 999, // Assicura che l'overlay sia sopra tutto il resto
+                        zIndex: 999
                     }}
                 >
                     <CircularProgress color="success"/>

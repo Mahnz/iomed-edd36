@@ -17,7 +17,7 @@ import {
     Tooltip,
     Dialog,
     DialogTitle,
-    DialogContent, DialogActions, Button, TextField, Snackbar, Alert, useTheme
+    DialogContent, DialogActions, Button, TextField, Snackbar, Alert, useTheme, CircularProgress
 } from "@mui/material"
 import {Cancel, Close} from "@mui/icons-material";
 import axios from "axios";
@@ -29,6 +29,7 @@ import {useNavigate} from "react-router-dom";
 export default function ElencoUtenti() {
     const cookies = new Cookies()
     const navigate = useNavigate()
+    const [showOverlay, setShowOverlay] = useState(false)
     const theme = useTheme()
     const [medico, setMedico] = useState(null)
     const [users, setUsers] = useState([])
@@ -87,6 +88,7 @@ export default function ElencoUtenti() {
         // BLOCKCHAIN fatto
         // todo - Chiamata alla backend per andare a cancellare l'utente
         let CF = cookies.get("token");
+        setShowOverlay(true)
         await axios.post(`http://localhost:3001/api/bc/deleteDoctor`, {
             token: CF,
             id: userToDelete.id
@@ -126,6 +128,24 @@ export default function ElencoUtenti() {
 
     return (
         <>
+            {showOverlay && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 999,
+                    }}
+                >
+                    <CircularProgress color="success"/>
+                </div>
+            )}
             <Typography variant="h4" mb={4}>
                 {medico ? "Elenco assistiti" : "Elenco dei medici autorizzati"}
             </Typography>

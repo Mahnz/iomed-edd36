@@ -4,17 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Altri cambiamenti e correzioni.">
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Corretto doppio click su LoginMedico.&#10;&#10;ElencoUtenti: utente rimosso correttamente dalla tabella alla sua eliminazione&#10;&#10;Aggiunto lo Snackbar dopo aver richiesto l'autorizzazione di accesso ai dati ad un paziente&#10;&#10;Altri cambiamenti e correzioni.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Hero.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Hero.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Impostazioni.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Impostazioni.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" afterDir="false" />
+    </list>
+    <list id="15b9665e-cc82-43f1-9015-8336ef18f26e" name="Changes by domenico" comment="Changes by domenico">
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +32,34 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js">
+      <ranges>
+        <range start1="19" end1="20" start2="19" end2="20" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="31" end1="31" start2="31" end2="32" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="89" end1="89" start2="90" end2="91" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="92" end1="95" start2="94" end2="101" changelist="15b9665e-cc82-43f1-9015-8336ef18f26e" />
+        <range start1="128" end1="128" start2="134" end2="152" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js">
+      <ranges>
+        <range start1="13" end1="14" start2="13" end2="14" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="60" end1="63" start2="60" end2="63" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="64" end1="65" start2="64" end2="65" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="71" end1="75" start2="71" end2="75" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="76" end1="78" start2="76" end2="78" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="79" end1="80" start2="79" end2="80" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="104" end1="105" start2="104" end2="104" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="151" end1="152" start2="150" end2="151" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="153" end1="155" start2="152" end2="152" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="157" end1="159" start2="154" end2="155" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="162" end1="163" start2="158" end2="162" changelist="15b9665e-cc82-43f1-9015-8336ef18f26e" />
+        <range start1="164" end1="164" start2="163" end2="164" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+        <range start1="180" end1="181" start2="180" end2="181" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
+      </ranges>
+    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -172,7 +201,7 @@
       <workItem from="1703554359378" duration="832000" />
       <workItem from="1703555377266" duration="3577000" />
       <workItem from="1703782453786" duration="245000" />
-      <workItem from="1703848191861" duration="3714000" />
+      <workItem from="1703848191861" duration="6036000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -230,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703811787904</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Corretta larghezza delle Cards nella HomePage.&#10;&#10;Altri cambiamenti e correzioni.">
+      <option name="closed" value="true" />
+      <created>1703852242985</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1703852242985</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,6 +292,9 @@
     <MESSAGE value="Modifiche:&#10; - ripristino ElencoVisite.js&#10; - fix vari" />
     <MESSAGE value="Modifiche&#10;&#10;HomePage:&#10; - AppBar: aggiunti i pulsanti per rimandare alle diverse sezioni; sistemato il titolo del progetto&#10; - aggiunta la striscia per le Cards per rimandare a login/signup di medico e paziente&#10; - reso responsive il form &quot;Contattaci&quot;&#10; - altri fix vari sui vari componenti&#10;&#10;SignUpFormMedico: corretti gli helperText&#10;&#10;Altri cambiamenti e correzioni" />
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Altri cambiamenti e correzioni." />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Altri cambiamenti e correzioni." />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Corretta larghezza delle Cards nella HomePage.&#10;&#10;Altri cambiamenti e correzioni." />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;Corretto doppio click su LoginMedico.&#10;&#10;ElencoUtenti: utente rimosso correttamente dalla tabella alla sua eliminazione&#10;&#10;Aggiunto lo Snackbar dopo aver richiesto l'autorizzazione di accesso ai dati ad un paziente&#10;&#10;Altri cambiamenti e correzioni." />
+    <MESSAGE value="Changes by domenico" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes by domenico" />
   </component>
 </project>
