@@ -4,7 +4,6 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import Authentication from "./pages/Authentication.js"
 import Dashboard from "./pages/Dashboard.js"
 import HomePage from "./pages/HomePage.js"
-import TestFrontend from "./pages/TestFrontend.js"
 import TestBC from "./pages/TestBC.js"
 import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
 
@@ -62,7 +61,6 @@ export default function App() {
 
                 <Route path="/dashboard/*" element={<Dashboard mode={mode} toggleMode={toggleMode}/>}/>
                 <Route path="/homepage" element={<HomePage/>}/>
-                <Route path="/testFE" element={<TestFrontend/>}/>
                 <Route path="/blockchain" element={<TestBC/>}/>
 
 

@@ -6,12 +6,11 @@ import Cookies from "universal-cookie"
 export default function HomeContent({handleSelectTab}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
-    const [loggedUser, setLoggedUser] = useState("Mario Rossi")
+    const [loggedUser, setLoggedUser] = useState("")
     const [medico, setMedico] = useState(null)
 
     useEffect(() => {
         //BLOCKCHAIN fatto
-        // todo - Da abilitare quando i cookie vengono settati correttamente
         if (!cookies.get("token")) {
             console.log("Nessun utente loggato")
             navigate("/homepage")
@@ -31,7 +30,7 @@ export default function HomeContent({handleSelectTab}) {
                 Benvenuto, {loggedUser}
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
+                <Grid item xs={12} md={4} sx={{height: 250}}>
                     <Card sx={{
                         transition: 'box-shadow 0.2s',
                         '&:hover': {
@@ -61,7 +60,7 @@ export default function HomeContent({handleSelectTab}) {
                 </Grid>
 
                 {!medico && (
-                    <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
+                    <Grid item xs={12} md={4} sx={{height: 250}}>
                         <Card sx={{
                             transition: 'box-shadow 0.2s',
                             '&:hover': {
@@ -92,7 +91,7 @@ export default function HomeContent({handleSelectTab}) {
                 )}
 
                 {medico && (
-                    <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
+                    <Grid item xs={12} md={4} sx={{height: 250}}>
                         <Card sx={{
                             transition: 'box-shadow 0.2s',
                             '&:hover': {
@@ -122,7 +121,7 @@ export default function HomeContent({handleSelectTab}) {
                     </Grid>
                 )}
 
-                <Grid item xs={12} sm={6} md={4} sx={{height: 270}}>
+                <Grid item xs={12} md={4} sx={{height: 250}}>
                     <Card sx={{
                         transition: 'box-shadow 0.2s',
                         '&:hover': {
@@ -143,7 +142,7 @@ export default function HomeContent({handleSelectTab}) {
                             </Typography>
                             <Typography color="text.secondary">
                                 {!medico
-                                    ? "Visualizza, aggiungi o rimuovi i medici autorizzati ad accedere alle tue informazioni."
+                                    ? "Visualizza e rimuovi i medici autorizzati ad accedere alle tue informazioni."
                                     : "Visualizza un elenco di tutti i pazienti assistiti e ricerca mediante il codice fiscale."
                                 }
                             </Typography>
@@ -156,7 +155,7 @@ export default function HomeContent({handleSelectTab}) {
                         </CardActions>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} sx={{height: 220}}>
+                <Grid item xs={12} md={4} sx={{height: 250}}>
                     <Card sx={{
                         transition: 'box-shadow 0.2s',
                         '&:hover': {

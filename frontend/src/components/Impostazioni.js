@@ -1,16 +1,11 @@
+// Impostazioni.js
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from "react-router-dom"
 import Cookies from "universal-cookie"
 import {
-    Typography,
-    Paper,
-    Grid,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    ListItemSecondaryAction,
-    Switch, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Tooltip, CircularProgress,
+    Typography, Paper, Grid, Switch, Button, IconButton, Tooltip,
+    List, ListItem, ListItemButton, ListItemText, ListItemSecondaryAction,
+    Dialog, DialogTitle, DialogContent, DialogActions, TextField, CircularProgress,
 } from '@mui/material'
 import {Brightness4, Brightness7} from "@mui/icons-material"
 import axios from "axios"
@@ -19,6 +14,7 @@ import axios from "axios"
 export default function Impostazioni({mode, toggleMode}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
+    const [medico, setMedico] = useState(null)
     const [showOverlay, setShowOverlay] = useState(false)
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -45,8 +41,17 @@ export default function Impostazioni({mode, toggleMode}) {
         setBtnDisabled(true)
     }
     useEffect(() => {
-        if (cookies.get('notifications')) {
-            setNotification(cookies.get('notifications'))
+        if (cookies.get("token")) {
+            if (cookies.get("type") === "medico") {
+                setMedico(true)
+            } else {
+                setMedico(false)
+            }
+            if (cookies.get('notifications')) {
+                setNotification(cookies.get('notifications'))
+            }
+        } else {
+            navigate("/homepage")
         }
     }, [])
 
@@ -60,7 +65,6 @@ export default function Impostazioni({mode, toggleMode}) {
     const [newPassword, setNewPassword] = useState('')
     const handleChangePassword = async () => {
         // BLOCKCHAIN fatto
-        // todo - Chiamata alla blockchain per cambiare la password
         await axios.post("http://localhost:3001/api/bc/changePass", {
             type: cookies.get("type"),
             token: cookies.get("token"),
@@ -75,7 +79,7 @@ export default function Impostazioni({mode, toggleMode}) {
         setNewPassword('')
     }
 
-
+    const [isFirstRender, setIsFirstRender] = useState(true)
     const [deleteAccountDialog, setDeleteAccountDialog] = useState(false)
     const [deleteData, setDeleteData] = useState({
         email: '',
@@ -116,147 +120,224 @@ export default function Impostazioni({mode, toggleMode}) {
         }
     }
     useEffect(() => {
-        if (deleteData.email) {
-            setErrorsDelete({
-                ...errorsDelete,
-                email: {
-                    state: true,
-                    message: 'Campo obbligatorio'
-                }
-            })
+        if (isFirstRender) {
+            setIsFirstRender(false)
         } else {
-            setErrorsDelete({
-                ...errorsDelete,
-                email: {
-                    state: false,
-                    message: ''
-                }
-            })
+            if (!deleteData.email) {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    email: {
+                        state: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else if (!emailRegex.test(deleteData.email)) {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    email: {
+                        state: true,
+                        message: ''
+                    }
+                }))
+            } else {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    email: {
+                        state: false,
+                        message: ''
+                    }
+                }))
+            }
         }
     }, [deleteData.email])
 
     useEffect(() => {
-        if (deleteData.password) {
-            setErrorsDelete({
-                ...errorsDelete,
-                password: {
-                    state: true,
-                    message: 'Campo obbligatorio'
-                }
-            })
+        if (isFirstRender) {
+            setIsFirstRender(false)
         } else {
-            setErrorsDelete({
-                ...errorsDelete,
-                password: {
-                    state: false,
-                    message: ''
-                }
-            })
+            if (!deleteData.password) {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    password: {
+                        state: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    password: {
+                        state: false,
+                        message: ''
+                    }
+                }))
+            }
         }
     }, [deleteData.password])
 
     useEffect(() => {
-        if (deleteData.confirmPassword) {
-            setErrorsDelete({
-                ...errorsDelete,
-                confirmPassword: {
-                    state: true,
-                    message: 'Campo obbligatorio'
-                }
-            })
+        if (isFirstRender) {
+            setIsFirstRender(false)
         } else {
-            setErrorsDelete({
-                ...errorsDelete,
-                confirmPassword: {
-                    state: false,
-                    message: ''
-                }
-            })
+            if (!deleteData.confirmPassword) {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    confirmPassword: {
+                        state: true,
+                        message: 'Campo obbligatorio'
+                    }
+                }))
+            } else {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    confirmPassword: {
+                        state: false,
+                        message: ''
+                    }
+                }))
+            }
         }
     }, [deleteData.confirmPassword])
 
     const handleDeleteAccount = async () => {
         // BLOCKCHAIN fatto
         if (!deleteData.email) {
-            setErrorsDelete({
-                ...errorsDelete,
+            setErrorsDelete((prevErrors) => ({
+                ...prevErrors,
                 email: {
                     state: true,
                     message: 'Campo obbligatorio'
                 }
-            })
+            }))
         } else {
             if (!emailRegex.test(deleteData.email)) {
-                setErrorsDelete({
-                    ...errorsDelete,
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
                     email: {
                         state: true,
                         message: "Inserire un'email valida"
                     }
-                })
+                }))
             } else {
-                setErrorsDelete({
-                    ...errorsDelete,
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
                     email: {
                         state: false,
                         message: ''
                     }
-                })
-                if (deleteData.password && deleteData.confirmPassword) {
-                    if (deleteData.password === deleteData.confirmPassword) {
-                        setShowOverlay(true)
-                        await axios.post("http://localhost:3001/api/bc/deleteUser", {
-                            email: deleteData.email,
-                            password: deleteData.password,
-                            type: cookies.get("type"),
-                            token: cookies.get("token")
-                        }).then(res => alert(res.data)).catch(e => alert(e.response))
-                        setDeleteAccountDialog(false)
+                }))
+            }
+        }
 
-                        // ? RIMOZIONE DI TUTTI I COOKIE DELL'UTENTE
+        if (!deleteData.password) {
+            setErrorsDelete((prevErrors) => ({
+                ...prevErrors,
+                password: {
+                    state: true,
+                    message: 'Campo obbligatorio'
+                }
+            }))
+        } else {
+            setErrorsDelete((prevErrors) => ({
+                ...prevErrors,
+                password: {
+                    state: false,
+                    message: ''
+                }
+            }))
+        }
+
+        if (!deleteData.confirmPassword) {
+            setErrorsDelete((prevErrors) => ({
+                ...prevErrors,
+                confirmPassword: {
+                    state: true,
+                    message: 'Campo obbligatorio'
+                }
+            }))
+        } else {
+            setErrorsDelete((prevErrors) => ({
+                ...prevErrors,
+                confirmPassword: {
+                    state: false,
+                    message: ''
+                }
+            }))
+        }
+
+        if (deleteData.email && deleteData.password && deleteData.confirmPassword) {
+            if (deleteData.password === deleteData.confirmPassword) {
+                // BLOCKCHAIN fatto
+                try {
+                    setShowOverlay(true)
+                    const res1 = await axios.post("http://localhost:3001/api/bc/deleteUser", {
+                        email: deleteData.email,
+                        password: deleteData.password,
+                        type: cookies.get("type"),
+                        token: cookies.get("token")
+                    })
+                    if (res1.status === 200) {
+                        console.log("Utente eliminato con successo dalla blockchain")
+                        if (!medico) {
+                            await axios.post(`http://localhost:3001/api/ipfs/removePatient/${cookies.get("codiceFiscale")}`)
+                                .then(res2 => {
+                                    console.log("Utente eliminato con successo da IPFS")
+                                }).catch(e => {
+                                    console.log(e.response)
+                                })
+                        }
                         cookies.remove("token", {path: '/'})
                         cookies.remove("type", {path: '/'})
                         cookies.remove("firstName", {path: '/'})
                         cookies.remove("lastName", {path: '/'})
                         cookies.remove("theme", {path: '/'})
-                        setShowOverlay(false)
-
-                        navigate('/homepage')
-                    } else {
-                        setErrorsDelete({
-                            ...errorsDelete,
-                            password: {
-                                state: true,
-                                message: 'Le password non coincidono'
-                            },
-                            confirmPassword: {
-                                state: true,
-                                message: 'Le password non coincidono'
-                            }
-                        })
+                        cookies.remove("notifications", {path: '/'})
+                        handleCloseDialogDeleteAccount()
                     }
-                } else {
-                    setErrorsDelete({
-                        ...errorsDelete,
-                        password: {
-                            state: true,
-                            message: 'Campo obbligatorio'
-                        },
-                        confirmPassword: {
-                            state: true,
-                            message: 'Campo obbligatorio'
-                        }
-                    })
+                } catch (e) {
+                    console.log(e.response)
+                    alert("Errore durante l'eliminazione dell'account")
+                } finally {
+                    setIsFirstRender(true)
+                    setShowOverlay(false)
+                    navigate('/homepage')
                 }
+            } else {
+                setErrorsDelete((prevErrors) => ({
+                    ...prevErrors,
+                    password: {
+                        state: true,
+                        message: 'Le password non coincidono'
+                    },
+                    confirmPassword: {
+                        state: true,
+                        message: 'Le password non coincidono'
+                    }
+                }))
             }
         }
     }
+
     const handleCloseDialogDeleteAccount = () => {
         setDeleteAccountDialog(false)
         setDeleteData({
             email: '',
             password: '',
             confirmPassword: ''
+        })
+        setErrorsDelete({
+            email: {
+                state: false,
+                message: ''
+            },
+            password: {
+                state: false,
+                message: ''
+            },
+            confirmPassword: {
+                state: false,
+                message: ''
+            }
         })
     }
 

@@ -3,8 +3,9 @@ import all from 'it-all'
 import {bcController} from "./bcController.mjs";
 import {concat as uint8ArrayConcat} from "uint8arrays";
 import {createRequire} from "module";
+
 const require = createRequire(import.meta.url);
-const jwt=require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const address = 'http://127.0.0.1:5002'
 const connect = async (req, res) => {
@@ -38,10 +39,10 @@ const addVisita = async (req, res) => {
     const userDirectory = `/patients/${codiceFiscale}`
 
     //TODO - Aggiunta convalida bc
-    const pk=await bcController.enrolling();
+    const pk = await bcController.enrolling();
     console.log(req.body.medico);
     console.log(pk);
-    const id=await jwt.verify(req.body.medico,pk);
+    const id = await jwt.verify(req.body.medico, pk);
 
 
     try {
@@ -79,33 +80,6 @@ const addVisita = async (req, res) => {
             }
         }
         res.status(200).json({success: true})
-    } catch (err) {
-        console.error(err)
-        res.status(500).json({error: 'Internal Server Error'})
-    }
-}
-
-// ! METODO DI TEST, DA ELIMINARE
-const saveToIpfs = async (req, res) => {
-    const ipfs = await connect()
-    const userDirectory = "/patients/MZZDNC02B23A662Z"
-    const files = req.files
-    try {
-        for (let file of files) {
-            console.log("Nome del file: " + file.originalname)
-            console.log("Tipo MIME: " + file.mimetype)
-            console.log("Dimensione: " + file.size + "\n")
-            console.log("- - - - - - - - - - - - - - - - - - - - - - - -")
-
-            const filePath = `${userDirectory} /${file.originalname}`
-            await ipfs.files.write(filePath, file.buffer, {create: true, parents: true})
-
-            const fileObj = await ipfs.files.stat(filePath)
-            const dirObj = await ipfs.files.stat(userDirectory)
-            console.log(`FILE: ${file.originalname} - CID: ${fileObj.cid.toString()}`)
-            console.log(`DIRECTORY: '${userDirectory}' - CID: ${dirObj.cid.toString()}`)
-            res.status(200).json({success: true, fileCID: fileObj.cid.toString()})
-        }
     } catch (err) {
         console.error(err)
         res.status(500).json({error: 'Internal Server Error'})
@@ -196,15 +170,17 @@ const downloadFile = async (req, res) => {
     }
 }
 
-const removePatient = async (username) => {
+const removePatient = async (req, res) => {
     const ipfs = await connect()
-    const userDirectory = `/patients/${username}`
+    const cf = req.body.codiceFiscale
+    const userDirectory = `/patients/${cf}`
     try {
         await ipfs.files.rm(userDirectory, {recursive: true})
         console.log(`Rimossa directory '${userDirectory}'`)
     } catch (err) {
         console.error(err)
     }
+    res.status(200).json({success: true})
 }
 
 export const ipfsController = {
@@ -214,5 +190,5 @@ export const ipfsController = {
     getAllVisiteByCF,
     getSingleVisitaByCF,
     downloadFile,
-    saveToIpfs
+    removePatient
 }

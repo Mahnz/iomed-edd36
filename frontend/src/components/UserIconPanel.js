@@ -51,22 +51,11 @@ export default function UserIconPanel({
     const cookies = new Cookies()
 
     const logout = () => {
-        cookies.remove('token', {
-            path: '/',
-            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-        });
-        cookies.remove('firstName', {
-            path: '/',
-            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-        });
-        cookies.remove('lastName', {
-            path: '/',
-            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-        });
-        cookies.remove("type", {
-            path: "/",
-            sameSite: "Strict"
-        });
+        cookies.remove('token', {path: '/'})
+        cookies.remove("lastName", {path: '/'})
+        cookies.remove("firstName", {path: '/'})
+        cookies.remove("type", {path: '/'})
+        cookies.remove("notifications", {path: '/'})
         navigate("/homepage")
     }
 

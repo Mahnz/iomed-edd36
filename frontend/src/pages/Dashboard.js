@@ -1,12 +1,12 @@
 // Dashboard.js
 import React, {useState, useEffect} from 'react'
 import Cookies from 'universal-cookie'
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
+import {Navigate, Route, Routes, useNavigate, useLocation} from "react-router-dom"
 import {
     styled, CssBaseline, Box, Container, Toolbar,
     Drawer as MuiDrawer, AppBar as MuiAppBar,
     Typography, Divider, Tooltip, IconButton, Badge,
-    List, ListItemButton, ListItemIcon, ListItemText, useTheme
+    List, ListItemButton, ListItemIcon, ListItemText, useTheme, Alert, Snackbar
 } from '@mui/material'
 import {
     Menu as MenuIcon,
@@ -16,6 +16,7 @@ import {
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser, faNotesMedical} from "@fortawesome/free-solid-svg-icons"
+import { toast } from 'react-toastify';
 
 // IMPORT DEI VARI COMPONENTI
 import ElencoVisite from '../components/ElencoVisite.js'
@@ -35,6 +36,7 @@ export default function Dashboard({mode, toggleMode}) {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const theme = useTheme()
+    const location = useLocation()
 
     // ? GESTIONE DELLA APERTURA/CHIUSURA DELLA SIDEBAR
     const [loggedUser, setLoggedUser] = useState(null)
@@ -44,6 +46,23 @@ export default function Dashboard({mode, toggleMode}) {
     const toggleDrawer = () => {
         setOpenDrawer(!openDrawer)
     }
+
+    useEffect(() => {
+        const {state} = location;
+        if (state && state.successMessage) {
+            toast.success();
+            toast.success(state.successMessage, {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
+    }, [location]);
 
     useEffect(() => {
         if (!cookies.get("token")) {
@@ -402,6 +421,13 @@ export default function Dashboard({mode, toggleMode}) {
                         <Route path="/impostazioni" element={<Impostazioni mode={mode} toggleMode={toggleMode}/>}/>
                         <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
                     </Routes>
+
+                    {/*<Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>*/}
+                    {/*    <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>*/}
+
+                    {/*    </Alert>*/}
+                    {/*</Snackbar>*/}
+
                 </Container>
             </Box>
         </Box>

@@ -10,7 +10,7 @@ import {
     Paper,
     AppBar,
     Toolbar,
-    Typography, createTheme, useTheme, Tooltip, IconButton, Link,
+    Typography, useTheme, Tooltip, IconButton, Link,
 } from "@mui/material"
 import axios from "axios";
 import Cookies from "universal-cookie";
@@ -159,7 +159,7 @@ export default function SignUpFormPaziente() {
             })
         } else if (name === 'birthProvincia') {
             // Check sulla Provincia di nascita
-            setFormData({
+            setFormData({   
                 ...formData,
                 birthProvincia: value,
                 birthPlace: ''

@@ -86,14 +86,12 @@ export default function ElencoUtenti() {
     const handleDeleteUser = async () => {
         handleCloseDialog()
         // BLOCKCHAIN fatto
-        // todo - Chiamata alla backend per andare a cancellare l'utente
         let CF = cookies.get("token");
         setShowOverlay(true)
         await axios.post(`http://localhost:3001/api/bc/deleteDoctor`, {
             token: CF,
             id: userToDelete.id
         }).then(res => {
-            // todo - Aggiornare la lista degli utenti dopo la cancellazione, così da eliminare la riga dalla tabella
             let temp = users.filter(e => e.id !== userToDelete.id);
             setUsers(temp);
             alert(res.data);
