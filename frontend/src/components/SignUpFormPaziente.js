@@ -229,17 +229,22 @@ export default function SignUpFormPaziente() {
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
                     });
+
+                    // todo - SNACKBAR DI SUCCESSO
                     alert("Registrazione paziente effettuata");
+
+                    // ? Reset allo stato iniziale del form
+                    setFormData(initialForm)
                     navigate("/dashboard/home");
                 })
-                .catch(e => console.log(e))
+                .catch(e => {
+                    console.log(e)
+                    alert("Errore: " + e.status + " " + e.response.data);
+                })
         } else {
             console.log('Dati non inviati');
-            alert("Errore " + e.status + " " + e.response);
+            alert("Errore: " + e.status + " " + e.response.data);
         }
-
-        // ? Reset allo stato iniziale del form
-        //setFormData(initialForm)
     }
 
     const goHome = () => {

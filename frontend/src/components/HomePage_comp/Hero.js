@@ -10,8 +10,7 @@ export default function Hero() {
             minHeight: '85vh',
             alignItems: 'center',
             justifyContent: 'center'
-        }} id="home"
-        >
+        }}>
             <Grid container spacing={5} sx={{
                 display: 'flex',
                 alignItems: 'center',

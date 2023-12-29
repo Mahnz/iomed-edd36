@@ -1,6 +1,6 @@
 // ElencoVisite.js
 import React, {useState, useEffect} from 'react'
-import {useNavigate} from "react-router-dom"
+import {useLocation, useNavigate} from "react-router-dom"
 import axios from "axios"
 import Cookies from "universal-cookie"
 import {Button, Container, Grid, Link, Paper, Typography} from "@mui/material"

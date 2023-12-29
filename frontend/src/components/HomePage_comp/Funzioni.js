@@ -6,7 +6,7 @@ import {AllInclusive, PaidOutlined, EngineeringOutlined} from '@mui/icons-materi
 export default function Funzioni() {
     return (
         <>
-            <Typography variant="h4" sx={{textAlign: 'center', backgroundColor: '#ffff', pt: 4}} id="funzioni">
+            <Typography variant="h4" sx={{textAlign: 'center', backgroundColor: '#ffff', pt: 4}}>
                 La nostra piattaforma
             </Typography>
             <Box sx={{flexGrow: 1, backgroundColor: '#ffff', pt: 2, pb: 4}}>

@@ -13,10 +13,18 @@ export default function HomePage() {
         <>
             <CssBaseline/>
             <Header/>
-            <Hero/>
-            <Funzioni/>
-            <Cards/>
-            <Contattaci/>
+            <section id="home" style={{mt: '64px'}}>
+                <Hero/>
+            </section>
+            <section id="funzioni" style={{mt: '64px'}}>
+                <Funzioni/>
+            </section>
+            <section id="inizia" style={{mt: '64px'}}>
+                <Cards/>
+            </section>
+            <section id="contattaci" style={{mt: '64px'}}>
+                <Contattaci/>
+            </section>
         </>
     )
 }

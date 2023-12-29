@@ -4,21 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche&#10;&#10;HomePage:&#10; - AppBar: aggiunti i pulsanti per rimandare alle diverse sezioni; sistemato il titolo del progetto&#10; - aggiunta la striscia per le Cards per rimandare a login/signup di medico e paziente&#10; - reso responsive il form &quot;Contattaci&quot;&#10; - altri fix vari sui vari componenti&#10;&#10;SignUpFormMedico: corretti gli helperText&#10;&#10;Altri cambiamenti e correzioni">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Cards.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/images/medic.jpg" afterDir="false" />
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Altri cambiamenti e correzioni.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoVisite.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/AboutUs.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/ContactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Contattaci.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Header.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Hero.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Hero.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Section.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Impostazioni.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Impostazioni.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/InserimentoVisitaMedica.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/DatiProfessionali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/DatiProfessionali.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Fine.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/Fine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/InformazioniPersonali.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpSteps_Med/InformazioniPersonali.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +103,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.FRONTEND">
+  <component name="RunManager" selected="npm.BACKEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -127,6 +122,13 @@
       <item itemvalue="npm.BACKEND" />
       <item itemvalue="npm.FRONTEND" />
     </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-c44b541a36ca-JavaScript-WS-233.13135.92" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -170,6 +172,7 @@
       <workItem from="1703554359378" duration="832000" />
       <workItem from="1703555377266" duration="3577000" />
       <workItem from="1703782453786" duration="245000" />
+      <workItem from="1703848191861" duration="3714000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -219,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703792127776</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Modifiche&#10;&#10;HomePage:&#10; - AppBar: aggiunti i pulsanti per rimandare alle diverse sezioni; sistemato il titolo del progetto&#10; - aggiunta la striscia per le Cards per rimandare a login/signup di medico e paziente&#10; - reso responsive il form &quot;Contattaci&quot;&#10; - altri fix vari sui vari componenti&#10;&#10;SignUpFormMedico: corretti gli helperText&#10;&#10;Altri cambiamenti e correzioni">
+      <option name="closed" value="true" />
+      <created>1703811787904</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1703811787904</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -243,6 +254,7 @@
     <MESSAGE value="Modifiche:&#10;-controllo routes;&#10;-modifica funzioni e relativi errori nelle query della bc;&#10;-aggiunta funzioni per ritrovamento paziente e dottore nella pagina myprofile, aggiunta delle routes, da effettuare il conditional rendering nella pagina corrispettiva;&#10;-pagina visualizzazione visite: il cf non viene più salvato in una variabile di stato, useState non permette di passare in tempo il valore corretto alla successiva axios, salvato in variabile locale. Funzioni richiamate perfettamente;&#10;-pagina ottenimento medici: funziona tutto, non più errore dovuto a una query;&#10;-aggiunta rimozione cookie del tipo in seguito a logout" />
     <MESSAGE value="Modifiche:&#10; - ripristino ElencoVisite.js&#10; - fix vari" />
     <MESSAGE value="Modifiche&#10;&#10;HomePage:&#10; - AppBar: aggiunti i pulsanti per rimandare alle diverse sezioni; sistemato il titolo del progetto&#10; - aggiunta la striscia per le Cards per rimandare a login/signup di medico e paziente&#10; - reso responsive il form &quot;Contattaci&quot;&#10; - altri fix vari sui vari componenti&#10;&#10;SignUpFormMedico: corretti gli helperText&#10;&#10;Altri cambiamenti e correzioni" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifiche&#10;&#10;HomePage:&#10; - AppBar: aggiunti i pulsanti per rimandare alle diverse sezioni; sistemato il titolo del progetto&#10; - aggiunta la striscia per le Cards per rimandare a login/signup di medico e paziente&#10; - reso responsive il form &quot;Contattaci&quot;&#10; - altri fix vari sui vari componenti&#10;&#10;SignUpFormMedico: corretti gli helperText&#10;&#10;Altri cambiamenti e correzioni" />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Altri cambiamenti e correzioni." />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Altri cambiamenti e correzioni." />
   </component>
 </project>

@@ -12,12 +12,12 @@ export default function Cards() {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="42vh"
+                minHeight="45vh"
                 sx={{backgroundColor: '#f2f0f1', pb: 3}}
             >
                 <Grid container spacing={6} sx={{justifyContent: 'center'}}>
                     {/* Card Paziente */}
-                    <Grid item xs={10} md={3}>
+                    <Grid item xs={10} md={5}>
                         <Card sx={{
                             height: "35vh",
                             borderRadius: 3,
@@ -52,7 +52,7 @@ export default function Cards() {
                     </Grid>
 
                     {/* Card Medico */}
-                    <Grid item xs={10} md={3}>
+                    <Grid item xs={10} md={5}>
                         <Card sx={{
                             height: "35vh",
                             borderRadius: 3,

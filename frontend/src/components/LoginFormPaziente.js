@@ -77,7 +77,6 @@ export default function LoginFormPaziente() {
     }
 
     const [isFirstRender, setIsFirstRender] = useState(true)
-    const [isFirstClick, setIsFirstClick] = useState(true)
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!email) {
@@ -125,49 +124,44 @@ export default function LoginFormPaziente() {
                 }
             }))
         }
-
-        if (isFirstClick) {
-            setIsFirstClick(false)
-        } else {
-            if (!errors.email.error && !errors.password.error) {
-                // todo - Verifica del login dalla blockchain
-                const user = {
-                    email: email,
-                    password: password
-                };
-                console.log("Sono arrivato alla POST")
-                await axios.post('http://localhost:3001/api/bc/login', user)
-                    .then(res => {
-                        console.log("Login paziente effettuato")
-                        console.log(res.data)
-                        cookies.set('token', res.data.CF, {
-                            path: '/',
-                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                        });
-                        cookies.set('type', "paziente", {
-                            path: '/',
-                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                        });
-                        cookies.set('firstName', res.data.firstName, {
-                            path: '/',
-                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                        });
-                        cookies.set('lastName', res.data.lastName, {
-                            path: '/',
-                            expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                            sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                        });
-                        alert("Login paziente effettuato");
-                        navigate("/dashboard/home")
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        alert("Errore " + e.status + " " + e.response);
+        if (!errors.email.error && !errors.password.error) {
+            // todo - Verifica del login dalla blockchain
+            const user = {
+                email: email,
+                password: password
+            };
+            console.log("Sono arrivato alla POST")
+            await axios.post('http://localhost:3001/api/bc/login', user)
+                .then(res => {
+                    console.log("Login paziente effettuato")
+                    console.log(res.data)
+                    cookies.set('token', res.data.CF, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
                     });
-            }
+                    cookies.set('type', "paziente", {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('firstName', res.data.firstName, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    cookies.set('lastName', res.data.lastName, {
+                        path: '/',
+                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
+                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                    });
+                    alert("Login paziente effettuato");
+                    navigate("/dashboard/home")
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Errore " + e.status + " " + e.response);
+                });
         }
     }
 

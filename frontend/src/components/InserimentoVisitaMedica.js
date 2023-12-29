@@ -498,7 +498,7 @@ export default function InserimentoVisitaMedica() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        zIndex: 999, // Assicura che l'overlay sia sopra tutto il resto
+                        zIndex: 999,
                     }}
                 >
                     <CircularProgress color="success"/>

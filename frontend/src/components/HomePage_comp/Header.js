@@ -50,7 +50,7 @@ export default function Header(props) {
                                     color="primary" sx={{fontSize: 15, ml: 2}}>
                                 Contattaci
                             </Button>
-                            <Button component={Link} href="#nizia"
+                            <Button component={Link} href="#inizia"
                                     variant="contained" sx={{width: 100, fontSize: 15, borderRadius: 5, ml: 2}}>
                                 Inizia
                             </Button>
