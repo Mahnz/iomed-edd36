@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Corretto doppio click su LoginMedico.&#10;&#10;ElencoUtenti: utente rimosso correttamente dalla tabella alla sua eliminazione&#10;&#10;Aggiunto lo Snackbar dopo aver richiesto l'autorizzazione di accesso ai dati ad un paziente&#10;&#10;Altri cambiamenti e correzioni.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo">
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
     </list>
     <list id="15b9665e-cc82-43f1-9015-8336ef18f26e" name="Changes by domenico" comment="Changes by domenico" />
@@ -24,6 +27,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -96,7 +100,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.BACKEND">
+  <component name="RunManager" selected="npm.FRONTEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -167,6 +171,7 @@
       <workItem from="1703782453786" duration="245000" />
       <workItem from="1703848191861" duration="6036000" />
       <workItem from="1703864870127" duration="2485000" />
+      <workItem from="1703884507384" duration="8556000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -232,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703852242985</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Modifiche e Correzioni&#10;&#10;ElencoUtenti: aggiunto il caricamento durante la cancellazione e la notifica al termine&#10;&#10;Aggiunta la notifica di registrazione e login effettuato con successo&#10;&#10;Logout: cancellati TUTTI i cookie memorizzati dopo il logout&#10;&#10;Impostazioni: cancellazione dell'utente sia dalla Blockchain che da IPFS&#10;&#10;HomeContent: aggiustate tutte le card, in altezza e larghezza&#10;&#10;IPFS: aggiunto metodo e route per la cancellazione dell'utente da IPFS&#10;&#10;Altri cambiamenti e correzioni.">
+      <option name="closed" value="true" />
+      <created>1703892232732</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1703892232732</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,6 +273,8 @@
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Corretta larghezza delle Cards nella HomePage.&#10;&#10;Altri cambiamenti e correzioni." />
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;Corretto doppio click su LoginMedico.&#10;&#10;ElencoUtenti: utente rimosso correttamente dalla tabella alla sua eliminazione&#10;&#10;Aggiunto lo Snackbar dopo aver richiesto l'autorizzazione di accesso ai dati ad un paziente&#10;&#10;Altri cambiamenti e correzioni." />
     <MESSAGE value="Changes by domenico" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes by domenico" />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;ElencoUtenti: aggiunto il caricamento durante la cancellazione e la notifica al termine&#10;&#10;Aggiunta la notifica di registrazione e login effettuato con successo&#10;&#10;Logout: cancellati TUTTI i cookie memorizzati dopo il logout&#10;&#10;Impostazioni: cancellazione dell'utente sia dalla Blockchain che da IPFS&#10;&#10;HomeContent: aggiustate tutte le card, in altezza e larghezza&#10;&#10;IPFS: aggiunto metodo e route per la cancellazione dell'utente da IPFS&#10;&#10;Altri cambiamenti e correzioni." />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo" />
   </component>
 </project>

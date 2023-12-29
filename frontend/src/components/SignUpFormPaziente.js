@@ -159,7 +159,7 @@ export default function SignUpFormPaziente() {
             })
         } else if (name === 'birthProvincia') {
             // Check sulla Provincia di nascita
-            setFormData({   
+            setFormData({
                 ...formData,
                 birthProvincia: value,
                 birthPlace: ''
@@ -208,34 +208,31 @@ export default function SignUpFormPaziente() {
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
                 .then(res => {
                     console.log("Registrazione paziente effettuata")
-                    console.log(res.data)
                     cookies.set('token', res.data.CF, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
+                    })
                     cookies.set('type', "paziente", {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
+                    })
                     cookies.set('firstName', res.data.firstName, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
+                    })
                     cookies.set('lastName', res.data.lastName, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
-
-                    // todo - SNACKBAR DI SUCCESSO
-                    alert("Registrazione paziente effettuata");
+                    })
 
                     // ? Reset allo stato iniziale del form
                     setFormData(initialForm)
-                    navigate("/dashboard/home");
+                    navigate("/dashboard/home", {state: {successMessage: 'Registrazione effettuata con successo!'}})
+
                 })
                 .catch(e => {
                     console.log(e);

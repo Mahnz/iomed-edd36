@@ -253,17 +253,16 @@ export default function SignUpFormMedico() {
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
                     });
-                    alert("Registrazione medico effettuata");
-                    navigate("/dashboard/home");
+
+                    // ? Reset allo stato iniziale del form
+                    setFormData(initialForm)
+                    navigate("/dashboard/home", {state: {successMessage: 'Registrazione effettuata con successo!'}})
                 })
                 .catch(e => console.log(e))
         } else {
             console.log('Dati non inviati');
             alert("Errore " + e.status + " " + e.response.data);
         }
-
-        // ? Reset allo stato iniziale del form
-        //setFormData(initialForm)
     }
 
     const goHome = () => {

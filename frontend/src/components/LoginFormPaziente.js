@@ -139,29 +139,28 @@ export default function LoginFormPaziente() {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
+                    })
                     cookies.set('type', "paziente", {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
+                    })
                     cookies.set('firstName', res.data.firstName, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
+                    })
                     cookies.set('lastName', res.data.lastName, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
-                    });
-                    alert("Login paziente effettuato");
-                    navigate("/dashboard/home")
+                    })
+                    navigate("/dashboard/home", {state: {successMessage: 'Login effettuato con successo!'}})
                 })
                 .catch(error => {
                     console.error(error);
                     alert("Errore " + e.status + " " + e.response.data);
-                });
+                })
         }
     }
 

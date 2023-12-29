@@ -141,8 +141,7 @@ export default function LoginFormMedico() {
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
                         sameSite: 'Strict',  // Cookie limitato al proprio dominio
                     });
-                    alert("Login medico effettuato");
-                    navigate("/dashboard/home");
+                    navigate("/dashboard/home", {state: {successMessage: 'Login effettuato con successo!'}})
                 })
                 .catch(error => {
                     console.error(error)
