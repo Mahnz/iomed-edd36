@@ -1,9 +1,12 @@
+// HomePage.js
 import React from 'react'
+import {CssBaseline} from '@mui/material'
 import Hero from "../components/HomePage_comp/Hero.js"
 import Header from "../components/HomePage_comp/Header.js"
-import Section from "../components/HomePage_comp/Section.js"
-import ContactUs from "../components/HomePage_comp/ContactUs.js"
-import {CssBaseline} from '@mui/material'
+import Funzioni from "../components/HomePage_comp/Funzioni.js"
+import Contattaci from "../components/HomePage_comp/Contattaci.js"
+import Cards from "../components/HomePage_comp/Cards.js";
+
 
 export default function HomePage() {
     return (
@@ -11,8 +14,9 @@ export default function HomePage() {
             <CssBaseline/>
             <Header/>
             <Hero/>
-            <Section/>
-            <ContactUs/>
+            <Funzioni/>
+            <Cards/>
+            <Contattaci/>
         </>
     )
 }

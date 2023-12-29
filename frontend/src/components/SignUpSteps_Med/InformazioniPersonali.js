@@ -91,7 +91,7 @@ export default function InformazioniPersonali({
                            fullWidth
                            required
                            error={errors.firstName}
-                           helperText={errors.firstName && 'Il campo Nome è obbligatorio'}
+                           helperText={errors.firstName && 'Campo obbligatorio'}
                 />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -104,7 +104,7 @@ export default function InformazioniPersonali({
                            fullWidth
                            required
                            error={errors.lastName}
-                           helperText={errors.lastName && 'Il campo Cognome è obbligatorio.'}
+                           helperText={errors.lastName && 'Campo obbligatorio'}
                 />
             </Grid>
 
@@ -126,7 +126,7 @@ export default function InformazioniPersonali({
                             required
                             fullWidth
                             error={errors.sex}
-                            helperText={errors.sex && 'Il campo Sesso è obbligatorio'}
+                            helperText={errors.sex && 'Campo obbligatorio'}
                         />
                     )}
                 />
@@ -141,7 +141,7 @@ export default function InformazioniPersonali({
                            fullWidth
                            required
                            error={errors.birthDate}
-                           helperText={errors.birthDate && 'Inserisci la tua data di nascita'}
+                           helperText={errors.birthDate && 'Campo obbligatorio'}
                 />
             </Grid>
 
@@ -162,7 +162,7 @@ export default function InformazioniPersonali({
                             required
                             fullWidth
                             error={errors.birthProvincia}
-                            helperText={errors.birthProvincia && 'Seleziona la provincia di nascita'}
+                            helperText={errors.birthProvincia && 'Campo obbligatorio'}
                         />
                     )}
                 />
@@ -177,7 +177,7 @@ export default function InformazioniPersonali({
                            fullWidth
                            required
                            error={errors.birthPlace}
-                           helperText={errors.birthPlace && 'Inserisci il comune di nascita'}
+                           helperText={errors.birthPlace && 'Campo obbligatorio'}
                 />
             </Grid>
 

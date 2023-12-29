@@ -5,25 +5,28 @@ import MyTeamImg from '../../images/myteam.jpg'
 export default function Hero() {
     return (
         <Box sx={{
-            width: '100%',
+            // width: '100%',
             display: 'flex',
-            minHeight: '600px',
+            minHeight: '85vh',
             alignItems: 'center',
             justifyContent: 'center'
-        }}>
-            <Grid container spacing={6} sx={{
+        }} id="home"
+        >
+            <Grid container spacing={5} sx={{
                 display: 'flex',
                 alignItems: 'center',
-                maxWidth: '1300px',
-                padding: '50px'
+                maxWidth: '75%'
             }}>
                 <Grid item xs={12} md={7}>
-                    <Typography variant="h3" fontWeight={700} sx={{paddingBottom: '15px'}}>
-                        Let's scale your business
+                    <Typography variant="h3" fontWeight={700}>
+                        IOMed
                     </Typography>
-                    <Typography variant="h6" sx={{
-                        opacity: '0.4',
-                        paddingBottom: '30px'
+                    <Typography variant="h3" fontWeight={500} sx={{pb: 3, opacity: '0.7'}}>
+                        Verso la digitalizzazione
+                    </Typography>
+                    <Typography variant="h5" sx={{
+                        opacity: '0.5',
+                        pb: 3
                     }}>
                         Hire professionals who will help your business make 10X your
                         previous income. With over 5years experience in Marketing & Business
@@ -32,13 +35,12 @@ export default function Hero() {
                     <Button
                         variant="contained"
                         color="primary"
-                        sx={{width: '200px', fontSize: '16px'}}
-                    >
-                        HIRE US
+                        sx={{width: 200, fontSize: 17}}>
+                        Inizia
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={5}>
-                    <img src={MyTeamImg} alt="My Team" sx={{width: '100%'}}/>
+                    <img src={MyTeamImg} sx={{width: '100%'}}/>
                 </Grid>
             </Grid>
         </Box>

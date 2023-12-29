@@ -38,7 +38,7 @@ export default function ElencoUtenti() {
             if (cookies.get("token")) {
                 if (cookies.get("type") === "medico") {
                     setMedico(true)
-                    const id=cookies.get("token");
+                    const id = cookies.get("token");
                     // BLOCKCHAIN fatto
                     await axios.get(`http://localhost:3001/api/bc/getPatientsById/${id}`)
                         .then(res => setUsers(res.data)).catch(e => console.log(e));
@@ -72,9 +72,9 @@ export default function ElencoUtenti() {
     const [openDialog, setOpenDialog] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
     const handleOpenDialog = (user) => {
-        setUserToDelete(user);
+        setUserToDelete(user)
         console.log(user)
-        setOpenDialog(true);
+        setOpenDialog(true)
     }
 
     const handleCloseDialog = () => {
@@ -90,13 +90,13 @@ export default function ElencoUtenti() {
         await axios.post(`http://localhost:3001/api/bc/deleteDoctor`, {
             token: CF,
             id: userToDelete.id
-        }).then(res => alert(res.data)).catch(e => console.log(e));
+        }).then(res => alert(res.data)).catch(e => console.log(e))
         // todo - Aggiornare la lista degli utenti dopo la cancellazione, così da eliminare la riga dalla tabella
 
         setOpenSnackbar(true)
     }
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('')
     const handleViewUser = (user) => {
         const codiceUtente = user.CF;
         navigate('/dashboard/listaAssistiti/visite', {state: codiceUtente})
@@ -108,21 +108,21 @@ export default function ElencoUtenti() {
 
     const filteredUsers = users.filter((user) => {
         if (medico) {
-            const fullName = `${user.lastName} ${user.firstName} ${user.id}`;
-            return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+            const fullName = `${user.lastName} ${user.firstName} ${user.id}`
+            return fullName.toLowerCase().includes(searchTerm.toLowerCase())
         } else {
-            const fullName = `${user.lastName} ${user.firstName} ${user.CF}`;
-            return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+            const fullName = `${user.lastName} ${user.firstName} ${user.CF}`
+            return fullName.toLowerCase().includes(searchTerm.toLowerCase())
         }
     });
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false)
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        setOpenSnackbar(false);
-    };
+        setOpenSnackbar(false)
+    }
 
     return (
         <>
@@ -170,9 +170,6 @@ export default function ElencoUtenti() {
                                         <StyledTableCell align="left">{row.firstName}</StyledTableCell>
                                         <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
                                         <StyledTableCell align="center">{medico ? row.CF : row.id}</StyledTableCell>
-                                        {/* todo - STAMPARE ID DEL MEDICO, NON CF */}
-                                        {/*   {medico ? row.CF : row.id}*/}
-                                        {/*</StyledTableCell>*/}
                                         {medico
                                             ? (
                                                 <StyledTableCell align="center">
@@ -184,8 +181,7 @@ export default function ElencoUtenti() {
                                                         </IconButton>
                                                     </Tooltip>
                                                 </StyledTableCell>
-                                            )
-                                            : (
+                                            ) : (
                                                 <StyledTableCell align="center">
                                                     <Tooltip title="Rimuovi medico dalla lista"
                                                              placement="right">

@@ -31,7 +31,7 @@ export default function DatiProfessionali({
                                }}
                                required
                                error={errors.email}
-                               helperText={errors.email && 'Devi inserire un indirizzo email'}
+                               helperText={errors.email && 'Campo obbligatorio'}
                     />
                 </Grid>
 
@@ -67,7 +67,7 @@ export default function DatiProfessionali({
                                }}
                                required
                                error={errors.password}
-                               helperText={errors.password && 'Inserisci una password'}
+                               helperText={errors.password && 'Campo obbligatorio'}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -101,7 +101,7 @@ export default function DatiProfessionali({
                                }}
                                required
                                error={errors.confirmPassword}
-                               helperText={errors.confirmPassword && 'Devi confermare la password'}
+                               helperText={errors.confirmPassword && 'Campo obbligatorio'}
                     />
                 </Grid>
             </Grid>
@@ -130,7 +130,7 @@ export default function DatiProfessionali({
                                }}
                                required
                                error={errors.id}
-                               helperText={errors.id && 'Inserisci un ID univoco'}
+                               helperText={errors.id && 'Campo obbligatorio'}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -143,7 +143,7 @@ export default function DatiProfessionali({
                                fullWidth
                                required
                                error={errors.spec}
-                               helperText={errors.spec && 'Seleziona il reparto di specializzazione'}
+                               helperText={errors.spec && 'Campo obbligatorio'}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -163,7 +163,7 @@ export default function DatiProfessionali({
                                }}
                                required
                                error={errors.hospital}
-                               helperText={errors.hospital && 'Inserisci ospedale/clinica di riferimento'}
+                               helperText={errors.hospital && 'Campo obbligatorio'}
                     />
                 </Grid>
             </Grid>

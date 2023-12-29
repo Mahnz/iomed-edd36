@@ -721,7 +721,7 @@ export default function InserimentoVisitaMedica() {
                     <Button onClick={handleCloseDialog} color="primary">
                         Annulla
                     </Button>
-                    <Button onClick={handleInsertVisita} color="primary">
+                    <Button onClick={handleInsertVisita} color="primary" variant="contained" autoFocus>
                         Conferma
                     </Button>
                 </DialogActions>

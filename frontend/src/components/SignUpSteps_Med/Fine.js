@@ -90,7 +90,7 @@ export default function Fine({formData, handleChange, errors}) {
                         fullWidth
                         required
                         error={errors.frontID}
-                        helperText={errors.frontID && 'Inserire il fronte del proprio documento'}
+                        helperText={errors.frontID && 'Inserire il fronte del documento'}
                     />
                     <input
                         ref={inputRefFront}
@@ -136,7 +136,7 @@ export default function Fine({formData, handleChange, errors}) {
                         fullWidth
                         required
                         error={errors.backID}
-                        helperText={errors.backID && 'Inserire il retro del proprio documento'}
+                        helperText={errors.backID && 'Inserire il retro del documento'}
                     />
                     <input
                         ref={inputRefBack}
