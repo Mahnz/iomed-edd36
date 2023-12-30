@@ -95,7 +95,7 @@ export default function ElencoUtenti() {
             let temp = users.filter(e => e.id !== userToDelete.id);
             setUsers(temp);
             alert(res.data);
-        }).catch(e => alert("Errore: " + e.status + " - " + e.response.data))
+        }).catch(e => alert("Errore: " + e.response.status + " - " + e.response.data))
         setShowOverlay(false)
         setOpenSnackbar(true)
     }

@@ -261,7 +261,7 @@ export default function SignUpFormMedico() {
                 .catch(e => console.log(e))
         } else {
             console.log('Dati non inviati');
-            alert("Errore " + e.status + " " + e.response.data);
+            alert("Errore " + e.response.status + " " + e.response.data);
         }
     }
 

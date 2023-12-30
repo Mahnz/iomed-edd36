@@ -145,7 +145,7 @@ export default function LoginFormMedico() {
                 })
                 .catch(error => {
                     console.error(error)
-                    alert("Errore " + e.status + " " + e.response.data);
+                    alert("Errore " + error.status + " " + error.response.data);
                 });
         }
     }

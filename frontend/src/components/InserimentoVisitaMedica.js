@@ -160,30 +160,6 @@ export default function InserimentoVisitaMedica() {
                     dataVisita: '',
                     allegati: []
                 }))
-
-                // todo - ABILITARE LA VERIFICA IN BLOCKCHAIN SULL'ESISTENZA DEL CF
-                // const response = await axios.post("http://localhost:3001/api/bc/verify", cf)
-                // if (response.status === 200) {
-                //     console.log("Il codice fiscale è presente sulla blockchain")
-                //     setIsCFVerified(true)
-                //     setErrors((prevErrors) => ({
-                //         ...prevErrors,
-                //         codiceFiscale: {
-                //             error: false,
-                //             message: ""
-                //         }
-                //     }))
-                // } else {
-                //     console.log("Il codice fiscale non è presente sulla blockchain")
-                //     setIsCFVerified(false)
-                //     setErrors((prevErrors) => ({
-                //         ...prevErrors,
-                //         codiceFiscale: {
-                //             error: true,
-                //             message: "Il paziente non è registrato alla piattaforma"
-                //         }
-                //     }))
-                // }
             } else {
                 setErrors((prevErrors) => ({
                     ...prevErrors,

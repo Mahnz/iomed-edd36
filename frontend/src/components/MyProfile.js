@@ -19,7 +19,7 @@ export default function MyProfile() {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const [medico, setMedico] = useState(null)
-    const [utente, setUtente] = useState(null)
+    const [utente, setUtente] = useState({requests: []})
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -82,7 +82,7 @@ export default function MyProfile() {
                 }))
                 setSnackbar({
                     state: 'success',
-                    message: 'Autorizzazione concessa a ' + response.data.firstName + ' ' + response.data.lastName + '!'
+                    message: 'Autorizzazione concessa al medico ' + id + '!'
                 })
             }
         } catch (e) {

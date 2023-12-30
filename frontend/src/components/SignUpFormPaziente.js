@@ -236,11 +236,11 @@ export default function SignUpFormPaziente() {
                 })
                 .catch(e => {
                     console.log(e);
-                    alert("Errore: " + e.status + " " + e.response.data);
+                    alert("Errore: " + e.response.status + " " + e.response.data);
                 })
         } else {
             console.log('Dati non inviati');
-            alert("Errore: " + e.status + " " + e.response.data);
+            alert("Errore: " + e.response.status + " " + e.response.data);
         }
     }
 

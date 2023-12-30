@@ -158,7 +158,7 @@ export default function LoginFormPaziente() {
                 })
                 .catch(error => {
                     console.error(error);
-                    alert("Errore " + e.status + " " + e.response.data);
+                    alert("Errore " + error.response.status + " " + error.response.data);
                 })
         }
     }

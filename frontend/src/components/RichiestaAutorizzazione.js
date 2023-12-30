@@ -155,7 +155,7 @@ export default function RichiestaAutorizzazione() {
             CF: userFound.codiceFiscale
         }).then(res => {
             setUserFound(null)
-        }).catch(e => alert("Errore: " + e.status + " - " + e.response.data));
+        }).catch(e => alert("Errore: " + e.response.status + " - " + e.response.data));
         setShowOverlay(false)
         setOpenSnackbar(true)
     }
