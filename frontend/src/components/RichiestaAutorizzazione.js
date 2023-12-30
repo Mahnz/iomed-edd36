@@ -51,11 +51,8 @@ export default function RichiestaAutorizzazione() {
                         message: ""
                     })
 
-                    // ! Verifica esistenza del codice fiscale in blockchain
+                    // ? Verifica esistenza del codice fiscale in blockchain
                     // BLOCKCHAIN fatto
-                    // todo - Chiamata alla blockchain per leggere il paziente corrispondente al codice fiscale.
-                    //        I dati da ottenere sono: Nome, Cognome, Data di nascita, Codice fiscale.
-                    //        Fare in modo che se il codice fiscale non esiste, venga lanciato errore
                     const response = await axios.post("http://localhost:3001/api/bc/verifyCF", {CF: codiceFiscale})
                     if (response.status === 200) {
                         console.log("Il codice fiscale è presente sulla blockchain")
@@ -145,7 +142,7 @@ export default function RichiestaAutorizzazione() {
         if (reason === 'clickaway') {
             return;
         }
-        setOpenSnackbar(false);
+        setOpenSnackbar(false)
     };
 
     const addPaziente = async () => {
@@ -158,10 +155,9 @@ export default function RichiestaAutorizzazione() {
             CF: userFound.codiceFiscale
         }).then(res => {
             setUserFound(null)
-            alert(res.data)
         }).catch(e => alert("Errore: " + e.status + " - " + e.response.data));
         setShowOverlay(false)
-        setOpenSnackbar(true);
+        setOpenSnackbar(true)
     }
 
     return (
@@ -259,7 +255,7 @@ export default function RichiestaAutorizzazione() {
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
-                    Visita medica inserita correttamente!
+                    Richiesta inviata correttamente!
                 </Alert>
             </Snackbar>
         </>

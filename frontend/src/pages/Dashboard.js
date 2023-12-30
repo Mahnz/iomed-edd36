@@ -16,7 +16,7 @@ import {
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser, faNotesMedical} from "@fortawesome/free-solid-svg-icons"
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 // IMPORT DEI VARI COMPONENTI
 import ElencoVisite from '../components/ElencoVisite.js'
@@ -47,24 +47,18 @@ export default function Dashboard({mode, toggleMode}) {
         setOpenDrawer(!openDrawer)
     }
 
-    useEffect(() => {
-        const {state} = location;
-        if (state && state.successMessage) {
-            toast.success();
-            toast.success(state.successMessage, {
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
         }
-    }, [location]);
+        setOpenSnackbar(false);
+    };
 
     useEffect(() => {
+        if (location.state && location.state.successMessage) {
+            setOpenSnackbar(true)
+        }
         if (!cookies.get("token")) {
             console.log("Login non effettuato. Reindirizzamento...")
             navigate("/homepage")
@@ -422,11 +416,11 @@ export default function Dashboard({mode, toggleMode}) {
                         <Route path="*" element={<Navigate to='/dashboard/home' replace/>}/>
                     </Routes>
 
-                    {/*<Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>*/}
-                    {/*    <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>*/}
-
-                    {/*    </Alert>*/}
-                    {/*</Snackbar>*/}
+                    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                        <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
+                            {location.state.successMessage}
+                        </Alert>
+                    </Snackbar>
 
                 </Container>
             </Box>

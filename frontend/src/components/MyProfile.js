@@ -11,139 +11,15 @@ import {
     ListItemText,
     ListItemButton,
     Divider,
-    IconButton
+    IconButton, CircularProgress, Snackbar, Alert
 } from '@mui/material'
 import {Close, Done} from '@mui/icons-material'
-import Paziente from '../exPatient.json'
 
 export default function MyProfile() {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const [medico, setMedico] = useState(null)
-    const [utente, setUtente] = useState({
-        requests: [
-            {
-                id: 1,
-                firstName: "Mario",
-                lastName: "Rossi"
-            },
-            {
-                id: 2,
-                firstName: "Luigi",
-                lastName: "Verdi"
-            },
-            {
-                id: 3,
-                firstName: "Giovanni",
-                lastName: "Bianchi"
-            },
-            {
-                id: 4,
-                firstName: "Giuseppe",
-                lastName: "Neri"
-            },
-            {
-                id: 5,
-                firstName: "Giacomo",
-                lastName: "Gialli"
-            },
-            {
-                id: 6,
-                firstName: "Gianluca",
-                lastName: "Blu"
-            },
-            {
-                id: 7,
-                firstName: "Gianmarco",
-                lastName: "Verdi"
-            },
-            {
-                id: 8,
-                firstName: "Gianluigi",
-                lastName: "Bianchi"
-            },
-            {
-                id: 9,
-                firstName: "Giancarlo",
-                lastName: "Neri"
-            },
-            {
-                id: 10,
-                firstName: "Gianfranco",
-                lastName: "Gialli"
-            },
-            {
-                id: 11,
-                firstName: "Gianpiero",
-                lastName: "Blu"
-            },
-            {
-                id: 12,
-                firstName: "Gianluigi",
-                lastName: "Verdi"
-            },
-            {
-                id: 13,
-                firstName: "Gianmarco",
-                lastName: "Bianchi"
-            },
-            {
-                id: 14,
-                firstName: "Gianluigi",
-                lastName: "Neri"
-            },
-            {
-                id: 15,
-                firstName: "Giancarlo",
-                lastName: "Gialli"
-            },
-            {
-                id: 16,
-                firstName: "Gianfranco",
-                lastName: "Blu"
-            },
-            {
-                id: 17,
-                firstName: "Gianpiero",
-                lastName: "Verdi"
-            },
-            {
-                id: 18,
-                firstName: "Gianluigi",
-                lastName: "Bianchi"
-            },
-            {
-                id: 19,
-                firstName: "Gianmarco",
-                lastName: "Neri"
-            },
-            {
-                id: 20,
-                firstName: "Gianluigi",
-                lastName: "Gialli"
-            },
-            {
-                id: 21,
-                firstName: "Giancarlo",
-                lastName: "Blu"
-            },
-            {
-                id: 22,
-                firstName: "Gianfranco",
-                lastName: "Verdi"
-            },
-            {
-                id: 23,
-                firstName: "Gianpiero",
-                lastName: "Bianchi"
-            },
-            {
-                id: 24,
-                firstName: "Gianluigi",
-                lastName: "Neri"
-            },
-        ]
-    })
+    const [utente, setUtente] = useState(null)
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -166,21 +42,36 @@ export default function MyProfile() {
                         }).catch(e => console.log(e))
                 }
             } else {
-                // navigate('/homepage')
+                navigate('/homepage')
             }
         }
         fetchUserData()
     }, [])
 
+    const [showOverlay, setShowOverlay] = useState(false)
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        state: null,
+        message: ''
+    })
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    };
 
     const handleConfirm = async (id) => {
         let CF = cookies.get("token");
-        console.log("Medico: " + id)
-        await axios.post(`http://localhost:3001/api/bc/confirmRequest`, {
-            token: CF,
-            id: id
-        }).then(res => {
-                console.log(res.data);
+
+        try {
+            setShowOverlay(true)
+            const response = await axios.post(`http://localhost:3001/api/bc/confirmRequest`, {
+                token: CF,
+                id: id
+            })
+            if (response.status === 200) {
+                console.log(response.data);
                 const requests = [...utente.requests]
                 const filteredRequests = requests.filter((request) => {
                     request.id !== id
@@ -189,35 +80,78 @@ export default function MyProfile() {
                     ...prev,
                     requests: filteredRequests
                 }))
+                setSnackbar({
+                    state: 'success',
+                    message: 'Autorizzazione concessa a ' + response.data.firstName + ' ' + response.data.lastName + '!'
+                })
             }
-        ).catch(e => console.log(e))
+        } catch (e) {
+            console.log("Errore: " + e.response.status)
+        } finally {
+            setShowOverlay(false)
+            setOpenSnackbar(true)
+            console.log("Richiesta accettata correttamente")
+        }
     }
 
     const handleCancel = async (id) => {
-        let CF = cookies.get("token");
-        await axios.post(`http://localhost:3001/api/bc/deleteRequest`, {
-            token: CF,
-            id: id
-        }).then(res => {
-            console.log(res.data);
-            const requests = [...utente.requests]
-            const filteredRequests = requests.filter((request) => {
-                request.id !== id
+        let CF = cookies.get("token")
+        try {
+            setShowOverlay(true)
+            const response = await axios.post(`http://localhost:3001/api/bc/deleteRequest`, {
+                token: CF,
+                id: id
             })
-            setUtente((...prev) => ({
-                ...prev,
-                requests: filteredRequests
-            }))
-        }).catch(e => console.log(e))
+
+            if (response.status === 200) {
+                console.log(response.data);
+                const requests = [...utente.requests]
+                const filteredRequests = requests.filter((request) => {
+                    request.id !== id
+                })
+                setUtente((...prev) => ({
+                    ...prev,
+                    requests: filteredRequests
+                }))
+                setSnackbar({
+                    state: 'error',
+                    message: 'Autorizzazione rifiutata per ' + response.data.firstName + ' ' + response.data.lastName + '!'
+                })
+            }
+        } catch (e) {
+            console.log("Errore: " + e.response.status)
+        } finally {
+            setShowOverlay(false)
+            setOpenSnackbar(true)
+            console.log("Richiesta cancellata correttamente")
+        }
     }
 
     return (
         <>
+            {showOverlay && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 999,
+                    }}
+                >
+                    <CircularProgress color="success"/>
+                </div>
+            )}
             <Typography variant="h4" mb={4}>
                 Il mio profilo
             </Typography>
 
-            {/* ? Stampa dei dati personali dell'utente */}
+            {/* Stampa dei dati personali dell'utente */}
             <Grid container spacing={3}>
                 <Grid item xs={12} md={7}>
                     <Paper sx={{pt: 2, pr: 2, pl: 2}}>
@@ -259,6 +193,7 @@ export default function MyProfile() {
                     </Paper>
                 </Grid>
 
+                {/* Stampa dei dati professionali dell'utente, se medico */}
                 {medico
                     ? (
                         <Grid item xs={12} md={5}>
@@ -296,8 +231,7 @@ export default function MyProfile() {
                         </Grid>
                     )
                     : (
-                        // todo - Elenco delle amicizie, da mostrare solo se paziente, map su utente.requests
-                        //        (ogni elemento possiede id, firstName e lastName)
+                        // ? Stampa delle autorizzazioni in attesa, se paziente
                         <Grid item xs={12} md={5}>
                             <Paper sx={{pt: 2, pr: 2, pl: 2, height: 425}}>
                                 <Typography variant="h5" color="primary" sx={{ml: 2, mb: 1}}>
@@ -394,6 +328,12 @@ export default function MyProfile() {
                     </Paper>
                 </Grid>
             </Grid>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbar.state} sx={{width: '100%'}}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </>
     )
 }

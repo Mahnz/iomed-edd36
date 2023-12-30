@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo">
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;MyProfile: Aggiunta schermata di caricamento e notifica di successo/errore al termine dell'operazione di accettazione/cancellazione&#10;&#10;RichiestaAutorizzazione: aggiunta notifica di conferma all'invio della richiesta&#10;&#10;Dashboard: aggiunte le notifiche di Login e Signup avvenuti con successo">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/IMPL_FUTURE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/MyProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.js" afterDir="false" />
     </list>
     <list id="15b9665e-cc82-43f1-9015-8336ef18f26e" name="Changes by domenico" comment="Changes by domenico" />
     <option name="SHOW_DIALOG" value="false" />
@@ -172,6 +172,7 @@
       <workItem from="1703848191861" duration="6036000" />
       <workItem from="1703864870127" duration="2485000" />
       <workItem from="1703884507384" duration="8556000" />
+      <workItem from="1703893614129" duration="7786000" />
     </task>
     <task id="LOCAL-00001" summary="Small update">
       <option name="closed" value="true" />
@@ -245,7 +246,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703892232732</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo">
+      <option name="closed" value="true" />
+      <created>1703893720102</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1703893720102</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,6 +284,7 @@
     <MESSAGE value="Changes by domenico" />
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;ElencoUtenti: aggiunto il caricamento durante la cancellazione e la notifica al termine&#10;&#10;Aggiunta la notifica di registrazione e login effettuato con successo&#10;&#10;Logout: cancellati TUTTI i cookie memorizzati dopo il logout&#10;&#10;Impostazioni: cancellazione dell'utente sia dalla Blockchain che da IPFS&#10;&#10;HomeContent: aggiustate tutte le card, in altezza e larghezza&#10;&#10;IPFS: aggiunto metodo e route per la cancellazione dell'utente da IPFS&#10;&#10;Altri cambiamenti e correzioni." />
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifiche e Correzioni&#10;&#10;Corretti i navigate per i login e i signup per passare i messaggi di successo" />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;MyProfile: Aggiunta schermata di caricamento e notifica di successo/errore al termine dell'operazione di accettazione/cancellazione&#10;&#10;RichiestaAutorizzazione: aggiunta notifica di conferma all'invio della richiesta&#10;&#10;Dashboard: aggiunte le notifiche di Login e Signup avvenuti con successo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifiche e Correzioni&#10;&#10;MyProfile: Aggiunta schermata di caricamento e notifica di successo/errore al termine dell'operazione di accettazione/cancellazione&#10;&#10;RichiestaAutorizzazione: aggiunta notifica di conferma all'invio della richiesta&#10;&#10;Dashboard: aggiunte le notifiche di Login e Signup avvenuti con successo" />
   </component>
 </project>
