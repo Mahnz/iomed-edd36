@@ -1,11 +1,6 @@
 // Funzioni.js
 import React from 'react'
 import {Grid, Typography, Box, useTheme} from '@mui/material'
-import {
-    AllInclusive,
-    PaidOutlined,
-    EngineeringOutlined, PersonOutlineOutlined
-} from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faEarthEurope,
@@ -124,8 +119,8 @@ export default function Funzioni() {
                             Semplicità in un click
                         </Typography>
                         <Typography>
-                            Se sei un medico, potrai avere accesso in qualsiasi momento ai dati del tuo nuovo paziente,
-                            anche se non è ancora stato registrato nella struttura ospedaliera in cui operi.
+                            Se sei un medico, potrai avere accesso in qualsiasi momento ai dati dei tui pazienti,
+                            registrati alla piattaforma.
                         </Typography>
                     </Grid>
                 </Grid>

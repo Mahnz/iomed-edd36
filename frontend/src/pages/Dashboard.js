@@ -46,6 +46,10 @@ export default function Dashboard({mode, toggleMode}) {
         setOpenDrawer(!openDrawer)
     }
 
+    const [snackbar, setSnackbar] = useState({
+        state: null,
+        message: ''
+    })
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -56,6 +60,10 @@ export default function Dashboard({mode, toggleMode}) {
 
     useEffect(() => {
         if (location.state && location.state.successMessage) {
+            setSnackbar({
+                state: 'success',
+                message: location.state.successMessage
+            })
             setOpenSnackbar(true)
         }
         if (!cookies.get("token")) {
@@ -416,11 +424,10 @@ export default function Dashboard({mode, toggleMode}) {
                     </Routes>
 
                     <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-                        <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
-                            {location.state.successMessage}
+                        <Alert onClose={handleCloseSnackbar} severity={snackbar.state} sx={{width: '100%'}}>
+                            {snackbar.message}
                         </Alert>
                     </Snackbar>
-
                 </Container>
             </Box>
         </Box>

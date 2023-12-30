@@ -49,6 +49,10 @@ export default function ElencoVisite({setVisita, codiceUtente}) {
         }
     }
 
+    const goBack = () => {
+        navigate("/dashboard/listaAssistiti")
+    }
+
     return (
         <>
             <Typography variant="h4" mb={4}>
@@ -103,8 +107,7 @@ export default function ElencoVisite({setVisita, codiceUtente}) {
                 {medico &&
                     <Grid item xs={12}>
                         <Container sx={{textAlign: 'center', pt: 2}}>
-                            <Button variant="contained" color="primary" component={Link} to="/dashboard/listaAssistiti"
-                                    startIcon={<ArrowBack/>}>
+                            <Button variant="contained" color="primary" onClick={goBack} startIcon={<ArrowBack/>}>
                                 Torna all'elenco
                             </Button>
                         </Container>

@@ -22,7 +22,7 @@ export default function App() {
 
     const toggleMode = () => {
         setMode((prev) => (prev === 'light' ? 'dark' : 'light'))
-    };
+    }
 
     useEffect(() => {
         cookies.set('theme', mode, {
@@ -63,8 +63,6 @@ export default function App() {
                 <Route path="/homepage" element={<HomePage/>}/>
                 <Route path="/blockchain" element={<TestBC/>}/>
 
-
-                {/* TODO - Redirect per motivi di test */}
                 <Route path="*" element={<Navigate to='/homepage' replace/>}/>
             </Routes>
         </ThemeProvider>

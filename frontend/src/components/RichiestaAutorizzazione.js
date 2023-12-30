@@ -5,13 +5,13 @@ import {
     TextField,
     Button, Card, Grid, Avatar, IconButton, Tooltip, Snackbar, Alert, CircularProgress,
 } from '@mui/material'
-import {AddCircle, Person} from "@mui/icons-material";
-import CodiceFiscale from "codice-fiscale-js";
-import Cookies from "universal-cookie";
-import axios from "axios";
+import {AddCircle, Person} from "@mui/icons-material"
+import CodiceFiscale from "codice-fiscale-js"
+import Cookies from "universal-cookie"
+import axios from "axios"
 
 export default function RichiestaAutorizzazione() {
-    const cookies = new Cookies();
+    const cookies = new Cookies()
     const [codiceFiscale, setCodiceFiscale] = useState('')
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [userFound, setUserFound] = useState(null)
@@ -137,7 +137,11 @@ export default function RichiestaAutorizzazione() {
     }, [codiceFiscale])
 
     const [showOverlay, setShowOverlay] = useState(false)
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        state: null,
+        message: ''
+    })
+    const [openSnackbar, setOpenSnackbar] = useState(false)
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -148,16 +152,27 @@ export default function RichiestaAutorizzazione() {
     const addPaziente = async () => {
         console.log('Aggiungi paziente')
         // BLOCKCHAIN fatto
-        // todo - Chiamata alla blockchain per aggiungere il paziente alla lista degli assistiti.
         setShowOverlay(true)
         await axios.post("http://localhost:3001/api/bc/addRequest", {
             token: cookies.get("token"),
             CF: userFound.codiceFiscale
         }).then(res => {
             setUserFound(null)
-        }).catch(e => alert("Errore: " + e.response.status + " - " + e.response.data));
-        setShowOverlay(false)
-        setOpenSnackbar(true)
+            setShowOverlay(false)
+            setSnackbar({
+                state: 'success',
+                message: "Richiesta inviata correttamente!"
+            })
+            setOpenSnackbar(true)
+        }).catch(e => {
+            setShowOverlay(false)
+            setSnackbar({
+                state: 'error',
+                message: "Errore: " + e.response.status + " - " + e.response.data
+            })
+            setOpenSnackbar(true)
+            setUserFound(null)
+        })
     }
 
     return (
@@ -254,8 +269,8 @@ export default function RichiestaAutorizzazione() {
             )}
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-                <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
-                    Richiesta inviata correttamente!
+                <Alert onClose={handleCloseSnackbar} severity={snackbar.state} sx={{width: '100%'}}>
+                    {snackbar.message}
                 </Alert>
             </Snackbar>
         </>
