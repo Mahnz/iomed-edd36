@@ -29,11 +29,11 @@ export default function Cards() {
                                 <Typography variant="h5" gutterBottom textAlign="center" fontWeight={600}>
                                     Paziente
                                 </Typography>
-                                <Typography variant="body1" sx={{mx: 2}}>
+                                <Typography variant="body1" sx={{mx: 2, mt: 1}}>
                                     Accedi o registrati come Paziente per usufruire delle funzionalità a te
                                     dedicate.<br/>
-                                    Visualizza le tue visite mediche, consulta comodamente i documenti e gestisci in
-                                    sicurezza le autorizzazioni di accesso ai dati.
+                                    Consulta comodamente le tue visite mediche, i documenti e gestisci in
+                                    sicurezza le autorizzazioni per l'accesso ai tuoi dati.
                                 </Typography>
                             </CardContent>
                             <CardActions sx={{justifyContent: 'center', mb: 2}}>
@@ -64,8 +64,8 @@ export default function Cards() {
                                 <Typography variant="h5" gutterBottom textAlign="center" fontWeight={600}>
                                     Medico
                                 </Typography>
-                                <Typography variant="body1" sx={{mx: 1}}>
-                                    Sei un professionista? Entra per registrare visite mediche, richiedere l'accesso ai
+                                <Typography variant="body1" sx={{mx: 1, mt: 1}}>
+                                    Sei un professionista? <br/>Accedi o registrati per inserire visite mediche, richiedere l'accesso ai
                                     dati dei tuoi assistiti e consultare liberamente tutta la documentazione.
                                 </Typography>
                             </CardContent>

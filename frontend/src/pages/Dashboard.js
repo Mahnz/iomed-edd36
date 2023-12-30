@@ -16,7 +16,6 @@ import {
 } from '@mui/icons-material'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBell, faCircleUser, faNotesMedical} from "@fortawesome/free-solid-svg-icons"
-import {toast} from 'react-toastify';
 
 // IMPORT DEI VARI COMPONENTI
 import ElencoVisite from '../components/ElencoVisite.js'

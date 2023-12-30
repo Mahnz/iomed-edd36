@@ -125,7 +125,6 @@ export default function LoginFormPaziente() {
             }))
         }
         if (!errors.email.error && !errors.password.error) {
-            // todo - Verifica del login dalla blockchain
             const user = {
                 email: email,
                 password: password

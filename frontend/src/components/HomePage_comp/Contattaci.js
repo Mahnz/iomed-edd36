@@ -61,7 +61,7 @@ export default function Contattaci() {
                 Contattaci
             </Typography>
             <Box display="flex" justifyContent="center" sx={{backgroundColor: '#ffff', pt: 2, pb: 2}}>
-                <Grid container md={5}>
+                <Grid container xs={10}>
                     <Grid item xs={12}>
                         <TextField type="text"
                                    name="nome"

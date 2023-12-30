@@ -1,27 +1,30 @@
 import React from 'react'
 import {Grid, Typography, Button, Box} from '@mui/material'
-import MyTeamImg from '../../images/myteam.jpg'
+import Medico_PC from '../../images/medico_pc.jpg'
 
 export default function Hero() {
     return (
         <Box sx={{
-            // width: '100%',
             display: 'flex',
             minHeight: '85vh',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            backgroundImage: `url(${Medico_PC})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            // filter: 'blur(8px)'
         }}>
             <Grid container spacing={5} sx={{
                 display: 'flex',
                 alignItems: 'center',
-                maxWidth: '75%'
+                maxWidth: '90%'
             }}>
-                <Grid item xs={12} md={7}>
-                    <Typography variant="h3" fontWeight={700}>
+                <Grid item xs={6} md={12} sm={12}>
+                    <Typography variant="h2" fontWeight={700}>
                         IOMed
                     </Typography>
                     <Typography variant="h3" fontWeight={500} sx={{pb: 3, opacity: '0.7'}}>
-                        Verso la digitalizzazione
+                        Un passo verso <br/>la digitalizzazione
                     </Typography>
                     <Typography variant="h5" sx={{
                         opacity: '0.5',
@@ -38,9 +41,9 @@ export default function Hero() {
                         Inizia
                     </Button>
                 </Grid>
-                <Grid item xs={12} md={5}>
-                    <img src={MyTeamImg} sx={{width: '100%'}}/>
-                </Grid>
+                {/*<Grid item xs={12} md={5}>*/}
+                {/*    <img src={MyTeamImg} sx={{width: '100%'}}/>*/}
+                {/*</Grid>*/}
             </Grid>
         </Box>
     )
