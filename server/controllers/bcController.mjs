@@ -22,7 +22,7 @@ const chaincodeName = 'basic';
 
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
-const org1UserId = 'javascriptAppUser1';
+const org1UserId = 'IOMed';
 
 
 
@@ -51,9 +51,6 @@ const addPatient = async (req, res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        //Inizio controlli
-        console.log(req.body.formData);
-        console.log(req.body.formData.docType);
         let q;
         if(req.body.formData.docType=="patient")
         {
@@ -72,24 +69,15 @@ const addPatient = async (req, res) => {
                 return res.status(409).json("Email associata già ad un altro utente");
 
             const p = new Patient(req.body.formData);
-            console.log(p);
-            let cid=await ipfsController.addUser(p.CF);
-            p.cid=cid;
 
-            console.log("inizio critto pass");
             const s=await bcrypt.genSalt(10);
             const pass=await bcrypt.hash(p.password,s);
             p.password=pass;
-
-            console.log("Fine critto");
-
-            console.log(p);
 
             console.log("Inizio transazione di aggiunta utente con chiave: "+p.CF);
 
             const r=await contract.submitTransaction("createPatient", p.CF, JSON.stringify(p));
             gateway.disconnect();
-            console.log(Buffer.from(r).toString());
 
             if(Buffer.from(r).toString()=="true")
             {
@@ -133,24 +121,14 @@ const addPatient = async (req, res) => {
             if(r.length==0)
             {
                 let d=new Doctor(req.body.formData);
-                console.log(d);
-                let cid=await ipfsController.addUser(d.CF);
-                d.cid=cid;
-
-                console.log("inizio critto pass");
                 let s=await bcrypt.genSalt(10);
                 let pass=await bcrypt.hash(d.password,s);
                 d.password=pass;
-
-                console.log("Fine critto");
-
-                console.log(d);
 
                 console.log("Inizio transazione di aggiunta medico con CF: "+d.CF);
 
                 const i=await contract.submitTransaction("createPatient", d.CF, JSON.stringify(d));
                 gateway.disconnect();
-                console.log(Buffer.from(i).toString());
 
                 if(Buffer.from(i).toString()=="true")
                 {
@@ -171,14 +149,10 @@ const addPatient = async (req, res) => {
                 else
                 {
                     console.log("Inizio operazione di update paziente a medico");
-                    console.log(a);
-                    console.log("Verifica password");
-                    console.log(r[0].Record);
                     const verify=await bcrypt.compare(req.body.formData.password, r[0].Record.password);
                     if(verify)
                     {
                         let d=r[0].Record;
-                        console.log(d);
                         d.id=req.body.formData.id;
                         d.hospital=req.body.formData.hospital;
                         d.telefonoUfficio=req.body.formData.telefonoUfficio;
@@ -194,8 +168,7 @@ const addPatient = async (req, res) => {
 
         }
     } catch (e) {
-        console.log(e);
-        console.error(`Errore durante il richiamo della funzione`);
+        console.log("Errore:"+ e.message);
         res.status(500).json(`Errore`);
     }
 }
@@ -228,13 +201,7 @@ const getPatient = async (req, res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        console.log("Ritrovo il CF");
-
         let CF=await jwt.verify(req.params.token, pk);
-
-        console.log("CF: "+CF);
-
-        console.log("Ricerca iniziata");
 
         let q={
             selector:
@@ -271,17 +238,12 @@ const getPatient = async (req, res) => {
         }
 
         p.requests=v;
-
-        console.log("Ricerca finita");
-        console.log(p);
-
         gateway.disconnect();
 
         return res.status(200).json(p);
 
     } catch (e) {
-        console.log(e);
-        console.error(`Errore durante il richiamo della funzione: ${e.message}`);
+        console.log("Errore: "+e.message);
         res.status(500).json("Errore");
     }
 }
@@ -314,13 +276,7 @@ const getDoctor = async (req, res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        console.log("Ritrovo il CF");
-
         let id=await jwt.verify(req.params.token, pk);
-
-        console.log("Id: "+id);
-
-        console.log("Ricerca iniziata");
 
         let q={
             selector:
@@ -333,9 +289,6 @@ const getDoctor = async (req, res) => {
         let p = await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         p=JSON.parse(prettyJSONString(p));
         p=p[0].Record;
-
-        console.log("Ricerca finita");
-        console.log(p);
 
         gateway.disconnect();
 
@@ -384,51 +337,6 @@ const getAll = async (req, res) => {
     }
 }
 
-
-const query = async (req, res) => {
-    try {
-        const ccp = buildCCPOrg1();
-        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
-
-        const wallet = await buildWallet(Wallets, walletPath);
-
-        await enrollAdmin(caClient, wallet, mspOrg1);
-
-        const pk=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-        const gateway = new Gateway();
-
-        await gateway.connect(ccp, {
-            wallet: wallet,
-            identity: org1UserId,
-            discovery: {enabled: true, asLocalhost: true}
-        });
-
-        //Ritrovamento canale su cui è applicato il chaincode
-        const network = await gateway.getNetwork(channelName);
-
-        //Ritrovamento smartContract da chaincode
-        const contract = network.getContract(chaincodeName);
-
-        const q = {
-            selector: {
-                name: "Giovanni",
-            },
-        };
-
-        console.log(q);
-
-        console.log('\n--> Evaluate Transaction: QueryAssets, assets of name Domenico');
-        const result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
-
-        console.log(prettyJSONString(result));
-
-        gateway.disconnect();
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 const login = async (req, res) => {
     try {
         const ccp = buildCCPOrg1();
@@ -464,16 +372,11 @@ const login = async (req, res) => {
         let result = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
 
         result=JSON.parse(prettyJSONString(result));
-
-        console.log("Verifica password");
         const verify=await bcrypt.compare(req.body.password, result[0].Record.password);
-
-        console.log(result);
-        console.log(verify);
 
         if(verify)
         {
-            console.log("Andato tutto");
+            console.log("Controlli completati, login effettuato");
             let CF= await jwt.sign(result[0].Record.CF, pk)
             res.status(200).json({CF: CF, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
         }
@@ -528,12 +431,11 @@ const loginM = async (req, res) => {
 
         result=JSON.parse(prettyJSONString(result));
 
-        console.log("Verifica password");
         const verify=await bcrypt.compare(req.body.password, result[0].Record.password);
 
         if(verify)
         {
-            console.log("Andato tutto");
+            console.log("Verifica credenziali conclusa con successo");
             let id=await jwt.sign(result[0].Record.id, pk)
             res.status(200).json({id: id, firstName: result[0].Record.firstName, lastName: result[0].Record.lastName});
         }
@@ -571,7 +473,6 @@ const enrolling=async () => {
 
 const verify=async (req,res) =>{
     const gateway = new Gateway();
-    console.log(req.body.CF);
 
     try {
         const ccp = buildCCPOrg1();
@@ -595,11 +496,6 @@ const verify=async (req,res) =>{
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        
-        
-  
-        console.log("Verifico esistenza cf "+req.body.CF);
-
         let q = {
                 selector: {
                     CF: req.body.CF
@@ -610,9 +506,6 @@ const verify=async (req,res) =>{
         let aux = await contract.evaluateTransaction('QueryAssets', JSON.stringify(q));
         
         aux=JSON.parse(prettyJSONString(aux));
-        console.log("Ricerca finita");
-        console.log(aux);
-
         gateway.disconnect();
 
         if(aux.length!=0)
@@ -659,11 +552,7 @@ const addRequest=async(req,res)=>{
 
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
-
-        console.log("Decriptiamo l'id del medico che sta passando tramite token");
         let id= await jwt.verify(req.body.token,pk);
-
-        console.log("Troviamo il paziente con il CF specificato");
         let qU= {
             selector:
                 {
@@ -722,11 +611,7 @@ const confirmRequest= async (req,res) => {
 
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
-
-        console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
         let CF= await jwt.verify(req.body.token,pk);
-
-        console.log("Troviamo il paziente col CF");
         let qU= {
             selector:
                 {
@@ -782,11 +667,7 @@ const deleteRequest= async (req,res) =>{
 
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
-
-        console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
         let CF= await jwt.verify(req.body.token,pk);
-
-        console.log("Troviamo il paziente col CF");
         let qU= {
             selector:
                 {
@@ -816,10 +697,6 @@ const getDoctors= async (req,res) => {
     const gateway = new Gateway();
     let v=[];
 
-    console.log("Inizio ricerca dottori");
-    console.log("Parametri:");
-    console.log(req.params);
-
     if(req.params.token==null)
         return res.status(401).json("Errore autenticazione");
 
@@ -845,24 +722,18 @@ const getDoctors= async (req,res) => {
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
         let CF= await jwt.verify(req.params.token,pk);
 
-        console.log("CF trovato: "+CF);
         let q={
             selector:
                 {
                     CF: CF
                 }
         }
-        console.log("Troviamo il paziente col CF");
         let user=await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         user=JSON.parse(prettyJSONString(user));
         user=user[0].Record;
-        console.log("Utente trovato: ")
-        console.log(user);
 
-        console.log("Per ogni id nel vettore delle richieste, troviamo il relativo medico e lo aggiungiamo al vettore")
         for(let e of user.doctors)
         {
             let q={
@@ -924,10 +795,8 @@ const deleteDoctor= async(req,res) =>{
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
         let CF= await jwt.verify(req.body.token,pk);
 
-        console.log("Troviamo il paziente col CF");
         let qU= {
             selector:
                 {
@@ -939,7 +808,6 @@ const deleteDoctor= async(req,res) =>{
         user=JSON.parse(prettyJSONString(user));
         user=user[0].Record;
 
-        console.log("Rimuoviamo l'autorizzazione dal dottore selezionato");
         user.doctors=user.doctors.filter(e=> e!=req.body.id);
 
         await contract.submitTransaction("updatePatient", CF, JSON.stringify(user));
@@ -1025,10 +893,7 @@ const getRequests= async (req,res) =>{
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
 
-        console.log("Decriptiamo il CF dell'utente che sta passando tramite token");
         let CF= await jwt.verify(req.params.token,pk);
-
-        console.log("Troviamo il paziente col CF");
 
         let qU= {
             selector:
@@ -1041,7 +906,6 @@ const getRequests= async (req,res) =>{
         user=JSON.parse(prettyJSONString(user));
         user=user[0].Record;
 
-        console.log("Per ogni id nel vettore delle richieste, troviamo il relativo medico e lo aggiungiamo al vettore")
         for(e of user.requests)
         {
             let q={
@@ -1098,8 +962,6 @@ const getPatients= async (req,res) => {
 
         //Ritrovamento smartContract da chaincode
         const contract = network.getContract(chaincodeName);
-
-        console.log("Decriptiamo l'id del medico che sta passando tramite token");
         let id= await jwt.verify(req.params.token,pk);
 
         const q = {
@@ -1112,7 +974,6 @@ const getPatients= async (req,res) => {
             },
         };
 
-        console.log("Troviamo i pazienti con il medico associato");
         let users=await contract.evaluateTransaction("QueryAssets", JSON.stringify(q));
         users=JSON.parse(prettyJSONString(users));
 
@@ -1124,7 +985,6 @@ const getPatients= async (req,res) => {
         gateway.disconnect();
 
         console.log("Restituiamo il vettore di tutti i pazienti associati al medico")
-        console.log(v);
         return res.status(200).json(v);
 
     } catch (e) {
@@ -1202,29 +1062,6 @@ const changePass= async(req,res) => {
     }
 }
 
-
-
-const testpv = async (req, res) => {
-    try {
-        const ccp = buildCCPOrg1();
-        const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
-
-        const wallet = await buildWallet(Wallets, walletPath);
-
-        await enrollAdmin(caClient, wallet, mspOrg1);
-
-        let p=await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-        console.log("Test pv");
-
-        console.log(p);
-
-        gateway.disconnect();
-    } catch (e) {
-        res.status(401).json("Accesso fallito");
-    }
-}
-
 const getCF=async (req,res)=>{
     try {
         const ccp = buildCCPOrg1();
@@ -1239,7 +1076,6 @@ const getCF=async (req,res)=>{
         let CF=await jwt.verify(req.params.token,p);
 
         console.log("Ritrovamento cf riuscito");
-        console.log(CF);
 
         return res.status(200).json(CF);
     } catch (e) {
@@ -1301,6 +1137,48 @@ const deleteUser=async(req,res)=>{
         if(!verify || req.body.email !== user.email)
             return res.status(404).json("Dati errati");
 
+        if(req.body.type!=="paziente")
+        {
+            let query={
+                selector: {
+                    doctors: {
+                        $elemMatch: {
+                            $eq: token,
+                        },
+                    },
+                },
+            };
+
+            let r=await contract.evaluateTransaction("QueryAssets", JSON.stringify(query));
+            r=JSON.parse(prettyJSONString(r));
+
+            for(let el of r)
+            {
+                el=el.Record;
+                el.doctors=el.doctors.filter(e=> e!= token);
+                await contract.submitTransaction("updatePatient", el.CF, JSON.stringify(el));
+            }
+
+            let query1={
+                selector: {
+                    requests: {
+                        $elemMatch: {
+                            $eq: token,
+                        },
+                    },
+                },
+            };
+
+            let r1=await contract.evaluateTransaction("QueryAssets", JSON.stringify(query1));
+            r1=JSON.parse(prettyJSONString(r1));
+            for(let el of r1)
+            {
+                el=el.Record;
+                el.requests=el.requests.filter(e=> e!= token);
+                await contract.submitTransaction("updatePatient", el.CF, JSON.stringify(el));
+            }
+        }
+
         await contract.submitTransaction("deletePatient", user.CF);
 
         gateway.disconnect();
@@ -1317,10 +1195,8 @@ export const bcController = {
     addPatient,
     getPatient,
     getAll,
-    query,
     login,
     loginM,
-    testpv,
     enrolling,
     verify,
     deleteRequest,

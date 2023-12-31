@@ -14,7 +14,6 @@ class Paziente {
         this.telefono = form.telefono;
         this.province = form.province;
         this.sex = form.sex;
-        this.cid = null;
         this.cap=form.cap;
         this.docType = form.docType;
         this.doctors = [];

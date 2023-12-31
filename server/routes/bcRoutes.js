@@ -19,15 +19,9 @@ router.get("/getCF/:token",bcController.getCF);
 router.post("/patientExist", bcController.patientExist);
 router.post("/verifyCF",bcController.verify);
 router.post("/changePass", bcController.changePass);
-router.post("/deleteUser", bcController.deleteUser)
+router.post("/deleteUser", bcController.deleteUser);
 
+router.get("/getData", bcController.getAll);
 
-router.get("/testpv", bcController.testpv);
-
-router.get("/getData", (req, res) => {
-    console.log("Richiesta arrivata");
-    bcController.getAll();
-    res.json("tutto ok")
-})
 
 export default router
