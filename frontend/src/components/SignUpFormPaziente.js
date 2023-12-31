@@ -10,7 +10,7 @@ import {
     Paper,
     AppBar,
     Toolbar,
-    Typography, useTheme, Tooltip, IconButton, Link,
+    Typography, useTheme, Tooltip, IconButton, Link, CircularProgress,
 } from "@mui/material"
 import axios from "axios";
 import Cookies from "universal-cookie";
@@ -43,30 +43,31 @@ export default function SignUpFormPaziente() {
         docType: "patient"
     }
     const [step, setStep] = useState(1)
+    const [showOverlay, setShowOverlay] = useState(false)
     const [formData, setFormData] = useState(initialForm)
     const [errInfoPersonali, setErrInfoPersonali] = useState({
-        firstName: true,
-        lastName: true,
-        birthDate: true,
-        birthProvincia: true,
-        birthPlace: true,
-        sex: true,
-        CF: true,
-        frontID: true,
-        backID: true
+        firstName: false,
+        lastName: false,
+        birthDate: false,
+        birthProvincia: false,
+        birthPlace: false,
+        sex: false,
+        CF: false,
+        frontID: false,
+        backID: false
     })
     const [errContatti, setErrContatti] = useState({
-        address: true,
-        province: true,
-        city: true,
-        cap: true,
-        telefono: true
+        address: false,
+        province: false,
+        city: false,
+        cap: false,
+        telefono: false
     })
     const [errFine, setErrFine] = useState({
-        email: true,
-        password: true,
-        confirmPassword: true,
-        checkTerms: true
+        email: false,
+        password: false,
+        confirmPassword: false,
+        checkTerms: false
     })
 
     useEffect(() => {
@@ -80,7 +81,6 @@ export default function SignUpFormPaziente() {
                 birthPlace: !formData.birthPlace.trim(),
                 CF: !formData.CF.trim()
             })
-            console.log("ERRORI: ", errInfoPersonali)
         } else if (step === 2) {
             setErrContatti({
                 province: !formData.province.trim(),
@@ -91,7 +91,6 @@ export default function SignUpFormPaziente() {
                 frontID: !formData.frontID,
                 backID: !formData.backID
             })
-            console.log("ERRORI: ", errContatti)
         } else if (step === 3) {
             setErrFine({
                 email: !formData.province,
@@ -99,7 +98,6 @@ export default function SignUpFormPaziente() {
                 confirmPassword: !formData.confirmPassword.trim(),
                 checkTerms: !formData.checkTerms
             })
-            console.log("ERRORI: ", errFine)
         }
     }, [step, formData])
 
@@ -112,7 +110,7 @@ export default function SignUpFormPaziente() {
         } else if (step === 3) {
             hasErrors = Object.values(errFine).some((error) => error)
         }
-        console.log("ERRORI: " + hasErrors)
+
         // 0 errori  ->  prossimo step
         if (!hasErrors) {
             setStep((prevStep) => prevStep + 1)
@@ -121,11 +119,6 @@ export default function SignUpFormPaziente() {
 
     const prevStep = () => {
         setStep(step - 1)
-    }
-
-    // ? METODO DA ELIMINARE, USATO SOLO PER TEST
-    const test = () => {
-        setStep(step + 1)
     }
 
     const handleChange = (e) => {
@@ -202,12 +195,11 @@ export default function SignUpFormPaziente() {
         if (!Object.values(errInfoPersonali).some((error) => error) &&
             !Object.values(errContatti).some((error) => error) &&
             !Object.values(errFine).some((error) => error)) {
-            // todo - Gestire l'invio dei dati in blockchain
-            console.log('Dati inviati:', formData)
+
             console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
                 .then(res => {
-                    console.log("Registrazione paziente effettuata")
+                    setShowOverlay(true)
                     cookies.set('token', res.data.CF, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
@@ -230,9 +222,10 @@ export default function SignUpFormPaziente() {
                     })
 
                     // ? Reset allo stato iniziale del form
+                    console.log("Registrazione paziente effettuata")
                     setFormData(initialForm)
+                    setShowOverlay(false)
                     navigate("/dashboard/home", {state: {successMessage: 'Registrazione effettuata con successo!'}})
-
                 })
                 .catch(e => {
                     console.log(e);
@@ -250,6 +243,24 @@ export default function SignUpFormPaziente() {
 
     return (
         <>
+            {showOverlay && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 999,
+                    }}
+                >
+                    <CircularProgress color="success"/>
+                </div>
+            )}
             <AppBar
                 position="absolute"
                 color="primary"
@@ -324,7 +335,6 @@ export default function SignUpFormPaziente() {
                                         step === 2 ? errContatti :
                                             step === 3 && errFine
                                 }
-                                test={test}
                             />
                         </Box>
                         <Typography variant="body2" sx={{mt: 2}}>

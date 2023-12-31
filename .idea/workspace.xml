@@ -4,19 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;Corretto doppio click su LoginMedico.&#10;&#10;ElencoUtenti: utente rimosso correttamente dalla tabella alla sua eliminazione&#10;&#10;Aggiunto lo Snackbar dopo aver richiesto l'autorizzazione di accesso ai dati ad un paziente&#10;&#10;Altri cambiamenti e correzioni.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginFormPaziente.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" afterDir="false" />
+    <list default="true" id="8032dc14-42e6-4244-84de-39515d6c62e1" name="Changes" comment="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Dashboard: notifiche mostrate correttamente dopo Login e Signup&#10;&#10;HomePage: corrette frasi nelle Cards&#10;&#10;RichiestaAutorizzazione: aggiunto Snackbar di successo/errore&#10;&#10;Altri cambiamenti e correzioni.">
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Contattaci.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Contattaci.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Funzioni.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Hero.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage_comp/Hero.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/images/bestTeams.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/images/medic.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/images/medico_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/images/medico_pc.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/images/medico_pc1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/images/myteam.jpg" beforeDir="false" />
     </list>
-    <list id="15b9665e-cc82-43f1-9015-8336ef18f26e" name="Changes by domenico" comment="Changes by domenico">
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormMedico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpFormPaziente.js" afterDir="false" />
-    </list>
+    <list id="15b9665e-cc82-43f1-9015-8336ef18f26e" name="Changes by domenico" comment="Changes by domenico" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,34 +32,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/frontend/src/components/ElencoUtenti.js">
-      <ranges>
-        <range start1="19" end1="20" start2="19" end2="20" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="31" end1="31" start2="31" end2="32" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="89" end1="89" start2="90" end2="91" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="92" end1="95" start2="94" end2="101" changelist="15b9665e-cc82-43f1-9015-8336ef18f26e" />
-        <range start1="128" end1="128" start2="134" end2="152" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/frontend/src/components/RichiestaAutorizzazione.js">
-      <ranges>
-        <range start1="13" end1="14" start2="13" end2="14" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="60" end1="63" start2="60" end2="63" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="64" end1="65" start2="64" end2="65" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="71" end1="75" start2="71" end2="75" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="76" end1="78" start2="76" end2="78" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="79" end1="80" start2="79" end2="80" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="104" end1="105" start2="104" end2="104" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="151" end1="152" start2="150" end2="151" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="153" end1="155" start2="152" end2="152" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="157" end1="159" start2="154" end2="155" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="162" end1="163" start2="158" end2="162" changelist="15b9665e-cc82-43f1-9015-8336ef18f26e" />
-        <range start1="164" end1="164" start2="163" end2="164" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-        <range start1="180" end1="181" start2="180" end2="181" changelist="8032dc14-42e6-4244-84de-39515d6c62e1" />
-      </ranges>
-    </file>
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -75,32 +46,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Domenico/Desktop/software-edd36/frontend/src/components&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.BACKEND.executor&quot;: &quot;Run&quot;,
-    &quot;npm.FRONTEND.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/Domenico/Desktop/packageOLD.json&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Node.js.index.js.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Domenico/Desktop/software-edd36/frontend/src/images",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.BACKEND.executor": "Run",
+    "npm.FRONTEND.executor": "Run",
+    "npm.start.executor": "Run",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font",
+    "ts.external.directory.path": "C:\\Users\\Domenico\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "two.files.diff.last.used.file": "C:/Users/Domenico/Desktop/packageOLD.json",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactBuddySettings">
     <option name="extensionsIgnore" value="true" />
   </component>
@@ -118,11 +89,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\images" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components\SignUpSteps" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\server" />
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src\pages" />
-      <recent name="C:\Users\Domenico\Desktop\software-edd36\server\routes" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Domenico\Desktop\software-edd36\frontend\src\components\SignUpSteps" />
@@ -132,7 +103,7 @@
       <recent name="C:\Users\Domenico\Desktop\software-edd36\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.BACKEND">
+  <component name="RunManager" selected="npm.FRONTEND">
     <configuration name="BACKEND" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="start" />
@@ -267,7 +238,31 @@
       <option name="project" value="LOCAL" />
       <updated>1703852242985</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Altri cambiamenti e correzioni.">
+      <option name="closed" value="true" />
+      <created>1703950354717</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1703950354718</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Fix sui catch: e.status --&gt; e.response.status&#10;&#10;MyProfile: fixato l'array di requests vuoto&#10;&#10;Altri cambiamenti e correzioni.">
+      <option name="closed" value="true" />
+      <created>1703950877328</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1703950877328</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Dashboard: notifiche mostrate correttamente dopo Login e Signup&#10;&#10;HomePage: corrette frasi nelle Cards&#10;&#10;RichiestaAutorizzazione: aggiunto Snackbar di successo/errore&#10;&#10;Altri cambiamenti e correzioni.">
+      <option name="closed" value="true" />
+      <created>1703955533460</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1703955533460</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,6 +290,9 @@
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;Ripristinato il metodo di deleteAccount.&#10;&#10;Aggiunti i messaggi di errore (helperText) sui campi del dialog di eliminazione.&#10;&#10;Corretto doppio click su LoginPaziente.&#10;&#10;Corretta larghezza delle Cards nella HomePage.&#10;&#10;Altri cambiamenti e correzioni." />
     <MESSAGE value="Modifiche e Correzioni&#10;&#10;Corretto doppio click su LoginMedico.&#10;&#10;ElencoUtenti: utente rimosso correttamente dalla tabella alla sua eliminazione&#10;&#10;Aggiunto lo Snackbar dopo aver richiesto l'autorizzazione di accesso ai dati ad un paziente&#10;&#10;Altri cambiamenti e correzioni." />
     <MESSAGE value="Changes by domenico" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes by domenico" />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Altri cambiamenti e correzioni." />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Fix sui catch: e.status --&gt; e.response.status&#10;&#10;MyProfile: fixato l'array di requests vuoto&#10;&#10;Altri cambiamenti e correzioni." />
+    <MESSAGE value="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Dashboard: notifiche mostrate correttamente dopo Login e Signup&#10;&#10;HomePage: corrette frasi nelle Cards&#10;&#10;RichiestaAutorizzazione: aggiunto Snackbar di successo/errore&#10;&#10;Altri cambiamenti e correzioni." />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifiche e Correzioni&#10;&#10;HomePage: IN CORSO&#10;&#10;Dashboard: notifiche mostrate correttamente dopo Login e Signup&#10;&#10;HomePage: corrette frasi nelle Cards&#10;&#10;RichiestaAutorizzazione: aggiunto Snackbar di successo/errore&#10;&#10;Altri cambiamenti e correzioni." />
   </component>
 </project>

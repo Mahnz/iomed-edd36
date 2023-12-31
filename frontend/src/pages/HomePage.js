@@ -1,5 +1,5 @@
 // HomePage.js
-import React from 'react'
+import React, {useEffect} from 'react'
 import {createTheme, ThemeProvider, CssBaseline} from '@mui/material'
 import Hero from "../components/HomePage_comp/Hero.js"
 import Header from "../components/HomePage_comp/Header.js"
@@ -9,6 +9,10 @@ import Cards from "../components/HomePage_comp/Cards.js";
 
 
 export default function HomePage() {
+    useEffect(() => {
+        document.title = 'IOMed | Un passo verso la digitalizzazione';
+    })
+
     const newTheme = createTheme({
         typography: {
             fontFamily: [

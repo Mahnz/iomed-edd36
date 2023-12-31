@@ -10,7 +10,7 @@ import {
     Paper,
     AppBar,
     Toolbar,
-    Typography, Tooltip, IconButton, Link, useTheme,
+    Typography, Tooltip, IconButton, Link, useTheme, CircularProgress,
 } from "@mui/material"
 import axios from "axios"
 import Cookies from "universal-cookie";
@@ -47,6 +47,7 @@ export default function SignUpFormMedico() {
         hospital: ''
     }
     const [step, setStep] = useState(1)
+    const [showOverlay, setShowOverlay] = useState(false)
     const [formData, setFormData] = useState(initialForm)
     const [errInfoPersonali, setErrInfoPersonali] = useState({
         firstName: true,
@@ -89,7 +90,6 @@ export default function SignUpFormMedico() {
                 birthPlace: !formData.birthPlace.trim(),
                 CF: !formData.CF.trim()
             })
-            console.log("ERRORI: ", errInfoPersonali)
         } else if (step === 2) {
             setErrDatiProfessionali({
                 email: !formData.email.trim(),
@@ -99,7 +99,6 @@ export default function SignUpFormMedico() {
                 spec: !formData.spec.trim(),
                 hospital: !formData.hospital.trim()
             })
-            console.log("ERRORI: ", errDatiProfessionali)
         } else if (step === 3) {
             setErrContatti({
                 province: !formData.province.trim(),
@@ -108,14 +107,12 @@ export default function SignUpFormMedico() {
                 cap: !formData.cap.trim(),
                 telefonoPersonale: !formData.telefonoPersonale.trim()
             })
-            console.log("ERRORI: ", errContatti)
         } else if (step === 4) {
             setErrFine({
                 frontID: !formData.frontID,
                 backID: !formData.backID,
                 checkTerms: !formData.checkTerms
             })
-            console.log("ERRORI: ", errFine)
         }
     }, [step, formData])
 
@@ -130,7 +127,7 @@ export default function SignUpFormMedico() {
         } else if (step === 4) {
             hasErrors = Object.values(errFine).some((error) => error)
         }
-        console.log("ERRORI: " + hasErrors)
+
         // 0 errori  ->  prossimo step
         if (!hasErrors) {
             setStep((prevStep) => prevStep + 1)
@@ -139,11 +136,6 @@ export default function SignUpFormMedico() {
 
     const prevStep = () => {
         setStep(step - 1)
-    }
-
-    // todo - Metodo da eliminare, usato solo per test
-    const test = () => {
-        setStep(step + 1)
     }
 
     const handleChange = (e) => {
@@ -227,12 +219,11 @@ export default function SignUpFormMedico() {
             !Object.values(errDatiProfessionali).some((error) => error) &&
             !Object.values(errContatti).some((error) => error) &&
             !Object.values(errFine).some((error) => error)) {
-            console.log('Dati inviati:', formData)
+
             console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
                 .then(res => {
-                    console.log("Registrazione medico effettuata")
-                    console.log(res.data)
+                    setShowOverlay(true)
                     cookies.set('token', res.data.id, {
                         path: '/',
                         expires: new Date(Date.now() + 3600000), // Valido per 1 ora
@@ -256,6 +247,8 @@ export default function SignUpFormMedico() {
 
                     // ? Reset allo stato iniziale del form
                     setFormData(initialForm)
+                    console.log("Registrazione medico effettuata")
+                    setShowOverlay(false)
                     navigate("/dashboard/home", {state: {successMessage: 'Registrazione effettuata con successo!'}})
                 })
                 .catch(e => console.log(e))
@@ -271,6 +264,24 @@ export default function SignUpFormMedico() {
 
     return (
         <>
+            {showOverlay && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 999,
+                    }}
+                >
+                    <CircularProgress color="success"/>
+                </div>
+            )}
             <AppBar
                 position="absolute"
                 color="primary"
@@ -348,7 +359,6 @@ export default function SignUpFormMedico() {
                                             step === 3 ? errContatti :
                                                 step === 4 ? errFine : errors
                                 }
-                                test={test}
                             />
                         </Box>
                         <Typography variant="body2" sx={{mt: 2}}>

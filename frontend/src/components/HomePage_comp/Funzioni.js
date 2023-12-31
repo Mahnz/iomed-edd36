@@ -18,10 +18,10 @@ export default function Funzioni() {
                 La nostra piattaforma
             </Typography>
             <Box sx={{flexGrow: 1, backgroundColor: '#ffff', pt: 2, pb: 4}}>
-                <Grid container spacing={3}
+                <Grid container spacing={3} alignItems="center"
                       sx={{
                           display: 'flex',
-                          alignItems: 'center',
+                          textAlign: 'center',
                           justifyContent: 'center',
                       }}>
                     <Grid item xs={12} md={3.5} minHeight={275} sm={10}
@@ -36,7 +36,6 @@ export default function Funzioni() {
                     >
                         <FontAwesomeIcon icon={faEarthEurope} style={{fontSize: 85}}
                                          color={theme.palette.primary.main}/>
-                        {/*<EngineeringOutlined sx={{fontSize: 100}} color="primary"/>*/}
                         <Typography variant="h6" fontWeight={700} sx={{mt: 2, mb: 1}}>
                             Disponibilità
                         </Typography>
@@ -54,7 +53,6 @@ export default function Funzioni() {
                               p: 4
                           }}
                     >
-                        {/*<SupervisorAccount sx={{fontSize: 100}} color="primary"/>*/}
                         <FontAwesomeIcon icon={faUsers} flip="horizontal" style={{fontSize: 82}}
                                          color={theme.palette.primary.main} type="regular"/>
                         <Typography variant="h6" fontWeight={700} sx={{mt: 2, mb: 1}}>

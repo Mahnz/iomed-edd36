@@ -14,8 +14,7 @@ export default function Steps({
                                   prevStep,
                                   handleChange,
                                   handleSubmit,
-                                  errors,
-                                  test
+                                  errors
                               }) {
 
     return (
@@ -27,19 +26,13 @@ export default function Steps({
                                            setFormData={setFormData}
                                            nextStep={nextStep}
                                            errors={errors}
-                                           test={test}
                     />
 
-                    {/*  PULSANTI "AVANTI" E "TEST"  */}
+                    {/*  PULSANTI "AVANTI"*/}
                     <Grid container spacing={1} sx={{mt: 2}}>
                         <Grid item xs={12}>
                             <Button variant="contained" color="primary" fullWidth onClick={nextStep}>
                                 Avanti
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" color="error" fullWidth onClick={test}>
-                                TEST
                             </Button>
                         </Grid>
                     </Grid>
@@ -71,11 +64,6 @@ export default function Steps({
                         <Grid item xs={6}>
                             <Button variant="contained" color="primary" fullWidth onClick={nextStep}>
                                 Avanti
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" color="error" fullWidth onClick={test}>
-                                TEST
                             </Button>
                         </Grid>
                     </Grid>

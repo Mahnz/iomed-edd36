@@ -175,7 +175,8 @@ export default function ElencoUtenti() {
                             <TableRow sx={{backgroundColor: '#1976d2', color: '#ffff'}}>
                                 <StyledTableCell sx={{width: '25%'}} align="left">Cognome</StyledTableCell>
                                 <StyledTableCell sx={{width: '25%'}} align="left">Nome</StyledTableCell>
-                                <StyledTableCell sx={{width: '15%'}} align="center">Data di nascita</StyledTableCell>
+                                <StyledTableCell sx={{width: '15%'}} align="center">Data di
+                                    nascita</StyledTableCell>
                                 <StyledTableCell sx={{width: '30%'}} align="center">
                                     {medico ? "Codice fiscale" : "Identificativo"}
                                 </StyledTableCell>
@@ -183,42 +184,54 @@ export default function ElencoUtenti() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredUsers
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => (
-                                    <StyledTableRow hover role="checkbox" key={index} tabIndex={-1}
-                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                                        <StyledTableCell align="left">{row.lastName}</StyledTableCell>
-                                        <StyledTableCell align="left">{row.firstName}</StyledTableCell>
-                                        <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
-                                        <StyledTableCell align="center">{medico ? row.CF : row.id}</StyledTableCell>
-                                        {medico
-                                            ? (
-                                                <StyledTableCell align="center">
-                                                    <Tooltip title="Vai alle visite del paziente" placement="right">
-                                                        <IconButton onClick={() => handleViewUser(row)}>
-                                                            <FontAwesomeIcon icon={faArrowRightFromBracket}
-                                                                             style={{color: theme.palette.success.main}}
-                                                            />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </StyledTableCell>
-                                            ) : (
-                                                <StyledTableCell align="center">
-                                                    <Tooltip title="Rimuovi medico dalla lista"
-                                                             placement="right">
-                                                        <IconButton onClick={() => handleOpenDialog(row)}>
-                                                            <Cancel sx={{color: theme.palette.error.main}}/>
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </StyledTableCell>
-                                            )
-                                        }
-                                    </StyledTableRow>
-                                ))}
+                            {filteredUsers.length === 0
+                                ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} align="center">
+                                            {medico ? "Nessun paziente tra gli assistiti" : "Nessun medico autorizzato"}
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    filteredUsers
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((row, index) => (
+                                            <StyledTableRow hover role="checkbox" key={index} tabIndex={-1}
+                                                            sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                <StyledTableCell align="left">{row.lastName}</StyledTableCell>
+                                                <StyledTableCell align="left">{row.firstName}</StyledTableCell>
+                                                <StyledTableCell align="center">{row.birthDate}</StyledTableCell>
+                                                <StyledTableCell
+                                                    align="center">{medico ? row.CF : row.id}</StyledTableCell>
+                                                {medico
+                                                    ? (
+                                                        <StyledTableCell align="center">
+                                                            <Tooltip title="Vai alle visite del paziente"
+                                                                     placement="right">
+                                                                <IconButton onClick={() => handleViewUser(row)}>
+                                                                    <FontAwesomeIcon icon={faArrowRightFromBracket}
+                                                                                     style={{color: theme.palette.success.main}}
+                                                                    />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </StyledTableCell>
+                                                    ) : (
+                                                        <StyledTableCell align="center">
+                                                            <Tooltip title="Rimuovi medico dalla lista"
+                                                                     placement="right">
+                                                                <IconButton onClick={() => handleOpenDialog(row)}>
+                                                                    <Cancel sx={{color: theme.palette.error.main}}/>
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </StyledTableCell>
+                                                    )
+                                                }
+                                            </StyledTableRow>
+                                        ))
+                                )}
                         </TableBody>
                     </Table>
                 </TableContainer>
+
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
@@ -228,6 +241,7 @@ export default function ElencoUtenti() {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+
             </Paper>
             {!medico && (
                 <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -244,14 +258,17 @@ export default function ElencoUtenti() {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            )}
-            {!medico && (
-                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-                    <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
-                        Autorizzazione rimossa con successo!
-                    </Alert>
-                </Snackbar>
-            )}
+            )
+            }
+            {
+                !medico && (
+                    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                        <Alert onClose={handleCloseSnackbar} severity="success" sx={{width: '100%'}}>
+                            Autorizzazione rimossa con successo!
+                        </Alert>
+                    </Snackbar>
+                )
+            }
         </>
     )
 }

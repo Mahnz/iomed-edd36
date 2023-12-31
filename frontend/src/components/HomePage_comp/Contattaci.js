@@ -61,8 +61,13 @@ export default function Contattaci() {
                 Contattaci
             </Typography>
             <Box display="flex" justifyContent="center" sx={{backgroundColor: '#ffff', pt: 2, pb: 2}}>
-                <Grid container xs={10}>
-                    <Grid item xs={12}>
+                <Grid container sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    maxWidth: '80%',
+                    justifyContent: 'center',
+                }}>
+                    <Grid item xs={10} lg={8}>
                         <TextField type="text"
                                    name="nome"
                                    label="Nome"
@@ -77,7 +82,7 @@ export default function Contattaci() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sx={{mt: 2}}>
+                    <Grid item xs={10} lg={8} sx={{mt: 2}}>
                         <TextField type="email"
                                    name="email"
                                    label="Email"
@@ -91,7 +96,7 @@ export default function Contattaci() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sx={{mt: 2}}>
+                    <Grid item xs={10} lg={8} sx={{mt: 2}}>
                         <TextField type="text"
                                    name="oggetto"
                                    label="Oggetto"
@@ -104,7 +109,7 @@ export default function Contattaci() {
                                    helperText={errors.oggetto && 'Campo obbligatorio'}
                         />
                     </Grid>
-                    <Grid item xs={12} sx={{mt: 2}}>
+                    <Grid item xs={10} lg={8} sx={{mt: 2}}>
                         <TextField type="text"
                                    name="descrizione"
                                    label="Inserisci un messaggio"
@@ -120,7 +125,7 @@ export default function Contattaci() {
                         />
                     </Grid>
 
-                    <Grid item xs={12} mt={2} sx={{justifyContent: 'center', textAlign: "center"}}>
+                    <Grid item xs={10} lg={8} mt={2} sx={{justifyContent: 'center', textAlign: "center"}}>
                         <Button
                             variant="contained"
                             type="submit"
