@@ -111,12 +111,10 @@ export default function LoginFormMedico() {
         }
 
         if (!errors.id.error && !errors.password.error) {
-            // todo - Verifica del login dalla blockchain
             const user = {
                 id: id,
                 password: password
-            };
-            console.log("Sono arrivato alla POST")
+            }
             await axios.post('http://localhost:3001/api/bc/loginM', user)
                 .then(res => {
                     console.log("Login medico effettuato")
@@ -145,7 +143,7 @@ export default function LoginFormMedico() {
                 })
                 .catch(error => {
                     console.error(error)
-                    alert("Errore " + error.status + " " + error.response.data);
+                    alert("Errore " + error.response.status + " " + error.response.data);
                 });
         }
     }

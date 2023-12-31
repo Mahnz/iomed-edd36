@@ -220,7 +220,6 @@ export default function SignUpFormMedico() {
             !Object.values(errContatti).some((error) => error) &&
             !Object.values(errFine).some((error) => error)) {
 
-            console.log("Chiamata funzione axios")
             await axios.post("http://localhost:3001/api/bc/insertUser", {formData: formData})
                 .then(res => {
                     setShowOverlay(true)

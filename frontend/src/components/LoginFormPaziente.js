@@ -128,8 +128,7 @@ export default function LoginFormPaziente() {
             const user = {
                 email: email,
                 password: password
-            };
-            console.log("Sono arrivato alla POST")
+            }
             await axios.post('http://localhost:3001/api/bc/login', user)
                 .then(res => {
                     console.log("Login paziente effettuato")

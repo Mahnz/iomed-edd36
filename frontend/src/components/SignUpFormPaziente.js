@@ -202,23 +202,23 @@ export default function SignUpFormPaziente() {
                     setShowOverlay(true)
                     cookies.set('token', res.data.CF, {
                         path: '/',
-                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        expires: new Date(Date.now() + 3600000),
+                        sameSite: 'Strict',
                     })
                     cookies.set('type', "paziente", {
                         path: '/',
-                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        expires: new Date(Date.now() + 3600000),
+                        sameSite: 'Strict',
                     })
                     cookies.set('firstName', res.data.firstName, {
                         path: '/',
-                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        expires: new Date(Date.now() + 3600000),
+                        sameSite: 'Strict',
                     })
                     cookies.set('lastName', res.data.lastName, {
                         path: '/',
-                        expires: new Date(Date.now() + 3600000), // Valido per 1 ora
-                        sameSite: 'Strict',  // Cookie limitato al proprio dominio
+                        expires: new Date(Date.now() + 3600000),
+                        sameSite: 'Strict',
                     })
 
                     // ? Reset allo stato iniziale del form
@@ -232,8 +232,8 @@ export default function SignUpFormPaziente() {
                     alert("Errore: " + e.response.status + " " + e.response.data);
                 })
         } else {
-            console.log('Dati non inviati');
-            alert("Errore: " + e.response.status + " " + e.response.data);
+            console.log('Dati non inviati')
+            alert("Errore: " + e.response.status + " " + e.response.data)
         }
     }
 
